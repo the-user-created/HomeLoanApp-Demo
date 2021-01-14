@@ -68,7 +68,7 @@ struct ResidencyContact: View {
                           question: formQuestions[2][0] ?? "MISSING",
                           selected: $sACitizen)
                 
-                if sACitizen == "No" {
+                if sACitizen.lowercased() == "no" {
                     FormPicker(iD: "nationality", pageNum: 2,
                                question: formQuestions[2][0.1] ?? "MISSING",
                                selectionOptions: countries,
@@ -90,53 +90,55 @@ struct ResidencyContact: View {
                               placeholder: formTextFieldPlaceholders[2][2] ?? "MISSING",
                               text: $cityOfBirth)
                 
+                if sACitizen.lowercased() == "no" {
                 FormYesNo(iD: "permanentResident", pageNum: 2,
                           question: formQuestions[2][3] ?? "MISSING",
                           selected: $permanentResident)
                 
-                if permanentResident == "No" {
-                    FormPicker(iD: "countryOfPermanentResidence", pageNum: 2,
-                               question: formQuestions[2][3.1] ?? "MISSING",
-                               selectionOptions: countries,
-                               selection: $countryOfPermanentResidence)
-                }
-                
-                Group() {
-                    FormPicker(iD: "permitType", pageNum: 2,
-                               question: formQuestions[2][4] ?? "MISSING",
-                               selectionOptions: permitTypes,
-                               selection: $permitType)
+                    if permanentResident.lowercased() == "no" {
+                        FormPicker(iD: "countryOfPermanentResidence", pageNum: 2,
+                                   question: formQuestions[2][3.1] ?? "MISSING",
+                                   selectionOptions: countries,
+                                   selection: $countryOfPermanentResidence)
+                    }
                     
-                    FormPicker(iD: "countryOfPermit", pageNum: 2,
-                               question: formQuestions[2][5] ?? "MISSING",
-                               selectionOptions: countries,
-                               selection: $countryOfPermit)
-                    
-                    FormDatePicker(iD: "permitIssueDate", pageNum: 2,
-                                   question: formQuestions[2][6] ?? "MISSING",
-                                   dateRangeOption: 0,
-                                   dateSelection: $permitIssueDate)
-                    
-                    FormDatePicker(iD: "permitExpiryDate", pageNum: 2,
-                                   question: formQuestions[2][7] ?? "MISSING",
-                                   dateRangeOption: 1,
-                                   dateSelection: $permitExpiryDate)
-                    
-                    FormDatePicker(iD: "contractIssueDate", pageNum: 2,
-                                   question: formQuestions[2][8] ?? "MISSING",
-                                   dateRangeOption: 0,
-                                   dateSelection: $contractIssueDate)
-                    
-                    FormDatePicker(iD: "contractExpiryDate", pageNum: 2,
-                                   question: formQuestions[2][9] ?? "MISSING",
-                                   dateRangeOption: 1,
-                                   dateSelection: $contractExpiryDate)
-                    
-                    FormTextField(iD: "workPermitNumber", pageNum: 2,
-                                  question: formQuestions[2][10] ?? "MISSING",
-                                  placeholder: formTextFieldPlaceholders[2][10] ?? "MISSING",
-                                  text: $workPermitNumber)
-                    
+                    Group() {
+                        FormPicker(iD: "permitType", pageNum: 2,
+                                   question: formQuestions[2][4] ?? "MISSING",
+                                   selectionOptions: permitTypes,
+                                   selection: $permitType)
+                        
+                        FormPicker(iD: "countryOfPermit", pageNum: 2,
+                                   question: formQuestions[2][5] ?? "MISSING",
+                                   selectionOptions: countries,
+                                   selection: $countryOfPermit)
+                        
+                        FormDatePicker(iD: "permitIssueDate", pageNum: 2,
+                                       question: formQuestions[2][6] ?? "MISSING",
+                                       dateRangeOption: 0,
+                                       dateSelection: $permitIssueDate)
+                        
+                        FormDatePicker(iD: "permitExpiryDate", pageNum: 2,
+                                       question: formQuestions[2][7] ?? "MISSING",
+                                       dateRangeOption: 1,
+                                       dateSelection: $permitExpiryDate)
+                        
+                        FormDatePicker(iD: "contractIssueDate", pageNum: 2,
+                                       question: formQuestions[2][8] ?? "MISSING",
+                                       dateRangeOption: 0,
+                                       dateSelection: $contractIssueDate)
+                        
+                        FormDatePicker(iD: "contractExpiryDate", pageNum: 2,
+                                       question: formQuestions[2][9] ?? "MISSING",
+                                       dateRangeOption: 1,
+                                       dateSelection: $contractExpiryDate)
+                        
+                        FormTextField(iD: "workPermitNumber", pageNum: 2,
+                                      question: formQuestions[2][10] ?? "MISSING",
+                                      placeholder: formTextFieldPlaceholders[2][10] ?? "MISSING",
+                                      text: $workPermitNumber)
+                        
+                    }
                 }
                 
             }
@@ -201,6 +203,7 @@ struct ResidencyContact: View {
                               question: formQuestions[2][15.6] ?? "MISSING",
                               placeholder: formTextFieldPlaceholders[2][15.6] ?? "MISSING",
                               text: $resStreetCode)
+                    .keyboardType(.numberPad)
                 
                 FormLenAt(iD: "lengthAtAddress", pageNum: 2,
                           question: formQuestions[2][15.7] ?? "MISSING",
@@ -249,6 +252,7 @@ struct ResidencyContact: View {
                                   question: formQuestions[2][15.6] ?? "MISSING",
                                   placeholder: formTextFieldPlaceholders[2][15.6] ?? "MISSING",
                                   text: $postalStreetCode)
+                        .keyboardType(.numberPad)
                 }
             }
             

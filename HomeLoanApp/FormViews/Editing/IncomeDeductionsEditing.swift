@@ -1,17 +1,18 @@
 //
-//  Income.swift
-//  HomeLoanApp
+//  IncomeEditing.swift
+//  HomeLoanApp-Demo
 //
-//  Created by David Young on 2020/11/30.
+//  Created by David Young on 2021/01/14.
 //
 
 import SwiftUI
 
-struct Income: View {
+struct IncomeDeductionsEditing: View {
     // MARK: - Wrapped Objects
     @Environment(\.managedObjectContext) private var viewContext
     @Environment (\.presentationMode) var presentationMode
     @EnvironmentObject var applicationCreation: ApplicationCreation
+    @ObservedObject var application: Application
     
     // MARK: - State Variables
     @State var basicSalary = ""
@@ -37,12 +38,60 @@ struct Income: View {
     @State var otherDeduction = ""
     @State var otherDeductionText = ""
     
+    @State var sender: ChoosePageVer
     @Binding var isDone: Bool
     
     // MARK: - Properties
     let resignPub = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
     let handleChangedValues = HandleChangedValues()
     
+    // MARK: - init
+    init(isDone: Binding<Bool>, application: Application, sender: ChoosePageVer) {
+        self._isDone = isDone
+        self._sender = State(wrappedValue: sender)
+        self.application = application
+        self._basicSalary = State(wrappedValue: self.application.basicSalary ?? "")
+        self._wages = State(wrappedValue: self.application.wages ?? "")
+        self._averageComm = State(wrappedValue: self.application.averageComm ?? "")
+        self._investments = State(wrappedValue: self.application.investments ?? "")
+        self._rentIncome = State(wrappedValue: self.application.rentIncome ?? "")
+        self._futureRentIncome = State(wrappedValue: self.application.futureRentIncome ?? "")
+        self._housingSub = State(wrappedValue: self.application.housingSub ?? "")
+        self._averageOvertime = State(wrappedValue: self.application.averageOvertime ?? "")
+        self._monthCarAllowance = State(wrappedValue: self.application.monthCarAllowance ?? "")
+        self._interestIncome = State(wrappedValue: self.application.interestIncome ?? "")
+        self._travelAllowance = State(wrappedValue: self.application.travelAllowance ?? "")
+        self._entertainment = State(wrappedValue: self.application.entertainment ?? "")
+        self._incomeFromSureties = State(wrappedValue: self.application.incomeFromSureties ?? "")
+        self._maintenanceAlimony = State(wrappedValue: self.application.maintenanceAlimony ?? "")
+        self._tax = State(wrappedValue: self.application.tax ?? "")
+        self._pension = State(wrappedValue: self.application.pension ?? "")
+        self._uIF = State(wrappedValue: self.application.uIF ?? "")
+        self._medicalAid = State(wrappedValue: self.application.medicalAid ?? "")
+        
+        if let otherIncome = self.application.otherIncome {
+            let openBracketIndices = findNth("[", text: otherIncome)
+            let closeBracketIndices = findNth("]", text: otherIncome)
+            
+            if !openBracketIndices.isEmpty && !closeBracketIndices.isEmpty {
+                self._otherIncomeText = State(wrappedValue: String(otherIncome[otherIncome.index(openBracketIndices[0], offsetBy: 1)..<closeBracketIndices[0]]))
+                self._otherIncome = State(wrappedValue: String(otherIncome[otherIncome.index(openBracketIndices[1], offsetBy: 1)..<closeBracketIndices[1]]))
+            }
+        }
+        
+        if let otherDeductions = self.application.otherDeductions {
+            let openBracketIndices = findNth("[", text: otherDeductions)
+            let closeBracketIndices = findNth("]", text: otherDeductions)
+            
+            if !openBracketIndices.isEmpty && !closeBracketIndices.isEmpty {
+                self._otherDeductionText = State(wrappedValue: String(otherDeductions[otherDeductions.index(openBracketIndices[0], offsetBy: 1)..<closeBracketIndices[0]]))
+                self._otherDeduction = State(wrappedValue: String(otherDeductions[otherDeductions.index(openBracketIndices[1], offsetBy: 1)..<closeBracketIndices[1]]))
+            }
+        }
+
+    }
+    
+    // MARK: - body
     var body: some View {
         Form() {
             Section(header: Text("INCOME")) {
@@ -137,7 +186,7 @@ struct Income: View {
                 Button(action: {
                     handleSaving()
                 }) {
-                    Text("Save")
+                    Text("Save changes")
                         .foregroundColor(.blue)
                         .font(.headline)
                 }
@@ -164,22 +213,26 @@ struct Income: View {
     private func handleSaving() {
         if !changedValues.isEmpty {
             isDone = determineComplete()
-            saveApplication()
+            addToApplication()
             presentationMode.wrappedValue.dismiss()
         }
     }
     
-    // MARK: - saveApplication
-    private func saveApplication() {
+    // MARK: - addToApplication()
+    private func addToApplication() {
         UIApplication.shared.endEditing()
+        
         for (key, value) in changedValues {
-            applicationCreation.application.setValue(value, forKey: key)
+            if sender == .creator {
+                applicationCreation.application.setValue(value, forKey: key)
+            } else {
+                application.setValue(value, forKey: key)
+            }
         }
         
         do {
             try viewContext.save()
-            print("print - Application Entity Updated")
-            applicationCreation.incomeSaved = true
+            print("Application Entity Updated")
             handleChangedValues.cleanChangedValues()
         } catch {
             print(error.localizedDescription)

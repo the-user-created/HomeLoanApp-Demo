@@ -6,6 +6,7 @@
         <attribute name="applicationType" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="applyingSubsidy" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="assetLiabilityInvestments" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="assetsLiabilitiesDone" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="assurance" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="averageComm" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="averageOvertime" optional="YES" attributeType="String" defaultValueString=""/>
@@ -32,7 +33,7 @@
         <attribute name="creditListings" optional="YES" attributeType="String"/>
         <attribute name="currentAcc" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="currentAdmin" optional="YES" attributeType="String" defaultValueString=""/>
-        <attribute name="dateOfBirth" optional="YES" attributeType="Date" defaultDateTimeInterval="0" usesScalarValueType="NO"/>
+        <attribute name="dateOfBirth" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="debtReArrange" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="debtReview" optional="YES" attributeType="String"/>
         <attribute name="domesticWages" optional="YES" attributeType="String" defaultValueString=""/>
@@ -49,10 +50,12 @@
         <attribute name="employerProvince" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="employerStreetCode" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="employerSuburb" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="employmentDone" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="employmentPeriod" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="employmentSector" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="entertainment" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="ethnicGroup" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="expensesDone" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="expensesEntertainment" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="expensesInvestments" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="expensesMaintenanceAlimony" optional="YES" attributeType="String" defaultValueString=""/>
@@ -68,9 +71,9 @@
         <attribute name="homeMain" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="housingScheme" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="housingSub" optional="YES" attributeType="String" defaultValueString=""/>
-        <attribute name="iDPassExpiryDate" optional="YES" attributeType="Date" defaultDateTimeInterval="0" usesScalarValueType="NO"/>
         <attribute name="iDPassNumber" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="iDType" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="incomeDeductionsDone" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="incomeFromSureties" optional="YES" attributeType="String"/>
         <attribute name="incomeSource" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="insolvent" optional="YES" attributeType="String" defaultValueString=""/>
@@ -98,7 +101,7 @@
         <attribute name="natureOfOccupation" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="notificationsCheck" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="numberOfApplicants" optional="YES" attributeType="Integer 16" usesScalarValueType="YES"/>
-        <attribute name="numDependents" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="numDependents" optional="YES" attributeType="Integer 16" usesScalarValueType="YES"/>
         <attribute name="occupationalStatus" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="occupationLevel" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="otherAcc" optional="YES" attributeType="String" defaultValueString=""/>
@@ -108,6 +111,7 @@
         <attribute name="otherExpenses" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="otherIncome" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="otherLiabilities" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="passExpiryDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="payingScheme" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="pEContact" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="pEDuration" optional="YES" attributeType="String" defaultValueString=""/>
@@ -139,6 +143,7 @@
         <attribute name="rentIncome" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="resCity" optional="YES" attributeType="String"/>
         <attribute name="resCountry" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="residencyContactDone" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="resIsPostal" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="resLine1" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="resLine2" optional="YES" attributeType="String" defaultValueString=""/>
@@ -152,6 +157,7 @@
         <attribute name="singleHouse" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="socialGrant" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="spouseIncome" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="subsidyCreditDone" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="subsidyForHome" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="suretyAgreements" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="surname" optional="YES" attributeType="String" defaultValueString=""/>
@@ -171,6 +177,6 @@
         <attribute name="workPhoneNum" optional="YES" attributeType="String" defaultValueString=""/>
     </entity>
     <elements>
-        <element name="Application" positionX="-63" positionY="-18" width="128" height="2563"/>
+        <element name="Application" positionX="-63" positionY="-18" width="128" height="2653"/>
     </elements>
 </model>

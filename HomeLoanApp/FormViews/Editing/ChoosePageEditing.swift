@@ -97,9 +97,9 @@ struct ChoosePageEditing: View {
             }
             .disabled(!generalDetailsDone)
             
-            NavigationLink(destination: IncomeEditing(isDone: $incomeDone, application: application, sender: .editor)) {
+            NavigationLink(destination: IncomeDeductionsEditing(isDone: $incomeDone, application: application, sender: .editor)) {
                 HStack() {
-                    Text("Income")
+                    Text("Income & Deductions")
                         .font(.headline)
                     
                     Spacer()
@@ -136,25 +136,18 @@ struct ChoosePageEditing: View {
             }
             .disabled(!generalDetailsDone)
             
-            // Notification & Warranty
-            Group() {
-                //if !applicationCreation.notificationSaved {
-                NavigationLink(destination: NotificationView(application: application, isDone: $notificationDone)) {
-                    HStack() {
-                        Text("Notification")
-                            .font(.headline)
-                        
-                        Spacer()
-                        
-                        Image(systemName: notificationDone ? "checkmark.circle.fill": "checkmark.circle")
-                            .foregroundColor(notificationDone ? .green: .red)
-                    }
-                }
-                .disabled(!canSignOff())
-                /*} else {
+            NavigationLink(destination: NotificationView(application: application, isDone: $notificationDone)) {
+                HStack() {
+                    Text("Notification")
+                        .font(.headline)
                     
-                }*/
+                    Spacer()
+                    
+                    Image(systemName: notificationDone ? "checkmark.circle.fill": "checkmark.circle")
+                        .foregroundColor(notificationDone ? .green: .red)
+                }
             }
+            .disabled(!canSignOff())
             
             Section() {
                 NavigationLink(destination: EmptyView()) {

@@ -181,9 +181,9 @@ struct ChoosePageCreating: View {
             // Income
             Group() {
                 if !applicationCreation.incomeSaved {
-                    NavigationLink(destination: Income(isDone: $incomeDone), tag: 8, selection: $selection) {
+                    NavigationLink(destination: IncomeDeductions(isDone: $incomeDone), tag: 8, selection: $selection) {
                         HStack() {
-                            Text("Income")
+                            Text("Income & Deductions")
                                 .font(.headline)
                             
                             Spacer()
@@ -194,9 +194,9 @@ struct ChoosePageCreating: View {
                     }
                     .disabled(!generalDetailsDone)
                 } else {
-                    NavigationLink(destination: IncomeEditing(isDone: $incomeDone, application: applicationCreation.application, sender: .creator), tag: 9, selection: $selection) {
+                    NavigationLink(destination: IncomeDeductionsEditing(isDone: $incomeDone, application: applicationCreation.application, sender: .creator), tag: 9, selection: $selection) {
                         HStack() {
-                            Text("Income")
+                            Text("Income & Deductions")
                                 .font(.headline)
                             
                             Spacer()

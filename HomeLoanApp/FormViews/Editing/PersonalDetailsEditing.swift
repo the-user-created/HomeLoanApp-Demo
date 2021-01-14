@@ -35,7 +35,7 @@ struct PersonalDetailsEditing: View {
     @State var dateOfBirth = Date()
     @State var iDType = 0
     @State var iDPassNumber = ""
-    @State var iDPassExpiryDate = Date()
+    @State var passExpiryDate = Date()
     @State var taxNumber = ""
     @State var taxReturn = ""
     @State var taxReturn1 = 0
@@ -72,7 +72,7 @@ struct PersonalDetailsEditing: View {
         self._iDType = State(wrappedValue: identityType.firstIndex(of: self.application.iDType ?? "--select--") ?? 0)
         self._iDPassNumber = State(wrappedValue: self.application.iDPassNumber ?? "")
         
-        self._iDPassExpiryDate = State(wrappedValue: self.application.iDPassExpiryDate ?? Date())
+        self._passExpiryDate = State(wrappedValue: self.application.passExpiryDate ?? Date())
         
         self._taxNumber = State(wrappedValue: self.application.taxNumber ?? "")
         self._taxReturn = State(wrappedValue: self.application.taxReturn ?? "")
@@ -150,10 +150,12 @@ struct PersonalDetailsEditing: View {
                               text: $iDPassNumber)
                     .keyboardType(identityType[iDType].contains("ID") ? .numberPad : .default)
                 
-                FormDatePicker(iD: "iDPassExpiryDate", pageNum: 1,
-                               question: formQuestions[1][switchIDPassport(value: identityType[iDType], loc: 7)] ?? "MISSING",
-                               dateRangeOption: 1,
-                               dateSelection: $iDPassExpiryDate)
+                if !identityType[iDType].lowercased().contains("id") {
+                    FormDatePicker(iD: "passExpiryDate", pageNum: 1,
+                                   question: formQuestions[1][7] ?? "MISSING",
+                                   dateRangeOption: 1,
+                                   dateSelection: $passExpiryDate)
+                }
                 
             }
             
@@ -287,9 +289,17 @@ struct PersonalDetailsEditing: View {
         
         for (key, value) in changedValues {
             if sender == .creator {
-                applicationCreation.application.setValue(value, forKey: key)
+                if key == "numDependents" {
+                    applicationCreation.application.setValue(Int16(value as! String), forKey: key)
+                } else {
+                    applicationCreation.application.setValue(value, forKey: key)
+                }
             } else {
-                application.setValue(value, forKey: key)
+                if key == "numDependents" {
+                    application.setValue(Int16(value as! String), forKey: key)
+                } else {
+                    application.setValue(value, forKey: key)
+                }
             }
         }
         

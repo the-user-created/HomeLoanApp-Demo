@@ -23,7 +23,7 @@ struct PersonalDetails: View {
     @State var dateOfBirth = Date()
     @State var iDType = 0
     @State var iDPassNumber = ""
-    @State var iDPassExpiryDate = Date()
+    @State var passExpiryDate = Date()
     @State var taxNumber = ""
     @State var taxReturn = ""
     @State var educationLevel = 0
@@ -112,10 +112,12 @@ struct PersonalDetails: View {
                               text: $iDPassNumber)
                     .keyboardType(identityType[iDType].contains("ID") ? .numberPad : .default)
                 
-                FormDatePicker(iD: "iDPassExpiryDate", pageNum: 1,
-                               question: formQuestions[1][switchIDPassport(value: identityType[iDType], loc: 7)] ?? "MISSING",
-                               dateRangeOption: 1,
-                               dateSelection: $iDPassExpiryDate)
+                if !identityType[iDType].lowercased().contains("id") {
+                    FormDatePicker(iD: "passExpiryDate", pageNum: 1,
+                                   question: formQuestions[1][7] ?? "MISSING",
+                                   dateRangeOption: 1,
+                                   dateSelection: $passExpiryDate)
+                }
                 
             }
             
@@ -225,9 +227,9 @@ struct PersonalDetails: View {
     
     // MARK: - determineComplete
     private func determineComplete() -> Bool {
-        /*if  {
+        if title != 0 && !surname.isEmpty && !firstNames.isEmpty && gender != 0 && iDType != 0 && !iDPassNumber.isEmpty && !taxNumber.isEmpty && !taxReturn.isEmpty && educationLevel != 0 && ethnicGroup != 0 && !singleHouse.isEmpty && maritalStatus != 0 && countryMarriage != 0 && !spouseIncome.isEmpty && !aNC.isEmpty && !numDependents.isEmpty && !mainResidence.isEmpty && !firstTimeHomeBuyer.isEmpty && !socialGrant.isEmpty && !publicOfficial.isEmpty && !relatedOfficial.isEmpty {
             return true
-        }*/
+        }
         
         return false
     }
@@ -245,7 +247,11 @@ struct PersonalDetails: View {
     private func saveApplication() {
         UIApplication.shared.endEditing()
         for (key, value) in changedValues {
-            applicationCreation.application.setValue(value, forKey: key)
+            if key == "numDependents" {
+                applicationCreation.application.setValue(Int16(value as! String), forKey: key)
+            } else {
+                applicationCreation.application.setValue(value, forKey: key)
+            }
         }
         
         do {

@@ -40,7 +40,7 @@ extension Application {
     @NSManaged public var dateOfBirth: Date?
     @NSManaged public var iDType: String?
     @NSManaged public var iDPassNumber: String?
-    @NSManaged public var iDPassExpiryDate: Date?
+    @NSManaged public var passExpiryDate: Date?
     @NSManaged public var taxNumber: String?
     @NSManaged public var taxReturn: String?
     @NSManaged public var educationLevel: String?
@@ -58,6 +58,7 @@ extension Application {
     @NSManaged public var relatedOfficial: String?
     
     // MARK: - Residency & Contact
+    @NSManaged public var residencyContactDone: Bool
     @NSManaged public var sACitizen: String?
     @NSManaged public var nationality: String?
     @NSManaged public var countryPassport: String?
@@ -94,6 +95,7 @@ extension Application {
     @NSManaged public var postalStreetCode: String?
     
     // MARK: - Subsidy & Credit
+    @NSManaged public var subsidyCreditDone: Bool
     @NSManaged public var subsidyForHome: String?
     @NSManaged public var applyingSubsidy: String?
     @NSManaged public var housingScheme: String?
@@ -108,6 +110,7 @@ extension Application {
     @NSManaged public var suretyAgreements: String?
     
     // MARK: - Employment
+    @NSManaged public var employmentDone: Bool
     @NSManaged public var occupationalStatus: String?
     @NSManaged public var payingScheme: String?
     @NSManaged public var incomeSource: String?
@@ -135,6 +138,7 @@ extension Application {
     @NSManaged public var pEDuration: String?
     
     // MARK: - Income
+    @NSManaged public var incomeDone: Bool
     @NSManaged public var basicSalary: String?
     @NSManaged public var wages: String?
     @NSManaged public var averageComm: String?
@@ -157,6 +161,7 @@ extension Application {
     @NSManaged public var otherDeductions: String?
     
     // MARK: - Expenses
+    @NSManaged public var expensesDone: Bool
     @NSManaged public var rental: String?
     @NSManaged public var expensesInvestments: String?
     @NSManaged public var ratesTaxes: String?
@@ -183,6 +188,7 @@ extension Application {
     @NSManaged public var otherExpenses: String?
     
     // MARK: - Assets & Liabilities
+    @NSManaged public var assetsLiabilitiesDone: Bool
     @NSManaged public var fixedProperty: String?
     @NSManaged public var vehicles: String?
     @NSManaged public var furnitureFittings: String?

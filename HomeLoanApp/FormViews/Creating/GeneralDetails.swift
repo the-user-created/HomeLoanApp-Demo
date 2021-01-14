@@ -31,6 +31,7 @@ struct GeneralDetails: View {
     
     // MARK: - Properties
     let resignPub = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
+    let keyboardPub = NotificationCenter.default.publisher(for: UIApplication.keyboardWillChangeFrameNotification)
     let handleChangedValues = HandleChangedValues()
     
     let loanPurpose = ["--select--","Buy an existing home", "--TBA--"]

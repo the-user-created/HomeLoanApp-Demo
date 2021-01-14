@@ -107,9 +107,10 @@ struct SubsidyCredit: View {
     
     // MARK: - determineComplete
     private func determineComplete() -> Bool {
-        /*if  {
+        if !subsidyForHome.isEmpty && !applyingSubsidy.isEmpty && !housingScheme.isEmpty && !currentAdmin.isEmpty && !previousAdmin.isEmpty && !judgement.isEmpty && !debtReview.isEmpty && !debtReArrange.isEmpty && !insolvent.isEmpty && !creditBureau.isEmpty && !creditListings.isEmpty && !suretyAgreements.isEmpty {
+            changedValues.updateValue(true, forKey: "subsidyCreditDone")
             return true
-        }*/
+        }
         
         return false
     }

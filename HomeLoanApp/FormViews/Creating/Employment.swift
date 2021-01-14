@@ -75,7 +75,7 @@ struct Employment: View {
                 
                 FormTextField(iD: "natureOfOccupation", pageNum: 4,
                               question: formQuestions[4][3] ?? "MISSING",
-                              placeholder: "something",
+                              placeholder: formTextFieldPlaceholders[4][3] ?? "MISSING",
                               text: $natureOfOccupation)
                 
                 FormPicker(iD: "occupationLevel", pageNum: 4,
@@ -91,22 +91,22 @@ struct Employment: View {
                 Group() {
                     FormTextField(iD: "natureOfBusiness", pageNum: 4,
                                   question: formQuestions[4][6] ?? "MISSING",
-                                  placeholder: "something",
+                                  placeholder: formTextFieldPlaceholders[4][6] ?? "MISSING",
                                   text: $natureOfBusiness)
                     
                     FormTextField(iD: "employer", pageNum: 4,
                                   question: formQuestions[4][7] ?? "MISSING",
-                                  placeholder: "something",
+                                  placeholder: formTextFieldPlaceholders[4][7] ?? "MISSING",
                                   text: $employer)
                     
                     FormTextField(iD: "companyRegNum", pageNum: 4,
                                   question: formQuestions[4][8] ?? "MISSING",
-                                  placeholder: "something",
+                                  placeholder: formTextFieldPlaceholders[4][8] ?? "MISSING",
                                   text: $companyRegNum)
                     
                     FormTextField(iD: "employeeNum", pageNum: 4,
                                   question: formQuestions[4][9] ?? "MISSING",
-                                  placeholder: "something",
+                                  placeholder: formTextFieldPlaceholders[4][9] ?? "MISSING",
                                   text: $employeeNum)
                     
                     FormLenAt(iD: "employmentPeriod", pageNum: 4,
@@ -124,38 +124,39 @@ struct Employment: View {
                 
                 FormTextField(iD: "employerLine1", pageNum: 4,
                               question: formQuestions[4][12] ?? "MISSING",
-                              placeholder: "something",
+                              placeholder: formTextFieldPlaceholders[4][12] ?? "MISSING",
                               text: $employerLine1)
                 
                 FormTextField(iD: "employerLine2", pageNum: 4,
                               question: formQuestions[4][13] ?? "MISSING",
-                              placeholder: "something",
+                              placeholder: formTextFieldPlaceholders[4][13] ?? "MISSING",
                               text: $employerLine2)
                 
                 FormTextField(iD: "employerSuburb", pageNum: 4,
                               question: formQuestions[4][14] ?? "MISSING",
-                              placeholder: "something",
+                              placeholder: formTextFieldPlaceholders[4][14] ?? "MISSING",
                               text: $employerSuburb)
                 
                 FormTextField(iD: "employerCity", pageNum: 4,
                               question: formQuestions[4][15] ?? "MISSING",
-                              placeholder: "something",
+                              placeholder: formTextFieldPlaceholders[4][15] ?? "MISSING",
                               text: $employerCity)
                 
                 FormTextField(iD: "employerProvince", pageNum: 4,
                               question: formQuestions[4][16] ?? "MISSING",
-                              placeholder: "something",
+                              placeholder: formTextFieldPlaceholders[4][16] ?? "MISSING",
                               text: $employerProvince)
                 
                 FormTextField(iD: "employerStreetCode", pageNum: 4,
                               question: formQuestions[4][17] ?? "MISSING",
-                              placeholder: "something",
+                              placeholder: formTextFieldPlaceholders[4][17] ?? "MISSING",
                               text: $employerStreetCode)
                 
                 FormTextField(iD: "workPhoneNum", pageNum: 4,
                               question: formQuestions[4][18] ?? "MISSING",
-                              placeholder: "something",
-                              text: $workPhoneNum).keyboardType(.phonePad)
+                              placeholder: formTextFieldPlaceholders[4][18] ?? "MISSING",
+                              text: $workPhoneNum)
+                    .keyboardType(.phonePad)
                 
                 Group {
                     FormYesNo(iD: "purchaseJobChange", pageNum: 4,
@@ -176,12 +177,12 @@ struct Employment: View {
                 Section(header: Text("PREVIOUS EMPLOYER")) {
                     FormTextField(iD: "previousEmployer", pageNum: 4,
                                   question: formQuestions[4][21.1] ?? "MISSING",
-                                  placeholder: "something",
+                                  placeholder: formTextFieldPlaceholders[4][21.1] ?? "MISSING",
                                   text: $previousEmployer)
                     
                     FormTextField(iD: "pEContact", pageNum: 4,
                                   question: formQuestions[4][21.2] ?? "MISSING",
-                                  placeholder: "something",
+                                  placeholder: formTextFieldPlaceholders[4][21.2] ?? "MISSING",
                                   text: $pEContact)
                         .keyboardType(.phonePad)
                     
