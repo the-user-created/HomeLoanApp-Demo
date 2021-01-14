@@ -151,9 +151,11 @@ struct GeneralDetails: View {
     // MARK: - determineComplete
     private func determineComplete() -> Bool {
         if salesConsultantIndex != 0 && applicationTypeIndex != 0 && applicantTypeIndex != 0 && loanPurposeIndex != 0 && propertyTypeIndex != 0 && determineValidNumOfApplicants() {
+            changedValues.updateValue(true, forKey: "generalDetailsDone")
             return true
         }
         
+        changedValues.updateValue(false, forKey: "generalDetailsDone")
         return false
     }
     
@@ -194,7 +196,11 @@ struct GeneralDetails: View {
         UIApplication.shared.endEditing()
         applicationCreation.makeApplication()
         for (key, value) in changedValues {
-            applicationCreation.application.setValue(value, forKey: key)
+            if key == "numberOfApplicants" {
+                applicationCreation.application.setValue(Int16(value as! String), forKey: key)
+            } else {
+                applicationCreation.application.setValue(value, forKey: key)
+            }
         }
         
         applicationCreation.application.loanID = UUID.init()

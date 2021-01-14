@@ -19,6 +19,7 @@ struct ChoosePageEditing: View {
     @State var personalDetailsDone: Bool = false
     @State var generalDetailsDone: Bool = false
     @State var subsidyCreditDone: Bool = false
+    @State var notificationDone: Bool = false
     @State var employmentDone: Bool = false
     @State var expensesDone: Bool = false
     @State var incomeDone: Bool = false
@@ -26,6 +27,7 @@ struct ChoosePageEditing: View {
     init(application: Application) {
         self.application = application
         self._generalDetailsDone = State(wrappedValue: self.application.generalDetailsDone)
+        self._personalDetailsDone = State(wrappedValue: self.application.personalDetailsDone)
     }
     
     // MARK: - body
@@ -135,6 +137,24 @@ struct ChoosePageEditing: View {
             .disabled(!generalDetailsDone)
             
             // Notification & Warranty
+            Group() {
+                //if !applicationCreation.notificationSaved {
+                NavigationLink(destination: NotificationView(application: application, isDone: $notificationDone)) {
+                    HStack() {
+                        Text("Notification")
+                            .font(.headline)
+                        
+                        Spacer()
+                        
+                        Image(systemName: notificationDone ? "checkmark.circle.fill": "checkmark.circle")
+                            .foregroundColor(notificationDone ? .green: .red)
+                    }
+                }
+                .disabled(!canSignOff())
+                /*} else {
+                    
+                }*/
+            }
             
             Section() {
                 NavigationLink(destination: EmptyView()) {
@@ -143,9 +163,18 @@ struct ChoosePageEditing: View {
                         .bold()
                         .foregroundColor(.blue)
                 }
-                .disabled(true)
+                .disabled(!canSignOff() && !notificationDone)
             }
         }
         .navigationBarTitle("Editing", displayMode: .large)
+    }
+    
+    // MARK: - canSignOff
+    private func canSignOff() -> Bool {
+        if generalDetailsDone && personalDetailsDone && residencyContactDone && subsidyCreditDone && employmentDone && incomeDone && expensesDone && assetsLiabilitiesDone {
+            return true
+        }
+        
+        return false
     }
 }

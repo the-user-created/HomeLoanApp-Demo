@@ -19,9 +19,12 @@ struct ChoosePageCreating: View {
     @State var personalDetailsDone: Bool = false
     @State var generalDetailsDone: Bool = false
     @State var subsidyCreditDone: Bool = false
+    @State var notificationDone: Bool = false
     @State var employmentDone: Bool = false
     @State var expensesDone: Bool = false
     @State var incomeDone: Bool = false
+    
+    @State var selection: Int?
     
     // MARK: - body
     var body: some View {
@@ -29,7 +32,7 @@ struct ChoosePageCreating: View {
             // General Details
             Group() {
                 if !applicationCreation.generalDetailsSaved {
-                    NavigationLink(destination: GeneralDetails(isDone: $generalDetailsDone)) {
+                    NavigationLink(destination: GeneralDetails(isDone: $generalDetailsDone), tag: 0, selection: $selection) {
                         HStack() {
                             Text("General Details")
                                 .font(.headline)
@@ -41,11 +44,9 @@ struct ChoosePageCreating: View {
                         }
                     }
                 } else {
-                    NavigationLink(destination: GeneralDetailsEditing(isDone: $generalDetailsDone,
-                                                                      application: applicationCreation.application,
-                                                                      sender: .creator)) {
+                    NavigationLink(destination: GeneralDetailsEditing(isDone: $generalDetailsDone, application: applicationCreation.application, sender: .creator), tag: 1, selection: $selection) {
                         HStack() {
-                            Text("General Details")
+                            Text("General Details Editing")
                                 .font(.headline)
                             
                             Spacer()
@@ -60,7 +61,7 @@ struct ChoosePageCreating: View {
             // Personal Details
             Group() {
                 if !applicationCreation.personalDetailsSaved {
-                    NavigationLink(destination: PersonalDetails(isDone: $personalDetailsDone)) {
+                    NavigationLink(destination: PersonalDetails(isDone: $personalDetailsDone), tag: 2, selection: $selection) {
                         HStack() {
                             Text("Personal Details")
                                 .font(.headline)
@@ -73,9 +74,7 @@ struct ChoosePageCreating: View {
                     }
                     .disabled(!generalDetailsDone)
                 } else {
-                    NavigationLink(destination: PersonalDetailsEditing(isDone: $personalDetailsDone,
-                                                                       application: applicationCreation.application,
-                                                                       sender: .creator)) {
+                    NavigationLink(destination: PersonalDetailsEditing(isDone: $personalDetailsDone, application: applicationCreation.application, sender: .creator), tag: 3, selection: $selection) {
                         HStack() {
                             Text("Personal Details")
                                 .font(.headline)
@@ -92,7 +91,7 @@ struct ChoosePageCreating: View {
             // Residency & Contact
             Group() {
                 if !applicationCreation.residencyContactSaved {
-                    NavigationLink(destination: ResidencyContact(isDone: $residencyContactDone)) {
+                    NavigationLink(destination: ResidencyContact(isDone: $residencyContactDone), tag: 4, selection: $selection) {
                         HStack() {
                             Text("Residency & Contact")
                                 .font(.headline)
@@ -105,9 +104,7 @@ struct ChoosePageCreating: View {
                     }
                     .disabled(!generalDetailsDone)
                 } else {
-                    NavigationLink(destination: ResidencyContactEditing(isDone: $residencyContactDone,
-                                                                        application: applicationCreation.application,
-                                                                        sender: .creator)) {
+                    NavigationLink(destination: ResidencyContactEditing(isDone: $residencyContactDone, application: applicationCreation.application, sender: .creator), tag: 5, selection: $selection) {
                         HStack() {
                             Text("Residency & Contact")
                                 .font(.headline)
@@ -124,7 +121,7 @@ struct ChoosePageCreating: View {
             // Subsidy & Credit
             Group() {
                 if !applicationCreation.subsidyCreditSaved {
-                    NavigationLink(destination: SubsidyCredit(isDone: $subsidyCreditDone)) {
+                    NavigationLink(destination: SubsidyCredit(isDone: $subsidyCreditDone), tag: 6, selection: $selection) {
                         HStack() {
                             Text("Subsidy & Credit")
                                 .font(.headline)
@@ -137,9 +134,7 @@ struct ChoosePageCreating: View {
                     }
                     .disabled(!generalDetailsDone)
                 } else {
-                    NavigationLink(destination: SubsidyCreditEditing(isDone: $subsidyCreditDone,
-                                                                     application: applicationCreation.application,
-                                                                     sender: .creator)) {
+                    NavigationLink(destination: SubsidyCreditEditing(isDone: $subsidyCreditDone, application: applicationCreation.application, sender: .creator), tag: 7, selection: $selection) {
                         HStack() {
                             Text("Subsidy & Credit")
                                 .font(.headline)
@@ -156,7 +151,7 @@ struct ChoosePageCreating: View {
             // Employment
             Group() {
                 if !applicationCreation.employmentSaved {
-                    NavigationLink(destination: Employment(isDone: $employmentDone)) {
+                    NavigationLink(destination: Employment(isDone: $employmentDone), tag: 8, selection: $selection) {
                         HStack() {
                             Text("Employment")
                                 .font(.headline)
@@ -169,7 +164,7 @@ struct ChoosePageCreating: View {
                     }
                     .disabled(!generalDetailsDone)
                 } else {
-                    NavigationLink(destination: EmploymentEditing(isDone: $employmentDone, application: applicationCreation.application, sender: .creator)) {
+                    NavigationLink(destination: EmploymentEditing(isDone: $employmentDone, application: applicationCreation.application, sender: .creator), tag: 8, selection: $selection) {
                         HStack() {
                             Text("Employment")
                                 .font(.headline)
@@ -186,7 +181,7 @@ struct ChoosePageCreating: View {
             // Income
             Group() {
                 if !applicationCreation.incomeSaved {
-                    NavigationLink(destination: Income(isDone: $incomeDone)) {
+                    NavigationLink(destination: Income(isDone: $incomeDone), tag: 8, selection: $selection) {
                         HStack() {
                             Text("Income")
                                 .font(.headline)
@@ -199,7 +194,7 @@ struct ChoosePageCreating: View {
                     }
                     .disabled(!generalDetailsDone)
                 } else {
-                    NavigationLink(destination: IncomeEditing(isDone: $incomeDone, application: applicationCreation.application, sender: .creator)) {
+                    NavigationLink(destination: IncomeEditing(isDone: $incomeDone, application: applicationCreation.application, sender: .creator), tag: 9, selection: $selection) {
                         HStack() {
                             Text("Income")
                                 .font(.headline)
@@ -213,12 +208,12 @@ struct ChoosePageCreating: View {
                 }
             }
             
-            // Income
+            // Expenses
             Group() {
                 if !applicationCreation.expensesSaved {
-                    NavigationLink(destination: Expenses(isDone: $expensesDone)) {
+                    NavigationLink(destination: Expenses(isDone: $expensesDone), tag: 9, selection: $selection) {
                         HStack() {
-                            Text("Income")
+                            Text("Expenses")
                                 .font(.headline)
                             
                             Spacer()
@@ -229,9 +224,9 @@ struct ChoosePageCreating: View {
                     }
                     .disabled(!generalDetailsDone)
                 } else {
-                    NavigationLink(destination: ExpensesEditing(isDone: $expensesDone, application: applicationCreation.application, sender: .creator)) {
+                    NavigationLink(destination: ExpensesEditing(isDone: $expensesDone, application: applicationCreation.application, sender: .creator), tag: 11, selection: $selection) {
                         HStack() {
-                            Text("Income")
+                            Text("Expenses")
                                 .font(.headline)
                             
                             Spacer()
@@ -246,7 +241,7 @@ struct ChoosePageCreating: View {
             // Assets & Liabilities
             Group() {
                 if !applicationCreation.assetsLiabilitiesSaved {
-                    NavigationLink(destination: AssetsLiabilities(isDone: $assetsLiabilitiesDone)) {
+                    NavigationLink(destination: AssetsLiabilities(isDone: $assetsLiabilitiesDone), tag: 12, selection: $selection) {
                         HStack() {
                             Text("Assets & Liabilities")
                                 .font(.headline)
@@ -259,7 +254,7 @@ struct ChoosePageCreating: View {
                     }
                     .disabled(!generalDetailsDone)
                 } else {
-                    NavigationLink(destination: AssetsLiabilitiesEditing(isDone: $assetsLiabilitiesDone, application: applicationCreation.application, sender: .creator)) {
+                    NavigationLink(destination: AssetsLiabilitiesEditing(isDone: $assetsLiabilitiesDone, application: applicationCreation.application, sender: .creator), tag: 13, selection: $selection) {
                         HStack() {
                             Text("Assets & Liabilities")
                                 .font(.headline)
@@ -274,17 +269,45 @@ struct ChoosePageCreating: View {
             }
             
             // Notification & Warranty
+            Group() {
+                //if !applicationCreation.notificationSaved {
+                NavigationLink(destination: NotificationView(application: applicationCreation.application, isDone: $notificationDone), tag: 14, selection: $selection) {
+                    HStack() {
+                        Text("Notification")
+                            .font(.headline)
+                        
+                        Spacer()
+                        
+                        Image(systemName: notificationDone ? "checkmark.circle.fill": "checkmark.circle")
+                            .foregroundColor(notificationDone ? .green: .red)
+                    }
+                }
+                .disabled(!canSignOff())
+                /*} else {
+                    
+                }*/
+            }
             
+            // Submit Application
             Section() {
-                NavigationLink(destination: EmptyView()) {
+                NavigationLink(destination: EmptyView(), tag: 15, selection: $selection) {
                     Text("Submit Application")
                         .font(.title3)
                         .bold()
                         .foregroundColor(.blue)
                 }
-                .disabled(true)
+                .disabled(!canSignOff() && !notificationDone)
             }
         }
         .navigationBarTitle("Creating", displayMode: .large)
+    }
+    
+    // MARK: - canSignOff
+    private func canSignOff() -> Bool {
+        if generalDetailsDone && personalDetailsDone && residencyContactDone && subsidyCreditDone && employmentDone && incomeDone && expensesDone && assetsLiabilitiesDone {
+            return true
+        }
+        
+        return false
     }
 }

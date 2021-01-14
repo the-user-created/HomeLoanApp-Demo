@@ -105,8 +105,10 @@ struct ResidencyContactEditing: View {
             let openBracketIndices = findNth("[", text: lengthAtAddress)
             let closeBracketIndices = findNth("]", text: lengthAtAddress)
             
-            self._lengthAtAddressYears = State(wrappedValue: String(lengthAtAddress[lengthAtAddress.index(openBracketIndices[0], offsetBy: 1)..<closeBracketIndices[0]]))
-            self._lengthAtAddressMonths = State(wrappedValue: String(lengthAtAddress[lengthAtAddress.index(openBracketIndices[1], offsetBy: 1)..<closeBracketIndices[1]]))
+            if !openBracketIndices.isEmpty && !closeBracketIndices.isEmpty {
+                self._lengthAtAddressYears = State(wrappedValue: String(lengthAtAddress[lengthAtAddress.index(openBracketIndices[0], offsetBy: 1)..<closeBracketIndices[0]]))
+                self._lengthAtAddressMonths = State(wrappedValue: String(lengthAtAddress[lengthAtAddress.index(openBracketIndices[1], offsetBy: 1)..<closeBracketIndices[1]]))
+            }
         }
     }
     

@@ -7,19 +7,21 @@
 
 import SwiftUI
 
-struct NotificationWarranty: View {
+struct NotificationView: View {
     // MARK: - Wrapped Objects
     @Environment(\.managedObjectContext) private var viewContext
     @Environment (\.presentationMode) var presentationMode
+    @EnvironmentObject var applicationCreation: ApplicationCreation
+    @ObservedObject var application: Application
     
     // MARK: - State Variables
     @State var notificationsCheck = ""
-    @State var application: Application?
+    @Binding var isDone: Bool
     
     // MARK: - Properties
     let handleChangedValues = HandleChangedValues()
-    let resignPub = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
     
+    // MARK: - body
     var body: some View {
         List() {
             Section(header: Text("Notification")) {
@@ -57,36 +59,46 @@ struct NotificationWarranty: View {
             Divider()
             
             Section() {
-                HStack(alignment: .center) {
-                    Spacer()
-                    
-                    Button(action: {
-                        print("Submitted")
-                        updateApplication()
-                    }) {
-                        backgroundForButton(btnText: "Submit Application",
-                                            fWidth: 190,
-                                            fHeight: 50,
-                                            btnColor: .blue)
-                    }
-                    .buttonStyle(BorderlessButtonStyle())
-                    .padding([.bottom], 22)
-                    
-                    Spacer()
+                Button(action: {
+                    handleSaving()
+                }) {
+                    Text("Save")
+                        .foregroundColor(.blue)
+                        .font(.headline)
                 }
+                .disabled(notificationsCheck.lowercased() == "yes" ? false : true)
             }
         }
-        .navigationBarTitle("Legalities")
+        .navigationBarTitle("Notification")
+    }
+    
+    // MARK: - determineComplete
+    private func determineComplete() -> Bool {
+        if notificationsCheck.lowercased() == "yes" {
+            return true
+        }
+        
+        return false
+    }
+    
+    // MARK: - handleSaving
+    private func handleSaving() {
+        if !changedValues.isEmpty {
+            isDone = determineComplete()
+            saveApplication()
+            presentationMode.wrappedValue.dismiss()
+        }
     }
     
     // MARK: - saveApplication
-    private func updateApplication() {
-        
-        application?.loanStatus = Status.submitted.rawValue
+    private func saveApplication() {
+        applicationCreation.application.notificationsCheck = notificationsCheck
         
         do {
             try viewContext.save()
-            print("print - Updated & Submitted Application")
+            print("print - Application Entity Updated")
+            applicationCreation.notificationSaved = true
+            handleChangedValues.cleanChangedValues()
         } catch {
             print(error.localizedDescription)
         }

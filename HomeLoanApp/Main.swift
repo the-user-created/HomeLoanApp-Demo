@@ -11,8 +11,8 @@ import Firebase
 
 struct Main: View {
     @Environment(\.managedObjectContext) var viewContext
-    @EnvironmentObject var settings: UserSettings
     @EnvironmentObject var applicationCreation: ApplicationCreation
+    @EnvironmentObject var settings: UserSettings
     @ObservedObject var userDetails: UserDetails
     
     var body: some View {
@@ -25,9 +25,10 @@ struct Main: View {
                 let openBracketIndices = findNth("[", text: displayName)
                 let closeBracketIndices = findNth("]", text: displayName)
                 
-                self.userDetails.firstNames = String(displayName[displayName.index(openBracketIndices[0], offsetBy: 1)..<closeBracketIndices[0]])
-                
-                self.userDetails.surname = String(displayName[displayName.index(openBracketIndices[1], offsetBy: 1)..<closeBracketIndices[1]])
+                if !openBracketIndices.isEmpty && !closeBracketIndices.isEmpty {
+                    self.userDetails.firstNames = String(displayName[displayName.index(openBracketIndices[0], offsetBy: 1)..<closeBracketIndices[0]])
+                    self.userDetails.surname = String(displayName[displayName.index(openBracketIndices[1], offsetBy: 1)..<closeBracketIndices[1]])
+                }
             }
             
             return AnyView(HomeTabView(userDetails: userDetails))

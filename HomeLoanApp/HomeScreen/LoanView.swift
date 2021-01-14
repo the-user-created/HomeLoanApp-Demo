@@ -25,7 +25,7 @@ struct LoanView: View {
     var body: some View {
         NavigationView() {
             List() {
-                NavigationLink(destination: ChoosePageCreating(), //GeneralDetails(),
+                NavigationLink(destination: ChoosePageCreating(),
                                isActive: self.$makingApplication) {
                     HStack() {
                         Image(systemName: "plus.circle")

@@ -73,16 +73,20 @@ struct IncomeEditing: View {
             let openBracketIndices = findNth("[", text: otherIncome)
             let closeBracketIndices = findNth("]", text: otherIncome)
             
-            self._otherIncomeText = State(wrappedValue: String(otherIncome[otherIncome.index(openBracketIndices[0], offsetBy: 1)..<closeBracketIndices[0]]))
-            self._otherIncome = State(wrappedValue: String(otherIncome[otherIncome.index(openBracketIndices[1], offsetBy: 1)..<closeBracketIndices[1]]))
+            if !openBracketIndices.isEmpty && !closeBracketIndices.isEmpty {
+                self._otherIncomeText = State(wrappedValue: String(otherIncome[otherIncome.index(openBracketIndices[0], offsetBy: 1)..<closeBracketIndices[0]]))
+                self._otherIncome = State(wrappedValue: String(otherIncome[otherIncome.index(openBracketIndices[1], offsetBy: 1)..<closeBracketIndices[1]]))
+            }
         }
         
         if let otherDeductions = self.application.otherDeductions {
             let openBracketIndices = findNth("[", text: otherDeductions)
             let closeBracketIndices = findNth("]", text: otherDeductions)
             
-            self._otherDeductionText = State(wrappedValue: String(otherDeductions[otherDeductions.index(openBracketIndices[0], offsetBy: 1)..<closeBracketIndices[0]]))
-            self._otherDeduction = State(wrappedValue: String(otherDeductions[otherDeductions.index(openBracketIndices[1], offsetBy: 1)..<closeBracketIndices[1]]))
+            if !openBracketIndices.isEmpty && !closeBracketIndices.isEmpty {
+                self._otherDeductionText = State(wrappedValue: String(otherDeductions[otherDeductions.index(openBracketIndices[0], offsetBy: 1)..<closeBracketIndices[0]]))
+                self._otherDeduction = State(wrappedValue: String(otherDeductions[otherDeductions.index(openBracketIndices[1], offsetBy: 1)..<closeBracketIndices[1]]))
+            }
         }
 
     }

@@ -63,24 +63,30 @@ struct AssetsLiabilitiesEditing: View {
             let openBracketIndices = findNth("[", text: otherAsset)
             let closeBracketIndices = findNth("]", text: otherAsset)
             
-            self._otherAssetText = State(wrappedValue: String(otherAsset[otherAsset.index(openBracketIndices[0], offsetBy: 1)..<closeBracketIndices[0]]))
-            self._otherAsset = State(wrappedValue: String(otherAsset[otherAsset.index(openBracketIndices[1], offsetBy: 1)..<closeBracketIndices[1]]))
+            if !openBracketIndices.isEmpty && !closeBracketIndices.isEmpty {
+                self._otherAssetText = State(wrappedValue: String(otherAsset[otherAsset.index(openBracketIndices[0], offsetBy: 1)..<closeBracketIndices[0]]))
+                self._otherAsset = State(wrappedValue: String(otherAsset[otherAsset.index(openBracketIndices[1], offsetBy: 1)..<closeBracketIndices[1]]))
+            }
         }
         
         if let otherAcc = self.application.otherAcc {
             let openBracketIndices = findNth("[", text: otherAcc)
             let closeBracketIndices = findNth("]", text: otherAcc)
             
-            self._otherAccText = State(wrappedValue: String(otherAcc[otherAcc.index(openBracketIndices[0], offsetBy: 1)..<closeBracketIndices[0]]))
-            self._otherAcc = State(wrappedValue: String(otherAcc[otherAcc.index(openBracketIndices[1], offsetBy: 1)..<closeBracketIndices[1]]))
+            if !openBracketIndices.isEmpty && !closeBracketIndices.isEmpty {
+                self._otherAccText = State(wrappedValue: String(otherAcc[otherAcc.index(openBracketIndices[0], offsetBy: 1)..<closeBracketIndices[0]]))
+                self._otherAcc = State(wrappedValue: String(otherAcc[otherAcc.index(openBracketIndices[1], offsetBy: 1)..<closeBracketIndices[1]]))
+            }
         }
         
         if let otherLiabilities = self.application.otherLiabilities {
             let openBracketIndices = findNth("[", text: otherLiabilities)
             let closeBracketIndices = findNth("]", text: otherLiabilities)
             
-            self._otherLiabilitiesText = State(wrappedValue: String(otherLiabilities[otherLiabilities.index(openBracketIndices[0], offsetBy: 1)..<closeBracketIndices[0]]))
-            self._otherLiabilities = State(wrappedValue: String(otherLiabilities[otherLiabilities.index(openBracketIndices[1], offsetBy: 1)..<closeBracketIndices[1]]))
+            if !openBracketIndices.isEmpty && !closeBracketIndices.isEmpty {
+                self._otherLiabilitiesText = State(wrappedValue: String(otherLiabilities[otherLiabilities.index(openBracketIndices[0], offsetBy: 1)..<closeBracketIndices[0]]))
+                self._otherLiabilities = State(wrappedValue: String(otherLiabilities[otherLiabilities.index(openBracketIndices[1], offsetBy: 1)..<closeBracketIndices[1]]))
+            }
         }
     }
     

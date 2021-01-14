@@ -51,7 +51,7 @@
 		BDEFBC51251B5E5200638ED1 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEFBC50251B5E5200638ED1 /* SettingsView.swift */; };
 		BDF68F4C2575F6BA0004E6CD /* Expenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF68F4B2575F6BA0004E6CD /* Expenses.swift */; };
 		BDF68F50257617470004E6CD /* AssetsLiabilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF68F4F257617470004E6CD /* AssetsLiabilities.swift */; };
-		BDF68F5325761EC30004E6CD /* NotificationWarranty.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF68F5225761EC30004E6CD /* NotificationWarranty.swift */; };
+		BDF68F5325761EC30004E6CD /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF68F5225761EC30004E6CD /* NotificationView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -103,7 +103,7 @@
 		BDEFBC50251B5E5200638ED1 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		BDF68F4B2575F6BA0004E6CD /* Expenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Expenses.swift; sourceTree = "<group>"; };
 		BDF68F4F257617470004E6CD /* AssetsLiabilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsLiabilities.swift; sourceTree = "<group>"; };
-		BDF68F5225761EC30004E6CD /* NotificationWarranty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationWarranty.swift; sourceTree = "<group>"; };
+		BDF68F5225761EC30004E6CD /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -247,7 +247,7 @@
 			children = (
 				BD87693525878FDE00B2C2D4 /* Editing */,
 				BD1912D1254EFC480095B1E9 /* Creating */,
-				BDF68F5225761EC30004E6CD /* NotificationWarranty.swift */,
+				BDF68F5225761EC30004E6CD /* NotificationView.swift */,
 			);
 			path = FormViews;
 			sourceTree = "<group>";
@@ -430,7 +430,7 @@
 				BDD53213252E33E900255C4F /* GeneralDetails.swift in Sources */,
 				BDECD31D251A219000382FED /* ProfileView.swift in Sources */,
 				BD823A1C25AFF00B008B54C7 /* IncomeEditing.swift in Sources */,
-				BDF68F5325761EC30004E6CD /* NotificationWarranty.swift in Sources */,
+				BDF68F5325761EC30004E6CD /* NotificationView.swift in Sources */,
 				BD01DB582575008700F2B41A /* SubsidyCredit.swift in Sources */,
 				BD7C6921251DFF750001514B /* SignUpView.swift in Sources */,
 				BDB71613251CEC3600BA1754 /* HomeTabView.swift in Sources */,

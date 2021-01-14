@@ -130,33 +130,31 @@ struct FormDatePicker: View {
     @Binding var dateSelection: Date
     
     var body: some View {
-        VStack() {
-            // Using: negative infinity up to current date
-            if dateRangeOption == 0 {
-                DatePicker(selection: $dateSelection,
-                           in: ...Date(),
-                           displayedComponents: .date) {
-                    
-                    Text(question)
-                        .foregroundColor(textColor)
-                        .multilineTextAlignment(.leading)
-                }
-                .onChange(of: self.dateSelection, perform: { _ in
-                    handleChangedValues.updateKeyValue(iD, value: dateSelection)
-                })
-            } else if dateRangeOption == 1 { // Using: from current date to infinity
-                DatePicker(selection: $dateSelection,
-                           in: Date()...,
-                           displayedComponents: .date) {
-                    
-                    Text(question)
-                        .foregroundColor(textColor)
-                        .multilineTextAlignment(.leading)
-                }
-                .onChange(of: self.dateSelection, perform: { _ in
-                    handleChangedValues.updateKeyValue(iD, value: dateSelection)
-                })
+        // Using: negative infinity up to current date
+        if dateRangeOption == 0 {
+            DatePicker(selection: $dateSelection,
+                       in: ...Date(),
+                       displayedComponents: .date) {
+                
+                Text(question)
+                    .foregroundColor(textColor)
+                    .multilineTextAlignment(.leading)
             }
+            .onChange(of: self.dateSelection, perform: { _ in
+                handleChangedValues.updateKeyValue(iD, value: dateSelection)
+            })
+        } else if dateRangeOption == 1 { // Using: from current date to infinity
+            DatePicker(selection: $dateSelection,
+                       in: Date()...,
+                       displayedComponents: .date) {
+                
+                Text(question)
+                    .foregroundColor(textColor)
+                    .multilineTextAlignment(.leading)
+            }
+            .onChange(of: self.dateSelection, perform: { _ in
+                handleChangedValues.updateKeyValue(iD, value: dateSelection)
+            })
         }
     }
 }
@@ -1021,6 +1019,7 @@ class ApplicationCreation: ObservableObject {
     @Published var personalDetailsSaved: Bool = false
     @Published var generalDetailsSaved: Bool = false
     @Published var subsidyCreditSaved: Bool = false
+    @Published var notificationSaved: Bool = false
     @Published var employmentSaved: Bool = false
     @Published var expensesSaved: Bool = false
     @Published var incomeSaved: Bool = false
@@ -1036,6 +1035,7 @@ class ApplicationCreation: ObservableObject {
         self.residencyContactSaved = false
         self.personalDetailsSaved = false
         self.subsidyCreditSaved = false
+        self.notificationSaved = false
         self.employmentSaved = false
         self.expensesSaved = false
         self.incomeSaved = false

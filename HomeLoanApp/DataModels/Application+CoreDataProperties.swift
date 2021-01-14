@@ -26,7 +26,7 @@ extension Application {
     @NSManaged public var loanID: UUID?
     @NSManaged public var loanPurpose: String?
     @NSManaged public var loanStatus: String?
-    @NSManaged public var numberOfApplicants: String?
+    @NSManaged public var numberOfApplicants: Int16
     @NSManaged public var propertyType: String?
     @NSManaged public var salesConsultant: String?
     @NSManaged public var loanCreatedDate: Date?

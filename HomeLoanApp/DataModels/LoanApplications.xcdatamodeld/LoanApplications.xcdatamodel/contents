@@ -97,7 +97,7 @@
         <attribute name="natureOfBusiness" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="natureOfOccupation" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="notificationsCheck" optional="YES" attributeType="String" defaultValueString=""/>
-        <attribute name="numberOfApplicants" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="numberOfApplicants" optional="YES" attributeType="Integer 16" usesScalarValueType="YES"/>
         <attribute name="numDependents" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="occupationalStatus" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="occupationLevel" optional="YES" attributeType="String" defaultValueString=""/>

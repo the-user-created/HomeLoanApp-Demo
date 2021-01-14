@@ -89,16 +89,20 @@ struct EmploymentEditing: View {
             let openBracketIndices = findNth("[", text: employmentPeriod)
             let closeBracketIndices = findNth("]", text: employmentPeriod)
             
-            self._employmentPeriodYears = State(wrappedValue: String(employmentPeriod[employmentPeriod.index(openBracketIndices[0], offsetBy: 1)..<closeBracketIndices[0]]))
-            self._employmentPeriodMonths = State(wrappedValue: String(employmentPeriod[employmentPeriod.index(openBracketIndices[1], offsetBy: 1)..<closeBracketIndices[1]]))
+            if !openBracketIndices.isEmpty && !closeBracketIndices.isEmpty {
+                self._employmentPeriodYears = State(wrappedValue: String(employmentPeriod[employmentPeriod.index(openBracketIndices[0], offsetBy: 1)..<closeBracketIndices[0]]))
+                self._employmentPeriodMonths = State(wrappedValue: String(employmentPeriod[employmentPeriod.index(openBracketIndices[1], offsetBy: 1)..<closeBracketIndices[1]]))
+            }
         }
         
         if let pEDuration = self.application.pEDuration {
             let openBracketIndices = findNth("[", text: pEDuration)
             let closeBracketIndices = findNth("]", text: pEDuration)
             
-            self._pEDurationYears = State(wrappedValue: String(pEDuration[pEDuration.index(openBracketIndices[0], offsetBy: 1)..<closeBracketIndices[0]]))
-            self._pEDurationMonths = State(wrappedValue: String(pEDuration[pEDuration.index(openBracketIndices[1], offsetBy: 1)..<closeBracketIndices[1]]))
+            if !openBracketIndices.isEmpty && !closeBracketIndices.isEmpty {
+                self._pEDurationYears = State(wrappedValue: String(pEDuration[pEDuration.index(openBracketIndices[0], offsetBy: 1)..<closeBracketIndices[0]]))
+                self._pEDurationMonths = State(wrappedValue: String(pEDuration[pEDuration.index(openBracketIndices[1], offsetBy: 1)..<closeBracketIndices[1]]))
+            }
         }
     }
     

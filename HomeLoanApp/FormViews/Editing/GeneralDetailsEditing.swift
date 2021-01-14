@@ -49,7 +49,7 @@ struct GeneralDetailsEditing: View {
         self._applicantTypeIndex = State(wrappedValue: applicantType.firstIndex(of: self.application.applicantType ?? "--select--") ?? 0)
         self._loanPurposeIndex = State(wrappedValue: loanPurpose.firstIndex(of: self.application.loanPurpose ?? "--select--") ?? 0)
         self._propertyTypeIndex = State(wrappedValue: propertyType.firstIndex(of: self.application.propertyType ?? "--select--") ?? 0)
-        self._numberOfApplicants = State(wrappedValue: self.application.numberOfApplicants ?? "")
+        self._numberOfApplicants = State(wrappedValue: String(self.application.numberOfApplicants))
         self._coApplicantOneName = State(wrappedValue: self.application.coApplicantOneName ?? "")
         self._coApplicantTwoName = State(wrappedValue: self.application.coApplicantTwoName ?? "")
         self._coApplicantThreeName = State(wrappedValue: self.application.coApplicantThreeName ?? "")
@@ -145,7 +145,7 @@ struct GeneralDetailsEditing: View {
                         handleSaving()
                     }) {
                         Text("Save changes")
-                            .foregroundColor(.blue)
+                            .foregroundColor(changedValues.isEmpty ? .gray : .blue)
                             .font(.headline)
                     }
                     .disabled(changedValues.isEmpty ? true : false)
@@ -206,14 +206,23 @@ struct GeneralDetailsEditing: View {
         return false
     }
     
+    // MARK: - addToApplication
     private func addToApplication() {
         UIApplication.shared.endEditing()
         
         for (key, value) in changedValues {
             if sender == .creator {
-                applicationCreation.application.setValue(value, forKey: key)
+                if key == "numberOfApplicants" {
+                    applicationCreation.application.setValue(Int16(value as! String), forKey: key)
+                } else {
+                    applicationCreation.application.setValue(value, forKey: key)
+                }
             } else {
-                application.setValue(value, forKey: key)
+                if key == "numberOfApplicants" {
+                    application.setValue(Int16(value as! String), forKey: key)
+                } else {
+                    application.setValue(value, forKey: key)
+                }
             }
         }
         

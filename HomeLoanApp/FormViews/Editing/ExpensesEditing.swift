@@ -82,8 +82,10 @@ struct ExpensesEditing: View {
             let openBracketIndices = findNth("[", text: otherExpenses)
             let closeBracketIndices = findNth("]", text: otherExpenses)
             
-            self._otherExpensesText = State(wrappedValue: String(otherExpenses[otherExpenses.index(openBracketIndices[0], offsetBy: 1)..<closeBracketIndices[0]]))
-            self._otherExpenses = State(wrappedValue: String(otherExpenses[otherExpenses.index(openBracketIndices[1], offsetBy: 1)..<closeBracketIndices[1]]))
+            if !openBracketIndices.isEmpty && !closeBracketIndices.isEmpty {
+                self._otherExpensesText = State(wrappedValue: String(otherExpenses[otherExpenses.index(openBracketIndices[0], offsetBy: 1)..<closeBracketIndices[0]]))
+                self._otherExpenses = State(wrappedValue: String(otherExpenses[otherExpenses.index(openBracketIndices[1], offsetBy: 1)..<closeBracketIndices[1]]))
+            }
         }
     }
     
