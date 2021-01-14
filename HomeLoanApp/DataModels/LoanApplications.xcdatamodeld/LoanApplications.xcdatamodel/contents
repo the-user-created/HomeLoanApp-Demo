@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="19H114" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Application" representedClassName="Application" syncable="YES">
+        <attribute name="aNC" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="applicantType" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="applicationType" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="applyingSubsidy" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="assetLiabilityInvestments" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="assurance" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="averageComm" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="averageOvertime" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="basicSalary" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="cashOnHand" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="cellNumber" optional="YES" attributeType="String"/>
+        <attribute name="cellphone" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="cityOfBirth" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="clothing" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="coApplicantOneName" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="coApplicantThreeName" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="coApplicantTwoName" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="companyRegNum" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="contractExpiryDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="contractIssueDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="corresLanguage" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="countryBirth" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="countryMarriage" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="countryOfPermanentResidence" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="countryOfPermit" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="countryPassport" optional="YES" attributeType="String"/>
+        <attribute name="creditBureau" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="creditCards" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="creditListings" optional="YES" attributeType="String"/>
+        <attribute name="currentAcc" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="currentAdmin" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="dateOfBirth" optional="YES" attributeType="Date" defaultDateTimeInterval="0" usesScalarValueType="NO"/>
+        <attribute name="debtReArrange" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="debtReview" optional="YES" attributeType="String"/>
+        <attribute name="domesticWages" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="donations" optional="YES" attributeType="String"/>
+        <attribute name="education" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="educationLevel" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="emailAddress" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="employeeNum" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="employer" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="employerCity" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="employerCountry" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="employerLine1" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="employerLine2" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="employerProvince" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="employerStreetCode" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="employerSuburb" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="employmentPeriod" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="employmentSector" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="entertainment" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="ethnicGroup" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="expensesEntertainment" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="expensesInvestments" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="expensesMaintenanceAlimony" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="firstNames" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="firstTimeHomeBuyer" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="fixedProperty" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="furnitureFittings" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="futureRentIncome" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="gender" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="generalDetailsDone" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="groceries" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="homeLanguage" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="homeMain" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="housingScheme" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="housingSub" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="iDPassExpiryDate" optional="YES" attributeType="Date" defaultDateTimeInterval="0" usesScalarValueType="NO"/>
+        <attribute name="iDPassNumber" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="iDType" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="incomeFromSureties" optional="YES" attributeType="String"/>
+        <attribute name="incomeSource" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="insolvent" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="installmentExp" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="installmentSales" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="insurance" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="interestIncome" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="investments" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="judgement" optional="YES" attributeType="String"/>
+        <attribute name="lengthAtAddress" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="levies" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="loanCreatedDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="loanID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="loanPurpose" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="loanStatus" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="mainResidence" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="maintenanceAlimony" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="maritalStatus" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="medical" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="medicalAid" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="monthCarAllowance" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="mortgageBonds" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="nationality" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="natureOfBusiness" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="natureOfOccupation" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="notificationsCheck" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="numberOfApplicants" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="numDependents" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="occupationalStatus" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="occupationLevel" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="otherAcc" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="otherAsset" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="otherDebt" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="otherDeductions" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="otherExpenses" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="otherIncome" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="otherLiabilities" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="payingScheme" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="pEContact" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="pEDuration" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="pension" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="permanentResident" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="permitExpiryDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="permitIssueDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="permitType" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="personalDetailsDone" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="personalLoans" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="petrolCar" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="postalCity" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="postalCountry" optional="YES" attributeType="String"/>
+        <attribute name="postalLine1" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="postalLine2" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="postalProvince" optional="YES" attributeType="String"/>
+        <attribute name="postalStreetCode" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="postalSuburb" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="previousAdmin" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="previousEmployer" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="previouslyEmployed" optional="YES" attributeType="String"/>
+        <attribute name="propertyRentExp" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="propertyType" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="publicOfficial" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="purchaseJobChange" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="ratesTaxes" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="relatedOfficial" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="rental" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="rentIncome" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="resCity" optional="YES" attributeType="String"/>
+        <attribute name="resCountry" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="resIsPostal" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="resLine1" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="resLine2" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="resProvince" optional="YES" attributeType="String"/>
+        <attribute name="resStreetCode" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="resSuburb" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="retailAcc" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="sACitizen" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="salesConsultant" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="security" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="singleHouse" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="socialGrant" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="spouseIncome" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="subsidyForHome" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="suretyAgreements" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="surname" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="tax" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="taxNumber" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="taxReturn" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="telephoneISP" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="timeshare" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="title" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="travelAllowance" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="uIF" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="vehicles" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="wages" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="waterLights" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="workInZA" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="workPermitNumber" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="workPhoneNum" optional="YES" attributeType="String" defaultValueString=""/>
+    </entity>
+    <elements>
+        <element name="Application" positionX="-63" positionY="-18" width="128" height="2563"/>
+    </elements>
+</model>
