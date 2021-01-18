@@ -14,6 +14,7 @@ struct GeneralDetails: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.presentationMode) private var presentationMode
     @EnvironmentObject var applicationCreation: ApplicationCreation
+    @EnvironmentObject var changedValues: ChangedValues
     
     // MARK: - State Variables
     @State var salesConsultantIndex = 0
@@ -27,12 +28,13 @@ struct GeneralDetails: View {
     @State var coApplicantTwoName = ""
     @State var coApplicantThreeName = ""
     
+    @State var isActive: Bool = false
+    @State var showingAlert: Bool = false
+    @State var alertMessage: String = ""
     @Binding var isDone: Bool
     
     // MARK: - Properties
     let resignPub = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
-    let keyboardPub = NotificationCenter.default.publisher(for: UIApplication.keyboardWillChangeFrameNotification)
-    let handleChangedValues = HandleChangedValues()
     
     let loanPurpose = ["--select--","Buy an existing home", "--TBA--"]
     let propertyType = ["--select--","Normal residential", "--TBA--"]
@@ -44,34 +46,34 @@ struct GeneralDetails: View {
     var body: some View {
         Form() {
             Section(header: Text("GENERAL")) {
-                FormPicker(iD: "salesConsultant", pageNum: 0,
+                FormPicker(iD: "salesConsultant",
                            question: formQuestions[0][0] ?? "MISSING",
                            selectionOptions: salesConsultants,
                            selection: $salesConsultantIndex)
                 
-                FormPicker(iD: "applicationType", pageNum: 0,
+                FormPicker(iD: "applicationType",
                            question: formQuestions[0][1] ?? "MISSING",
                            selectionOptions: applicationType,
                            selection: $applicationTypeIndex)
                 
-                FormPicker(iD: "applicantType", pageNum: 0,
+                FormPicker(iD: "applicantType",
                            question: formQuestions[0][2] ?? "MISSING",
                            selectionOptions: applicantType,
                            selection: $applicantTypeIndex)
                 
-                FormPicker(iD: "loanPurpose", pageNum: 0,
+                FormPicker(iD: "loanPurpose",
                            question: formQuestions[0][3] ?? "MISSING",
                            selectionOptions: loanPurpose,
                            selection: $loanPurposeIndex)
                 
-                FormPicker(iD: "propertyType", pageNum: 0,
+                FormPicker(iD: "propertyType",
                            question: formQuestions[0][4] ?? "MISSING",
                            selectionOptions: propertyType,
                            selection: $propertyTypeIndex)
             }
             
             Section() {
-                FormTextField(iD: "numberOfApplicants", pageNum: 0,
+                FormTextField(iD: "numberOfApplicants",
                               question: formQuestions[0][5] ?? "MISSING",
                               placeholder: formTextFieldPlaceholders[0][5] ?? "MISSING",
                               text: $numberOfApplicants)
@@ -83,31 +85,31 @@ struct GeneralDetails: View {
                     VStack() {
                         switch numberOfApplicants {
                         case "2":
-                            FormTextField(iD: "coApplicantOneName", pageNum: 0,
+                            FormTextField(iD: "coApplicantOneName",
                                           question: "Co-Applicant #1: ",
                                           placeholder: "Steve Jobs",
                                           text: $coApplicantOneName)
                             
                         case "3":
-                            FormTextField(iD: "coApplicantOneName", pageNum: 0,
+                            FormTextField(iD: "coApplicantOneName",
                                           question: "Co-Applicant #1: ",
                                           placeholder: "Steve Jobs",
                                           text: $coApplicantOneName)
-                            FormTextField(iD: "coApplicantTwoName", pageNum: 0,
+                            FormTextField(iD: "coApplicantTwoName",
                                           question: "Co-Applicant #2: ",
                                           placeholder: "Steve Jobs",
                                           text: $coApplicantTwoName)
                             
                         case "4":
-                            FormTextField(iD: "coApplicantOneName", pageNum: 0,
+                            FormTextField(iD: "coApplicantOneName",
                                           question: "Co-Applicant #1: ",
                                           placeholder: "Steve Jobs",
                                           text: $coApplicantOneName)
-                            FormTextField(iD: "coApplicantTwoName", pageNum: 0,
+                            FormTextField(iD: "coApplicantTwoName",
                                           question: "Co-Applicant #2: ",
                                           placeholder: "Steve Jobs",
                                           text: $coApplicantTwoName)
-                            FormTextField(iD: "coApplicantThreeName", pageNum: 0,
+                            FormTextField(iD: "coApplicantThreeName",
                                           question: "Co-Applicant #3: ",
                                           placeholder: "Steve Jobs",
                                           text: $coApplicantThreeName)
@@ -115,6 +117,7 @@ struct GeneralDetails: View {
                         case let x where Int(x) ?? 0 < 1:
                             Text("Please enter a valid number of applicants.")
                                 .foregroundColor(.blue)
+                            
                         case let x where Int(x) ?? 5 > 4:
                             Text("We currently only support in-app applications of up to 4 applicants. Please proceed to contact the Sales Consultant directly to get your application started.")
                                 .multilineTextAlignment(.leading)
@@ -126,82 +129,124 @@ struct GeneralDetails: View {
                 }
             }
             
-            // Shows/Hides the Save button based on whether the number of applicants is valid
-            if determineValidNumOfApplicants() {
-                Button(action: {
-                    handleSaving()
-                }) {
-                    Text("Save")
-                        .foregroundColor(.blue)
-                        .font(.headline)
-                }
-                .disabled(changedValues.isEmpty ? true : false)
-                
-            } else {
-                    Text("Please specify the number of applicants to save.")
-                        .foregroundColor(.blue)
+            Button(action: {
+                handleSaving()
+            }) {
+                Text("Save")
+                    .foregroundColor(.blue)
+                    .font(.headline)
             }
         }
         .onTapGesture(count: 2, perform: UIApplication.shared.endEditing)
         .navigationBarTitle("General")
         .onReceive(resignPub) { _ in
-            handleSaving()
+            if isActive {
+                handleSaving()
+            }
+        }
+        .onChange(of: numberOfApplicants) { value in
+            switch Int(value) {
+                case 1:
+                    self.coApplicantOneName = ""
+                    changedValues.removeValue(forKey: "coApplicantOneName")
+                    self.coApplicantTwoName = ""
+                    changedValues.removeValue(forKey: "coApplicantTwoName")
+                    self.coApplicantThreeName = ""
+                    changedValues.removeValue(forKey: "coApplicantThreeName")
+                case 2:
+                    self.coApplicantTwoName = ""
+                    changedValues.removeValue(forKey: "coApplicantTwoName")
+                    self.coApplicantThreeName = ""
+                    changedValues.removeValue(forKey: "coApplicantThreeName")
+                case 3:
+                    self.coApplicantThreeName = ""
+                    changedValues.removeValue(forKey: "coApplicantThreeName")
+                default:
+                    return
+            }
+        }
+        .alert(isPresented: $showingAlert) {
+            Alert(title: Text(""), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+        }
+        .onDisappear() {
+            isActive = false
+        }
+        .onAppear() {
+            isActive = true
         }
     }
     
     // MARK: - determineComplete
     private func determineComplete() -> Bool {
+        var isComplete: Bool = false
         if salesConsultantIndex != 0 && applicationTypeIndex != 0 && applicantTypeIndex != 0 && loanPurposeIndex != 0 && propertyTypeIndex != 0 && determineValidNumOfApplicants() {
-            changedValues.updateValue(true, forKey: "generalDetailsDone")
-            return true
+            isComplete = true
         }
         
-        changedValues.updateValue(false, forKey: "generalDetailsDone")
-        return false
+        changedValues.changedValues.updateValue(isComplete, forKey: "generalDetailsDone")
+        return isComplete
     }
     
     // MARK: - handleSaving
     private func handleSaving() {
-        if !changedValues.isEmpty && determineValidNumOfApplicants() {
+        if determineValidNumOfApplicants() {
             isDone = determineComplete()
             saveApplication()
             presentationMode.wrappedValue.dismiss()
+        } else {
+            showingAlert = true
         }
     }
     
     // MARK: - determineValidNumOfApplicants
     private func determineValidNumOfApplicants() -> Bool {
+        var result: Bool = false
         switch Int(self.numberOfApplicants) {
             case 1:
-                return true
+                result = true
             case 2:
-                if self.coApplicantOneName != "" {
-                    return true
+                if !self.coApplicantOneName.isEmpty {
+                    result = true
+                } else {
+                    alertMessage = "Please add the name of co-applicant #1."
                 }
             case 3:
-                if self.coApplicantOneName != "" && self.coApplicantTwoName != "" {
-                    return true
+                if !self.coApplicantOneName.isEmpty && !self.coApplicantTwoName.isEmpty {
+                    result = true
+                } else {
+                    alertMessage = !coApplicantOneName.isEmpty ? "Please add the name of co-applicant #2." : (!coApplicantTwoName.isEmpty ? "Please add the name of co-applicant #1." : "Please add the names of co-applicant #1 and co-applicant #2.")
                 }
             case 4:
-                if self.coApplicantOneName != "" && self.coApplicantTwoName != "" && self.coApplicantThreeName != "" {
-                    return true
+                if !self.coApplicantOneName.isEmpty && !self.coApplicantTwoName.isEmpty && !self.coApplicantThreeName.isEmpty {
+                    result = true
+                } else if !self.coApplicantOneName.isEmpty && self.coApplicantTwoName.isEmpty && self.coApplicantThreeName.isEmpty {
+                    alertMessage = "Please add the names of co-applicant #2 and co-applicant #3."
+                } else if self.coApplicantOneName.isEmpty && !self.coApplicantTwoName.isEmpty && self.coApplicantThreeName.isEmpty {
+                    alertMessage = "Please add the names of co-applicant #1 and co-applicant #3."
+                } else if self.coApplicantOneName.isEmpty && self.coApplicantTwoName.isEmpty && !self.coApplicantThreeName.isEmpty {
+                    alertMessage = "Please add the names of co-applicant #1 and co-applicant #2."
+                } else if !self.coApplicantOneName.isEmpty && !self.coApplicantTwoName.isEmpty && self.coApplicantThreeName.isEmpty {
+                    alertMessage = "Please add the name of co-applicant #3."
+                } else if !self.coApplicantOneName.isEmpty && self.coApplicantTwoName.isEmpty && !self.coApplicantThreeName.isEmpty {
+                    alertMessage = "Please add the name of co-applicant #2."
+                } else if self.coApplicantOneName.isEmpty && !self.coApplicantTwoName.isEmpty && !self.coApplicantThreeName.isEmpty {
+                    alertMessage = "Please add the name of co-applicant #1."
+                } else {
+                    alertMessage = "Please add the names of the co-applicants"
                 }
             default:
-                return false
+                alertMessage = "Please specify the number of applicants."
         }
-        return false
+        
+        return result
     }
     
     // MARK: - saveApplication
     private func saveApplication() {
         UIApplication.shared.endEditing()
         applicationCreation.makeApplication()
-        for (key, value) in changedValues {
-            if key == "numberOfApplicants" {
-                applicationCreation.application.setValue(Int16(value as! String), forKey: key)
-            } else {
-                applicationCreation.application.setValue(value, forKey: key)
-            }
+        for (key, value) in changedValues.changedValues {
+            applicationCreation.application.setValue(value, forKey: key)
         }
         
         applicationCreation.application.loanID = UUID.init()
@@ -212,7 +257,7 @@ struct GeneralDetails: View {
             try viewContext.save()
             print("print - New Application Saved")
             applicationCreation.generalDetailsSaved = true
-            handleChangedValues.cleanChangedValues()
+            changedValues.cleanChangedValues()
         } catch {
             print(error.localizedDescription)
         }

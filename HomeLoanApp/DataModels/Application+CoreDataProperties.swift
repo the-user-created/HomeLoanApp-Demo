@@ -26,7 +26,7 @@ extension Application {
     @NSManaged public var loanID: UUID?
     @NSManaged public var loanPurpose: String?
     @NSManaged public var loanStatus: String?
-    @NSManaged public var numberOfApplicants: Int16
+    @NSManaged public var numberOfApplicants: String?
     @NSManaged public var propertyType: String?
     @NSManaged public var salesConsultant: String?
     @NSManaged public var loanCreatedDate: Date?
@@ -50,7 +50,7 @@ extension Application {
     @NSManaged public var countryMarriage: String?
     @NSManaged public var spouseIncome: String?
     @NSManaged public var aNC: String?
-    @NSManaged public var numDependents: Int16
+    @NSManaged public var numDependents: String?
     @NSManaged public var mainResidence: String?
     @NSManaged public var firstTimeHomeBuyer: String?
     @NSManaged public var socialGrant: String?
@@ -137,8 +137,8 @@ extension Application {
     @NSManaged public var pEContact: String?
     @NSManaged public var pEDuration: String?
     
-    // MARK: - Income
-    @NSManaged public var incomeDone: Bool
+    // MARK: - Income & Deductions
+    @NSManaged public var incomeDeductionsDone: Bool
     @NSManaged public var basicSalary: String?
     @NSManaged public var wages: String?
     @NSManaged public var averageComm: String?
@@ -204,6 +204,9 @@ extension Application {
     @NSManaged public var otherDebt: String?
     @NSManaged public var otherAcc: String?
     @NSManaged public var otherLiabilities: String?
+    
+    // MARK: - Document Scans
+    @NSManaged public var scansDone: Bool
     
     // MARK: - Notification/Warranty
     @NSManaged public var notificationsCheck: String?

@@ -14,6 +14,7 @@ struct PersonalDetails: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment (\.presentationMode) var presentationMode
     @EnvironmentObject var applicationCreation: ApplicationCreation
+    @EnvironmentObject var changedValues: ChangedValues
     
     // MARK: - State Variables
     @State var title = 0
@@ -40,15 +41,13 @@ struct PersonalDetails: View {
     @State var publicOfficial = ""
     @State var relatedOfficial = ""
     
-    @State var isShowingScannerSheet: Bool = false
-    @State var isShowingScannerHelp: Bool = false
+    @State var resignPub: NotificationCenter.Publisher = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
+    @State var isActive: Bool = false
     
     @Binding var isDone: Bool
     
     // MARK: - Properties
-    let resignPub = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
     let scanButtonInsets = EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
-    let handleChangedValues = HandleChangedValues()
     
     let educationLevels = ["--select--", "Matric", "Bachelor degree", "Masters degree", "Doctorate", "Diploma", "--TBA--"]
     let ethnicGroups = ["--select--", "Asian", "Black", "Caucasian", "Coloured", "Indian", "--TBA--"]
@@ -61,59 +60,46 @@ struct PersonalDetails: View {
     var body: some View {
         Form() {
             Section(header: Text("PERSONAL DETAILS")) {
-                FormPicker(iD: "title", pageNum: 1,
-                           question: formQuestions[1][0] ?? "MISSING",
-                           selectionOptions: titles,
-                           selection: $title)
-                
-                FormTextField(iD: "surname", pageNum: 1,
-                              question: formQuestions[1][1] ?? "MISSING",
-                              placeholder: formTextFieldPlaceholders[1][1] ?? "MISSING",
-                              text: $surname).keyboardType(.alphabet)
-                
-                FormTextField(iD: "firstNames", pageNum: 1,
-                              question: formQuestions[1][2] ?? "MISSING",
-                              placeholder: formTextFieldPlaceholders[1][2] ?? "MISSING",
-                              text: $firstNames).keyboardType(.alphabet)
-                
-                FormPicker(iD: "gender", pageNum: 1,
-                           question: formQuestions[1][3] ?? "MISSING",
-                           selectionOptions: genderSelection,
-                           selection: $gender)
-                
-                FormDatePicker(iD: "dateOfBirth", pageNum: 1,
-                               question: formQuestions[1][4] ?? "MISSING",
-                               dateRangeOption: 0,
-                               dateSelection: $dateOfBirth)
-                
-                FormPicker(iD: "iDType", pageNum: 1,
-                           question: formQuestions[1][5] ?? "MISSING",
-                           selectionOptions: identityType,
-                           selection: $iDType)
-                
-                HStack() {
-                    Button(scanString()) {
-                        self.isShowingScannerSheet = true
-                    }
+                Group() {
+                    FormPicker(iD: "title",
+                               question: formQuestions[1][0] ?? "MISSING",
+                               selectionOptions: titles,
+                               selection: $title)
                     
-                    Spacer()
+                    FormTextField(iD: "surname",
+                                  question: formQuestions[1][1] ?? "MISSING",
+                                  placeholder: formTextFieldPlaceholders[1][1] ?? "MISSING",
+                                  text: $surname).keyboardType(.alphabet)
                     
-                    Button(action: { self.isShowingScannerHelp = true }) {
-                        Image(systemName: "info.circle")
-                    }
+                    FormTextField(iD: "firstNames",
+                                  question: formQuestions[1][2] ?? "MISSING",
+                                  placeholder: formTextFieldPlaceholders[1][2] ?? "MISSING",
+                                  text: $firstNames).keyboardType(.alphabet)
                     
+                    FormPicker(iD: "gender",
+                               question: formQuestions[1][3] ?? "MISSING",
+                               selectionOptions: genderSelection,
+                               selection: $gender)
+                    
+                    FormDatePicker(iD: "dateOfBirth",
+                                   question: formQuestions[1][4] ?? "MISSING",
+                                   dateRangeOption: 0,
+                                   dateSelection: $dateOfBirth)
+                    
+                    FormPicker(iD: "iDType",
+                               question: formQuestions[1][5] ?? "MISSING",
+                               selectionOptions: identityType,
+                               selection: $iDType)
                 }
-                .foregroundColor(.blue)
-                .buttonStyle(BorderlessButtonStyle())
                 
-                FormTextField(iD: "iDPassNumber", pageNum: 1,
+                FormTextField(iD: "iDPassNumber",
                               question: formQuestions[1][switchIDPassport(value: identityType[iDType], loc: 6)] ?? "MISSING",
                               placeholder: formTextFieldPlaceholders[1][6] ?? "MISSING",
                               text: $iDPassNumber)
                     .keyboardType(identityType[iDType].contains("ID") ? .numberPad : .default)
                 
                 if !identityType[iDType].lowercased().contains("id") {
-                    FormDatePicker(iD: "passExpiryDate", pageNum: 1,
+                    FormDatePicker(iD: "passExpiryDate",
                                    question: formQuestions[1][7] ?? "MISSING",
                                    dateRangeOption: 1,
                                    dateSelection: $passExpiryDate)
@@ -122,31 +108,31 @@ struct PersonalDetails: View {
             }
             
             Section() {
-                FormTextField(iD: "taxNumber", pageNum: 1,
+                FormTextField(iD: "taxNumber",
                               question: formQuestions[1][8] ?? "MISSING",
                               placeholder: formTextFieldPlaceholders[1][8] ?? "MISSING",
                               text: $taxNumber)
                     .keyboardType(.numberPad)
                 
-                FormYesNo(iD: "taxReturn", pageNum: 1,
+                FormYesNo(iD: "taxReturn",
                           question: formQuestions[1][9] ?? "MISSING",
                           selected: $taxReturn)
                 
-                FormPicker(iD: "educationLevel", pageNum: 1,
+                FormPicker(iD: "educationLevel",
                            question: formQuestions[1][10] ?? "MISSING",
                            selectionOptions: educationLevels,
                            selection: $educationLevel)
                 
-                FormPicker(iD: "ethnicGroup", pageNum: 1,
+                FormPicker(iD: "ethnicGroup",
                            question: formQuestions[1][11] ?? "MISSING",
                            selectionOptions: ethnicGroups,
                            selection: $ethnicGroup)
                 
-                FormYesNo(iD: "singleHouse", pageNum: 1,
+                FormYesNo(iD: "singleHouse",
                           question: formQuestions[1][12] ?? "MISSING",
                           selected: $singleHouse)
                 
-                FormPicker(iD: "maritalStatus", pageNum: 1,
+                FormPicker(iD: "maritalStatus",
                            question: formQuestions[1][13] ?? "MISSING",
                            selectionOptions: maritalStatuses,
                            selection: $maritalStatus)
@@ -155,20 +141,20 @@ struct PersonalDetails: View {
             
             if maritalStatuses[maritalStatus] == "Married" {
                 Section(header: Text("MARRIAGE INFO")) {
-                    FormPicker(iD: "countryMarriage", pageNum: 1,
+                    FormPicker(iD: "countryMarriage",
                                question: formQuestions[1][13.1] ?? "MISSING",
                                selectionOptions: countries,
                                selection: $countryMarriage)
                     
-                    FormYesNo(iD: "spouseIncome", pageNum: 1,
+                    FormYesNo(iD: "spouseIncome",
                                question: formQuestions[1][13.2] ?? "MISSING",
                                selected: $spouseIncome)
                     
-                    FormYesNo(iD: "aNC", pageNum: 1,
+                    FormYesNo(iD: "aNC",
                               question: formQuestions[1][13.3] ?? "MISSING",
                               selected: $aNC)
                     
-                    FormTextField(iD: "numDependents", pageNum: 1,
+                    FormTextField(iD: "numDependents",
                                   question: formQuestions[1][13.4] ?? "MISSING",
                                   placeholder: formTextFieldPlaceholders[1][13.4] ?? "MISSING",
                                   text: $numDependents)
@@ -178,23 +164,23 @@ struct PersonalDetails: View {
             }
             
             Section(header: Text("PERSONAL DETAILS")) {
-                FormYesNo(iD: "mainResidence", pageNum: 1,
+                FormYesNo(iD: "mainResidence",
                           question: formQuestions[1][14] ?? "MISSING",
                           selected: $mainResidence)
                 
-                FormYesNo(iD: "firstTimeHomeBuyer", pageNum: 1,
+                FormYesNo(iD: "firstTimeHomeBuyer",
                           question: formQuestions[1][15] ?? "MISSING",
                           selected: $firstTimeHomeBuyer)
                 
-                FormYesNo(iD: "socialGrant", pageNum: 1,
+                FormYesNo(iD: "socialGrant",
                           question: formQuestions[1][16] ?? "MISSING",
                           selected: $socialGrant)
                 
-                FormYesNo(iD: "publicOfficial", pageNum: 1,
+                FormYesNo(iD: "publicOfficial",
                           question: formQuestions[1][17] ?? "MISSING",
                           selected: $publicOfficial)
                 
-                FormYesNo(iD: "relatedOfficial", pageNum: 1,
+                FormYesNo(iD: "relatedOfficial",
                           question: formQuestions[1][18] ?? "MISSING",
                           selected: $relatedOfficial)
             }
@@ -204,39 +190,50 @@ struct PersonalDetails: View {
                     handleSaving()
                 }) {
                     Text("Save")
-                        .foregroundColor(.blue)
+                        .foregroundColor(changedValues.changedValues.isEmpty ? .gray : .blue)
                         .font(.headline)
                 }
-                .disabled(changedValues.isEmpty ? true : false)
+                .disabled(changedValues.changedValues.isEmpty ? true : false)
             }
-        }
-        .sheet(isPresented: self.$isShowingScannerSheet) {
-            ScannerView(completion: {
-                _ in self.isShowingScannerSheet = false
-            }, scanName: "passport_id")
-        }
-        .sheet(isPresented: self.$isShowingScannerHelp) {
-            Text("Steps on taking a good scan")
         }
         .onTapGesture(count: 2, perform: UIApplication.shared.endEditing)
         .navigationBarTitle("Personal Details")
         .onReceive(resignPub) { _ in
-            handleSaving()
+            if isActive {
+                handleSaving()
+            }
+        }
+        .onDisappear() {
+            isActive = false
+        }
+        .onAppear() {
+            isActive = true
         }
     }
     
     // MARK: - determineComplete
     private func determineComplete() -> Bool {
-        if title != 0 && !surname.isEmpty && !firstNames.isEmpty && gender != 0 && iDType != 0 && !iDPassNumber.isEmpty && !taxNumber.isEmpty && !taxReturn.isEmpty && educationLevel != 0 && ethnicGroup != 0 && !singleHouse.isEmpty && maritalStatus != 0 && countryMarriage != 0 && !spouseIncome.isEmpty && !aNC.isEmpty && !numDependents.isEmpty && !mainResidence.isEmpty && !firstTimeHomeBuyer.isEmpty && !socialGrant.isEmpty && !publicOfficial.isEmpty && !relatedOfficial.isEmpty {
-            return true
+        var isComplete: Bool = false
+        // Base checks
+        if title != 0 && !surname.isEmpty && !firstNames.isEmpty && gender != 0 && iDType != 0 && !iDPassNumber.isEmpty && !taxNumber.isEmpty && !taxReturn.isEmpty && educationLevel != 0 && ethnicGroup != 0 && !singleHouse.isEmpty && maritalStatus != 0 && !mainResidence.isEmpty && !firstTimeHomeBuyer.isEmpty && !socialGrant.isEmpty && !publicOfficial.isEmpty && !relatedOfficial.isEmpty {
+            
+            // Marriage info check
+            if maritalStatus == 2 {
+                if countryMarriage != 0 && !spouseIncome.isEmpty && !aNC.isEmpty && !numDependents.isEmpty {
+                    isComplete = true
+                }
+            } else {
+                isComplete = true
+            }
         }
         
-        return false
+        changedValues.changedValues.updateValue(isComplete, forKey: "personalDetailsDone")
+        return isComplete
     }
     
     // MARK: - handleSaving
     private func handleSaving() {
-        if !changedValues.isEmpty {
+        if !changedValues.changedValues.isEmpty {
             isDone = determineComplete()
             saveApplication()
             presentationMode.wrappedValue.dismiss()
@@ -246,37 +243,21 @@ struct PersonalDetails: View {
     // MARK: - saveApplication
     private func saveApplication() {
         UIApplication.shared.endEditing()
-        for (key, value) in changedValues {
-            if key == "numDependents" {
-                applicationCreation.application.setValue(Int16(value as! String), forKey: key)
-            } else {
-                applicationCreation.application.setValue(value, forKey: key)
-            }
+        for (key, value) in changedValues.changedValues {
+            applicationCreation.application.setValue(value, forKey: key)
         }
         
         do {
             try viewContext.save()
             print("print - Application Entity Updated")
             applicationCreation.personalDetailsSaved = true
-            handleChangedValues.cleanChangedValues()
+            changedValues.cleanChangedValues()
         } catch {
             print(error.localizedDescription)
         }
     }
     
-    // MARK: - scanString()
-    private func scanString() -> String {
-        var outString: String = "Scan your "
-        if iDType != 0 {
-            outString += identityType[iDType].contains("ID") ? "ID" : "Passport"
-        } else {
-            outString += "passport/ID"
-        }
-        
-        return outString
-    }
-    
-    // MARK: - switchIDPassport()
+    // MARK: - switchIDPassport
     private func switchIDPassport(value: String, loc: Double)  -> Double {
         var location: Double = loc
         

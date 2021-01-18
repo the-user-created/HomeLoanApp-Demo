@@ -92,7 +92,7 @@ struct SettingsView: View {
                         UserDefaults.standard.setValue(false, forKey: "loggedIn")
                         print("print - Logged Out")
                     }) {
-                        backgroundForButton(btnText: "LOG OUT", btnColor: .blue)
+                        BackgroundForButton(btnText: "LOG OUT", btnColor: .blue)
                     }
                     .buttonStyle(BorderlessButtonStyle())
                     

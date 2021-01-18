@@ -13,6 +13,7 @@ struct SubsidyCreditEditing: View {
     @Environment (\.presentationMode) var presentationMode
     @EnvironmentObject var applicationCreation: ApplicationCreation
     @ObservedObject var application: Application
+    @EnvironmentObject var changedValues: ChangedValues
     
     // MARK: - State Variables
     @State var subsidyForHome = ""
@@ -28,15 +29,14 @@ struct SubsidyCreditEditing: View {
     @State var creditListings = ""
     @State var suretyAgreements = ""
     
-    @State var sender: ChoosePageVer
+    @State var sender: Sender
     @Binding var isDone: Bool
     
     // MARK: - Properties
     let resignPub = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
-    let handleChangedValues = HandleChangedValues()
     
     // MARK: - init
-    init(isDone: Binding<Bool>, application: Application, sender: ChoosePageVer) {
+    init(isDone: Binding<Bool>, application: Application, sender: Sender) {
         self._isDone = isDone
         self._sender = State(wrappedValue: sender)
         self.application = application
@@ -58,53 +58,53 @@ struct SubsidyCreditEditing: View {
     var body: some View {
         Form() {
             Section(header: Text("SUBSIDY")) {
-                FormYesNo(iD: "subsidyForHome", pageNum: 3,
+                FormYesNo(iD: "subsidyForHome",
                           question: formQuestions[3][0] ?? "MISSING",
                           selected: $subsidyForHome)
                 
-                FormYesNo(iD: "applyingSubsidy", pageNum: 3,
+                FormYesNo(iD: "applyingSubsidy",
                           question: formQuestions[3][1] ?? "MISSING",
                           selected: $applyingSubsidy)
                 
-                FormYesNo(iD: "housingScheme", pageNum: 3,
+                FormYesNo(iD: "housingScheme",
                           question: formQuestions[3][2] ?? "MISSING",
                           selected: $housingScheme)
             }
             
             Section(header: Text("CREDIT HISTORY")) {
-                FormYesNo(iD: "currentAdmin", pageNum: 3,
+                FormYesNo(iD: "currentAdmin",
                           question: formQuestions[3][3] ?? "MISSING",
                           selected: $currentAdmin)
                 
-                FormYesNo(iD: "previousAdmin", pageNum: 3,
+                FormYesNo(iD: "previousAdmin",
                           question: formQuestions[3][4] ?? "MISSING",
                           selected: $previousAdmin)
                 
-                FormYesNo(iD: "judgement", pageNum: 3,
+                FormYesNo(iD: "judgement",
                           question: formQuestions[3][5] ?? "MISSING",
                           selected: $judgement)
                 
-                FormYesNo(iD: "debtReview", pageNum: 3,
+                FormYesNo(iD: "debtReview",
                           question: formQuestions[3][6] ?? "MISSING",
                           selected: $debtReview)
                 
-                FormYesNo(iD: "debtReArrange", pageNum: 3,
+                FormYesNo(iD: "debtReArrange",
                           question: formQuestions[3][7] ?? "MISSING",
                           selected: $debtReArrange)
                 
-                FormYesNo(iD: "insolvent", pageNum: 3,
+                FormYesNo(iD: "insolvent",
                           question: formQuestions[3][8] ?? "MISSING",
                           selected: $insolvent)
                 
-                FormYesNo(iD: "creditBureau", pageNum: 3,
+                FormYesNo(iD: "creditBureau",
                           question: formQuestions[3][9] ?? "MISSING",
                           selected: $creditBureau)
                 
-                FormYesNo(iD: "creditListings", pageNum: 3,
+                FormYesNo(iD: "creditListings",
                           question: formQuestions[3][10] ?? "MISSING",
                           selected: $creditListings)
                 
-                FormYesNo(iD: "suretyAgreements", pageNum: 3,
+                FormYesNo(iD: "suretyAgreements",
                           question: formQuestions[3][11] ?? "MISSING",
                           selected: $suretyAgreements)
             }
@@ -117,7 +117,7 @@ struct SubsidyCreditEditing: View {
                         .foregroundColor(.blue)
                         .font(.headline)
                 }
-                .disabled(changedValues.isEmpty ? true : false)
+                .disabled(changedValues.changedValues.isEmpty ? true : false)
             }
         }
         .navigationBarTitle("Subsidy & Credit")
@@ -140,7 +140,7 @@ struct SubsidyCreditEditing: View {
     
     // MARK: - handleSaving
     private func handleSaving() {
-        if !changedValues.isEmpty {
+        if !changedValues.changedValues.isEmpty {
             isDone = determineComplete()
             addToApplication()
             presentationMode.wrappedValue.dismiss()
@@ -151,7 +151,7 @@ struct SubsidyCreditEditing: View {
     private func addToApplication() {
         UIApplication.shared.endEditing()
         
-        for (key, value) in changedValues {
+        for (key, value) in changedValues.changedValues {
             if sender == .creator {
                 applicationCreation.application.setValue(value, forKey: key)
             } else {
@@ -162,7 +162,7 @@ struct SubsidyCreditEditing: View {
         do {
             try viewContext.save()
             print("Application Entity Updated")
-            handleChangedValues.cleanChangedValues()
+            changedValues.cleanChangedValues()
         } catch {
             print(error.localizedDescription)
         }

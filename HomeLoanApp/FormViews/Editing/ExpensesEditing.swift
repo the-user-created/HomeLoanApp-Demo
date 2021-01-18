@@ -13,6 +13,7 @@ struct ExpensesEditing: View {
     @Environment (\.presentationMode) var presentationMode
     @EnvironmentObject var applicationCreation: ApplicationCreation
     @ObservedObject var application: Application
+    @EnvironmentObject var changedValues: ChangedValues
     
     // MARK: - State Variables
     @State var rental = ""
@@ -42,15 +43,14 @@ struct ExpensesEditing: View {
     @State var otherExpenses = ""
     @State var otherExpensesText = ""
     
-    @State var sender: ChoosePageVer
+    @State var sender: Sender
     @Binding var isDone: Bool
     
     // MARK: - Properties
     let resignPub = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
-    let handleChangedValues = HandleChangedValues()
     
     // MARK: - init
-    init(isDone: Binding<Bool>, application: Application, sender: ChoosePageVer) {
+    init(isDone: Binding<Bool>, application: Application, sender: Sender) {
         self._isDone = isDone
         self._sender = State(wrappedValue: sender)
         self.application = application
@@ -94,107 +94,107 @@ struct ExpensesEditing: View {
         Form() {
             Section(header: Text("EXPENSES")) {
                 Group {
-                    FormRandTextField(iD: "rental", pageNum: 6,
+                    FormRandTextField(iD: "rental",
                                       question: formQuestions[6][0] ?? "MISSING",
                                       text: $rental)
                     
-                    FormRandTextField(iD: "expensesInvestments", pageNum: 6,
+                    FormRandTextField(iD: "expensesInvestments",
                                       question: formQuestions[6][1] ?? "MISSING",
                                       text: $expensesInvestments)
                     
-                    FormRandTextField(iD: "ratesTaxes", pageNum: 6,
+                    FormRandTextField(iD: "ratesTaxes",
                                       question: formQuestions[6][2] ?? "MISSING",
                                       text: $ratesTaxes)
                     
-                    FormRandTextField(iD: "waterLights", pageNum: 6,
+                    FormRandTextField(iD: "waterLights",
                                       question: formQuestions[6][3] ?? "MISSING",
                                       text: $waterLights)
                     
-                    FormRandTextField(iD: "homeMain", pageNum: 6,
+                    FormRandTextField(iD: "homeMain",
                                       question: formQuestions[6][4] ?? "MISSING",
                                       text: $homeMain)
                 }
                 
                 Group {
-                    FormRandTextField(iD: "petrolCar", pageNum: 6,
+                    FormRandTextField(iD: "petrolCar",
                                       question: formQuestions[6][5] ?? "MISSING",
                                       text: $petrolCar)
                     
-                    FormRandTextField(iD: "insurance", pageNum: 6,
+                    FormRandTextField(iD: "insurance",
                                       question: formQuestions[6][6] ?? "MISSING",
                                       text: $insurance)
                     
-                    FormRandTextField(iD: "assurance", pageNum: 6,
+                    FormRandTextField(iD: "assurance",
                                       question: formQuestions[6][7] ?? "MISSING",
                                       text: $assurance)
                     
-                    FormRandTextField(iD: "timeshare", pageNum: 6,
+                    FormRandTextField(iD: "timeshare",
                                       question: formQuestions[6][8] ?? "MISSING",
                                       text: $timeshare)
                     
-                    FormRandTextField(iD: "groceries", pageNum: 6,
+                    FormRandTextField(iD: "groceries",
                                       question: formQuestions[6][9] ?? "MISSING",
                                       text: $groceries)
                 }
                 
                 Group {
-                    FormRandTextField(iD: "clothing", pageNum: 6,
+                    FormRandTextField(iD: "clothing",
                                       question: formQuestions[6][10] ?? "MISSING",
                                       text: $clothing)
                     
-                    FormRandTextField(iD: "levies", pageNum: 6,
+                    FormRandTextField(iD: "levies",
                                       question: formQuestions[6][11] ?? "MISSING",
                                       text: $levies)
                     
-                    FormRandTextField(iD: "domesticWages", pageNum: 6,
+                    FormRandTextField(iD: "domesticWages",
                                       question: formQuestions[6][12] ?? "MISSING",
                                       text: $domesticWages)
                     
-                    FormRandTextField(iD: "education", pageNum: 6,
+                    FormRandTextField(iD: "education",
                                       question: formQuestions[6][13] ?? "MISSING",
                                       text: $education)
                     
-                    FormRandTextField(iD: "expensesEntertainment", pageNum: 6,
+                    FormRandTextField(iD: "expensesEntertainment",
                                       question: formQuestions[6][14] ?? "MISSING",
                                       text: $expensesEntertainment)
                 }
                 
                 Group {
-                    FormRandTextField(iD: "security", pageNum: 6,
+                    FormRandTextField(iD: "security",
                                       question: formQuestions[6][15] ?? "MISSING",
                                       text: $security)
                     
-                    FormRandTextField(iD: "propertyRentExp", pageNum: 6,
+                    FormRandTextField(iD: "propertyRentExp",
                                       question: formQuestions[6][16] ?? "MISSING",
                                       text: $propertyRentExp)
                     
-                    FormRandTextField(iD: "medical", pageNum: 6,
+                    FormRandTextField(iD: "medical",
                                       question: formQuestions[6][17] ?? "MISSING",
                                       text: $medical)
                     
-                    FormRandTextField(iD: "donations", pageNum: 6,
+                    FormRandTextField(iD: "donations",
                                       question: formQuestions[6][18] ?? "MISSING",
                                       text: $donations)
                     
-                    FormRandTextField(iD: "cellphone", pageNum: 6,
+                    FormRandTextField(iD: "cellphone",
                                       question: formQuestions[6][19] ?? "MISSING",
                                       text: $cellphone)
                 }
                 
                 Group {
-                    FormRandTextField(iD: "telephoneISP", pageNum: 6,
+                    FormRandTextField(iD: "telephoneISP",
                                       question: formQuestions[6][20] ?? "MISSING",
                                       text: $telephoneISP)
                     
-                    FormRandTextField(iD: "expensesMaintenanceAlimony", pageNum: 6,
+                    FormRandTextField(iD: "expensesMaintenanceAlimony",
                                       question: formQuestions[6][21] ?? "MISSING",
                                       text: $expensesMaintenanceAlimony)
                     
-                    FormRandTextField(iD: "installmentExp", pageNum: 6,
+                    FormRandTextField(iD: "installmentExp",
                                       question: formQuestions[6][22] ?? "MISSING",
                                       text: $installmentExp)
                     
-                    FormOtherQuestion(iD: "otherExpenses", pageNum: 6,
+                    FormOtherRand(iD: "otherExpenses",
                                       question: formQuestions[6][23] ?? "MISSING",
                                       other: $otherExpenses,
                                       otherText: $otherExpensesText)
@@ -209,7 +209,7 @@ struct ExpensesEditing: View {
                         .foregroundColor(.blue)
                         .font(.headline)
                 }
-                .disabled(changedValues.isEmpty ? true : false)
+                .disabled(changedValues.changedValues.isEmpty ? true : false)
             }
         }
         .navigationBarTitle("Expenses")
@@ -230,7 +230,7 @@ struct ExpensesEditing: View {
     
     // MARK: - handleSaving
     private func handleSaving() {
-        if !changedValues.isEmpty {
+        if !changedValues.changedValues.isEmpty {
             isDone = determineComplete()
             addToApplication()
             presentationMode.wrappedValue.dismiss()
@@ -241,7 +241,7 @@ struct ExpensesEditing: View {
     private func addToApplication() {
         UIApplication.shared.endEditing()
         
-        for (key, value) in changedValues {
+        for (key, value) in changedValues.changedValues {
             if sender == .creator {
                 applicationCreation.application.setValue(value, forKey: key)
             } else {
@@ -252,7 +252,7 @@ struct ExpensesEditing: View {
         do {
             try viewContext.save()
             print("Application Entity Updated")
-            handleChangedValues.cleanChangedValues()
+            changedValues.cleanChangedValues()
         } catch {
             print(error.localizedDescription)
         }

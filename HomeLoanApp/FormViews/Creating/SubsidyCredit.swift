@@ -12,6 +12,7 @@ struct SubsidyCredit: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment (\.presentationMode) var presentationMode
     @EnvironmentObject var applicationCreation: ApplicationCreation
+    @EnvironmentObject var changedValues: ChangedValues
     
     // MARK: - State Variables
     @State var subsidyForHome = ""
@@ -31,58 +32,57 @@ struct SubsidyCredit: View {
     
     // MARK: - Properties
     let resignPub = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
-    let handleChangedValues = HandleChangedValues()
     
     var body: some View {
         Form() {
             Section(header: Text("SUBSIDY")) {
-                FormYesNo(iD: "subsidyForHome", pageNum: 3,
+                FormYesNo(iD: "subsidyForHome",
                           question: formQuestions[3][0] ?? "MISSING",
                           selected: $subsidyForHome)
                 
-                FormYesNo(iD: "applyingSubsidy", pageNum: 3,
+                FormYesNo(iD: "applyingSubsidy",
                           question: formQuestions[3][1] ?? "MISSING",
                           selected: $applyingSubsidy)
                 
-                FormYesNo(iD: "housingScheme", pageNum: 3,
+                FormYesNo(iD: "housingScheme",
                           question: formQuestions[3][2] ?? "MISSING",
                           selected: $housingScheme)
             }
             
             Section(header: Text("CREDIT HISTORY")) {
-                FormYesNo(iD: "currentAdmin", pageNum: 3,
+                FormYesNo(iD: "currentAdmin",
                           question: formQuestions[3][3] ?? "MISSING",
                           selected: $currentAdmin)
                 
-                FormYesNo(iD: "previousAdmin", pageNum: 3,
+                FormYesNo(iD: "previousAdmin",
                           question: formQuestions[3][4] ?? "MISSING",
                           selected: $previousAdmin)
                 
-                FormYesNo(iD: "judgement", pageNum: 3,
+                FormYesNo(iD: "judgement",
                           question: formQuestions[3][5] ?? "MISSING",
                           selected: $judgement)
                 
-                FormYesNo(iD: "debtReview", pageNum: 3,
+                FormYesNo(iD: "debtReview",
                           question: formQuestions[3][6] ?? "MISSING",
                           selected: $debtReview)
                 
-                FormYesNo(iD: "debtReArrange", pageNum: 3,
+                FormYesNo(iD: "debtReArrange",
                           question: formQuestions[3][7] ?? "MISSING",
                           selected: $debtReArrange)
                 
-                FormYesNo(iD: "insolvent", pageNum: 3,
+                FormYesNo(iD: "insolvent",
                           question: formQuestions[3][8] ?? "MISSING",
                           selected: $insolvent)
                 
-                FormYesNo(iD: "creditBureau", pageNum: 3,
+                FormYesNo(iD: "creditBureau",
                           question: formQuestions[3][9] ?? "MISSING",
                           selected: $creditBureau)
                 
-                FormYesNo(iD: "creditListings", pageNum: 3,
+                FormYesNo(iD: "creditListings",
                           question: formQuestions[3][10] ?? "MISSING",
                           selected: $creditListings)
                 
-                FormYesNo(iD: "suretyAgreements", pageNum: 3,
+                FormYesNo(iD: "suretyAgreements",
                           question: formQuestions[3][11] ?? "MISSING",
                           selected: $suretyAgreements)
             }
@@ -95,7 +95,7 @@ struct SubsidyCredit: View {
                         .foregroundColor(.blue)
                         .font(.headline)
                 }
-                .disabled(changedValues.isEmpty ? true : false)
+                .disabled(changedValues.changedValues.isEmpty ? true : false)
             }
         }
         .navigationBarTitle("Subsidy & Credit")
@@ -108,7 +108,7 @@ struct SubsidyCredit: View {
     // MARK: - determineComplete
     private func determineComplete() -> Bool {
         if !subsidyForHome.isEmpty && !applyingSubsidy.isEmpty && !housingScheme.isEmpty && !currentAdmin.isEmpty && !previousAdmin.isEmpty && !judgement.isEmpty && !debtReview.isEmpty && !debtReArrange.isEmpty && !insolvent.isEmpty && !creditBureau.isEmpty && !creditListings.isEmpty && !suretyAgreements.isEmpty {
-            changedValues.updateValue(true, forKey: "subsidyCreditDone")
+            changedValues.changedValues.updateValue(true, forKey: "subsidyCreditDone")
             return true
         }
         
@@ -117,7 +117,7 @@ struct SubsidyCredit: View {
     
     // MARK: - handleSaving
     private func handleSaving() {
-        if !changedValues.isEmpty {
+        if !changedValues.changedValues.isEmpty {
             isDone = determineComplete()
             saveApplication()
             presentationMode.wrappedValue.dismiss()
@@ -127,7 +127,7 @@ struct SubsidyCredit: View {
     // MARK: - saveApplication
     private func saveApplication() {
         UIApplication.shared.endEditing()
-        for (key, value) in changedValues {
+        for (key, value) in changedValues.changedValues {
             applicationCreation.application.setValue(value, forKey: key)
         }
         
@@ -135,7 +135,7 @@ struct SubsidyCredit: View {
             try viewContext.save()
             print("print - Application Entity Updated")
             applicationCreation.subsidyCreditSaved = true
-            handleChangedValues.cleanChangedValues()
+            changedValues.cleanChangedValues()
         } catch {
             print(error.localizedDescription)
         }

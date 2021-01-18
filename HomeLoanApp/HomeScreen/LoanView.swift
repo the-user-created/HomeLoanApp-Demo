@@ -13,6 +13,7 @@ struct LoanView: View {
     // MARK: - Wrapped Objects
     @Environment(\.managedObjectContext) private var viewContext
     @EnvironmentObject var applicationCreation: ApplicationCreation
+    @EnvironmentObject var changedValues: ChangedValues
     
     @FetchRequest(entity: Application.entity(),
                   sortDescriptors: [NSSortDescriptor(keyPath: \Application.loanCreatedDate, ascending: false)]
@@ -20,6 +21,7 @@ struct LoanView: View {
     
     // MARK: - State Variables
     @State private var makingApplication: Bool = false
+    @State private var editingApplication: Int?
     
     // MARK: - body
     var body: some View {
@@ -36,14 +38,11 @@ struct LoanView: View {
                             .foregroundColor(.blue)
                     }
                 }
-                .onChange(of: makingApplication) { _ in
-                    if !makingApplication {
-                        applicationCreation.removeApplicationFromMemory()
-                    }
-                }
                 
-                ForEach(applications, id: \.self) { application in
-                    NavigationLink(destination: ChoosePageEditing(application: application)) {
+                ForEach(applications) { application in
+                    NavigationLink(destination: ChoosePageEditing(application: application),
+                                   tag: applications.firstIndex(of: application) ?? 0,
+                                   selection: self.$editingApplication) {
                         HStack() {
                             VStack(alignment: .leading) {
                                 Text("Application created on \(application.loanCreatedDate ?? Date(), formatter: dateFormatter)")
@@ -51,17 +50,32 @@ struct LoanView: View {
                                 
                                 Text("Status: \(application.loanStatus ?? "")")
                                     .font(.subheadline)
+                                
                             }
                             
                             Spacer()
                             
                             Text("Edit")
                                 .foregroundColor(.blue)
+                            
                         }
+                        .frame(height: 50)
                     }
-                    .frame(height: 50)
                 }
                 .onDelete(perform: deleteApplication)
+            }
+            .onChange(of: makingApplication) { _ in
+                if !makingApplication {
+                    print("print - cleaned changedValues and removed application from memory")
+                    applicationCreation.removeApplicationFromMemory()
+                    changedValues.cleanChangedValues()
+                }
+            }
+            .onChange(of: editingApplication) { _ in
+                if editingApplication == nil {
+                    print("print - cleaned changedValues")
+                    changedValues.cleanChangedValues()
+                }
             }
             .listStyle(PlainListStyle())
             .navigationBarTitle("Loan Applications")

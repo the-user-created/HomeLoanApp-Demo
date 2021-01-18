@@ -100,8 +100,8 @@
         <attribute name="natureOfBusiness" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="natureOfOccupation" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="notificationsCheck" optional="YES" attributeType="String" defaultValueString=""/>
-        <attribute name="numberOfApplicants" optional="YES" attributeType="Integer 16" usesScalarValueType="YES"/>
-        <attribute name="numDependents" optional="YES" attributeType="Integer 16" usesScalarValueType="YES"/>
+        <attribute name="numberOfApplicants" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="numDependents" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="occupationalStatus" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="occupationLevel" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="otherAcc" optional="YES" attributeType="String" defaultValueString=""/>
@@ -153,6 +153,7 @@
         <attribute name="retailAcc" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="sACitizen" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="salesConsultant" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="scansDone" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="security" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="singleHouse" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="socialGrant" optional="YES" attributeType="String" defaultValueString=""/>
@@ -177,6 +178,6 @@
         <attribute name="workPhoneNum" optional="YES" attributeType="String" defaultValueString=""/>
     </entity>
     <elements>
-        <element name="Application" positionX="-63" positionY="-18" width="128" height="2653"/>
+        <element name="Application" positionX="-63" positionY="-18" width="128" height="2668"/>
     </elements>
 </model>

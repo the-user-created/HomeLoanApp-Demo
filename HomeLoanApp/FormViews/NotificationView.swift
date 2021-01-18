@@ -13,13 +13,13 @@ struct NotificationView: View {
     @Environment (\.presentationMode) var presentationMode
     @EnvironmentObject var applicationCreation: ApplicationCreation
     @ObservedObject var application: Application
+    @EnvironmentObject var changedValues: ChangedValues
     
     // MARK: - State Variables
     @State var notificationsCheck = ""
     @Binding var isDone: Bool
     
     // MARK: - Properties
-    let handleChangedValues = HandleChangedValues()
     
     // MARK: - body
     var body: some View {
@@ -44,7 +44,6 @@ struct NotificationView: View {
                     .font(.subheadline)
                 
                 FormYesNo(iD: "notificationsCheck",
-                          pageNum: 8,
                           question: "Do you agree to all notifications",
                           selected: $notificationsCheck)
                     .padding([.top], 10)
@@ -83,7 +82,7 @@ struct NotificationView: View {
     
     // MARK: - handleSaving
     private func handleSaving() {
-        if !changedValues.isEmpty {
+        if !changedValues.changedValues.isEmpty {
             isDone = determineComplete()
             saveApplication()
             presentationMode.wrappedValue.dismiss()
@@ -98,7 +97,7 @@ struct NotificationView: View {
             try viewContext.save()
             print("print - Application Entity Updated")
             applicationCreation.notificationSaved = true
-            handleChangedValues.cleanChangedValues()
+            changedValues.cleanChangedValues()
         } catch {
             print(error.localizedDescription)
         }

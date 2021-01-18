@@ -23,6 +23,7 @@ struct ChoosePageCreating: View {
     @State var employmentDone: Bool = false
     @State var expensesDone: Bool = false
     @State var incomeDone: Bool = false
+    @State var scansDone: Bool = false
     
     @State var selection: Int?
     
@@ -46,7 +47,7 @@ struct ChoosePageCreating: View {
                 } else {
                     NavigationLink(destination: GeneralDetailsEditing(isDone: $generalDetailsDone, application: applicationCreation.application, sender: .creator), tag: 1, selection: $selection) {
                         HStack() {
-                            Text("General Details Editing")
+                            Text("General Details")
                                 .font(.headline)
                             
                             Spacer()
@@ -164,7 +165,7 @@ struct ChoosePageCreating: View {
                     }
                     .disabled(!generalDetailsDone)
                 } else {
-                    NavigationLink(destination: EmploymentEditing(isDone: $employmentDone, application: applicationCreation.application, sender: .creator), tag: 8, selection: $selection) {
+                    NavigationLink(destination: EmploymentEditing(isDone: $employmentDone, application: applicationCreation.application, sender: .creator), tag: 9, selection: $selection) {
                         HStack() {
                             Text("Employment")
                                 .font(.headline)
@@ -178,10 +179,10 @@ struct ChoosePageCreating: View {
                 }
             }
             
-            // Income
+            // Income & Deductions
             Group() {
                 if !applicationCreation.incomeSaved {
-                    NavigationLink(destination: IncomeDeductions(isDone: $incomeDone), tag: 8, selection: $selection) {
+                    NavigationLink(destination: IncomeDeductions(isDone: $incomeDone), tag: 10, selection: $selection) {
                         HStack() {
                             Text("Income & Deductions")
                                 .font(.headline)
@@ -194,7 +195,7 @@ struct ChoosePageCreating: View {
                     }
                     .disabled(!generalDetailsDone)
                 } else {
-                    NavigationLink(destination: IncomeDeductionsEditing(isDone: $incomeDone, application: applicationCreation.application, sender: .creator), tag: 9, selection: $selection) {
+                    NavigationLink(destination: IncomeDeductionsEditing(isDone: $incomeDone, application: applicationCreation.application, sender: .creator), tag: 11, selection: $selection) {
                         HStack() {
                             Text("Income & Deductions")
                                 .font(.headline)
@@ -211,7 +212,7 @@ struct ChoosePageCreating: View {
             // Expenses
             Group() {
                 if !applicationCreation.expensesSaved {
-                    NavigationLink(destination: Expenses(isDone: $expensesDone), tag: 9, selection: $selection) {
+                    NavigationLink(destination: Expenses(isDone: $expensesDone), tag: 12, selection: $selection) {
                         HStack() {
                             Text("Expenses")
                                 .font(.headline)
@@ -224,7 +225,7 @@ struct ChoosePageCreating: View {
                     }
                     .disabled(!generalDetailsDone)
                 } else {
-                    NavigationLink(destination: ExpensesEditing(isDone: $expensesDone, application: applicationCreation.application, sender: .creator), tag: 11, selection: $selection) {
+                    NavigationLink(destination: ExpensesEditing(isDone: $expensesDone, application: applicationCreation.application, sender: .creator), tag: 13, selection: $selection) {
                         HStack() {
                             Text("Expenses")
                                 .font(.headline)
@@ -241,7 +242,7 @@ struct ChoosePageCreating: View {
             // Assets & Liabilities
             Group() {
                 if !applicationCreation.assetsLiabilitiesSaved {
-                    NavigationLink(destination: AssetsLiabilities(isDone: $assetsLiabilitiesDone), tag: 12, selection: $selection) {
+                    NavigationLink(destination: AssetsLiabilities(isDone: $assetsLiabilitiesDone), tag: 14, selection: $selection) {
                         HStack() {
                             Text("Assets & Liabilities")
                                 .font(.headline)
@@ -254,7 +255,7 @@ struct ChoosePageCreating: View {
                     }
                     .disabled(!generalDetailsDone)
                 } else {
-                    NavigationLink(destination: AssetsLiabilitiesEditing(isDone: $assetsLiabilitiesDone, application: applicationCreation.application, sender: .creator), tag: 13, selection: $selection) {
+                    NavigationLink(destination: AssetsLiabilitiesEditing(isDone: $assetsLiabilitiesDone, application: applicationCreation.application, sender: .creator), tag: 15, selection: $selection) {
                         HStack() {
                             Text("Assets & Liabilities")
                                 .font(.headline)
@@ -268,10 +269,22 @@ struct ChoosePageCreating: View {
                 }
             }
             
-            // Notification & Warranty
+            // Notification & Warranty, Document Scans
             Group() {
-                //if !applicationCreation.notificationSaved {
-                NavigationLink(destination: NotificationView(application: applicationCreation.application, isDone: $notificationDone), tag: 14, selection: $selection) {
+                NavigationLink(destination: DocumentScans(application: applicationCreation.application, sender: .creator, isDone: $scansDone), tag: 16, selection: $selection) {
+                    HStack() {
+                        Text("Supporting Documents")
+                            .font(.headline)
+                        
+                        Spacer()
+                        
+                        Image(systemName: scansDone ? "checkmark.circle.fill" : "checkmark.circle")
+                            .foregroundColor(scansDone ? .green : .red)
+                    }
+                }
+                .disabled(!generalDetailsDone)
+                
+                NavigationLink(destination: NotificationView(application: applicationCreation.application, isDone: $notificationDone), tag: 17, selection: $selection) {
                     HStack() {
                         Text("Notification")
                             .font(.headline)
@@ -283,21 +296,16 @@ struct ChoosePageCreating: View {
                     }
                 }
                 .disabled(!canSignOff())
-                /*} else {
-                    
-                }*/
             }
             
             // Submit Application
-            Section() {
-                NavigationLink(destination: EmptyView(), tag: 15, selection: $selection) {
-                    Text("Submit Application")
-                        .font(.title3)
-                        .bold()
-                        .foregroundColor(.blue)
-                }
-                .disabled(!canSignOff() && !notificationDone)
+            NavigationLink(destination: EmptyView(), tag: 18, selection: $selection) {
+                Text("Submit Application")
+                    .font(.title3)
+                    .bold()
+                    .foregroundColor(.blue)
             }
+            .disabled(!canSignOff() && !notificationDone)
         }
         .navigationBarTitle("Creating", displayMode: .large)
     }

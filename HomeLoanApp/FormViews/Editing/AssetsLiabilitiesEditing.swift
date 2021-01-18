@@ -13,6 +13,7 @@ struct AssetsLiabilitiesEditing: View {
     @Environment (\.presentationMode) var presentationMode
     @EnvironmentObject var applicationCreation: ApplicationCreation
     @ObservedObject var application: Application
+    @EnvironmentObject var changedValues: ChangedValues
     
     // MARK: - State Variables
     @State var fixedProperty = ""
@@ -34,15 +35,14 @@ struct AssetsLiabilitiesEditing: View {
     @State var otherLiabilities = ""
     @State var otherLiabilitiesText = ""
     
-    @State var sender: ChoosePageVer
+    @State var sender: Sender
     @Binding var isDone: Bool
     
     // MARK: - Properties
     let resignPub = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
-    let handleChangedValues = HandleChangedValues()
     
     // MARK: - init
-    init(isDone: Binding<Bool>, application: Application, sender: ChoosePageVer) {
+    init(isDone: Binding<Bool>, application: Application, sender: Sender) {
         self._isDone = isDone
         self._sender = State(wrappedValue: sender)
         self.application = application
@@ -94,27 +94,27 @@ struct AssetsLiabilitiesEditing: View {
     var body: some View {
         Form() {
             Section(header: Text("Assets")) {
-                FormRandTextField(iD: "fixedProperty", pageNum: 7,
+                FormRandTextField(iD: "fixedProperty",
                                   question: formQuestions[7][0] ?? "MISSING",
                                   text: $fixedProperty)
                 
-                FormRandTextField(iD: "vehicles", pageNum: 7,
+                FormRandTextField(iD: "vehicles",
                                   question: formQuestions[7][1] ?? "MISSING",
                                   text: $vehicles)
                 
-                FormRandTextField(iD: "furnitureFittings", pageNum: 7,
+                FormRandTextField(iD: "furnitureFittings",
                                   question: formQuestions[7][2] ?? "MISSING",
                                   text: $furnitureFittings)
                 
-                FormRandTextField(iD: "assetLiabilityInvestments", pageNum: 7,
+                FormRandTextField(iD: "assetLiabilityInvestments",
                                   question: formQuestions[7][3] ?? "MISSING",
                                   text: $assetLiabilityInvestments)
                 
-                FormRandTextField(iD: "cashOnHand", pageNum: 7,
+                FormRandTextField(iD: "cashOnHand",
                                   question: formQuestions[7][4] ?? "MISSING",
                                   text: $cashOnHand)
                 
-                FormOtherQuestion(iD: "otherAsset", pageNum: 7,
+                FormOtherRand(iD: "otherAsset",
                                   question: formQuestions[7][5] ?? "MISSING",
                                   other: $otherAsset,
                                   otherText: $otherAssetText)
@@ -122,42 +122,42 @@ struct AssetsLiabilitiesEditing: View {
             
             Section(header: Text("Liabilities")) {
                 Group {
-                    FormRandTextField(iD: "mortgageBonds", pageNum: 7,
+                    FormRandTextField(iD: "mortgageBonds",
                                       question: formQuestions[7][6] ?? "MISSING",
                                       text: $mortgageBonds)
                     
-                    FormRandTextField(iD: "installmentSales", pageNum: 7,
+                    FormRandTextField(iD: "installmentSales",
                                       question: formQuestions[7][7] ?? "MISSING",
                                       text: $installmentSales)
                     
-                    FormRandTextField(iD: "creditCards", pageNum: 7,
+                    FormRandTextField(iD: "creditCards",
                                       question: formQuestions[7][8] ?? "MISSING",
                                       text: $creditCards)
                     
-                    FormRandTextField(iD: "currentAcc", pageNum: 7,
+                    FormRandTextField(iD: "currentAcc",
                                       question: formQuestions[7][9] ?? "MISSING",
                                       text: $currentAcc)
                 }
                 
                 Group {
-                    FormRandTextField(iD: "personalLoans", pageNum: 7,
+                    FormRandTextField(iD: "personalLoans",
                                       question: formQuestions[7][10] ?? "MISSING",
                                       text: $personalLoans)
                     
-                    FormRandTextField(iD: "retailAcc", pageNum: 7,
+                    FormRandTextField(iD: "retailAcc",
                                       question: formQuestions[7][11] ?? "MISSING",
                                       text: $retailAcc)
                     
-                    FormRandTextField(iD: "otherDebt", pageNum: 7,
+                    FormRandTextField(iD: "otherDebt",
                                       question: formQuestions[7][12] ?? "MISSING",
                                       text: $otherDebt)
                     
-                    FormOtherQuestion(iD: "otherAcc", pageNum: 7,
+                    FormOtherRand(iD: "otherAcc",
                                       question: formQuestions[7][13] ?? "MISSING",
                                       other: $otherAcc,
                                       otherText: $otherAccText)
                     
-                    FormOtherQuestion(iD: "otherLiabilities", pageNum: 7,
+                    FormOtherRand(iD: "otherLiabilities",
                                       question: formQuestions[7][14] ?? "MISSING",
                                       other: $otherLiabilities,
                                       otherText: $otherLiabilitiesText)
@@ -172,7 +172,7 @@ struct AssetsLiabilitiesEditing: View {
                         .foregroundColor(.blue)
                         .font(.headline)
                 }
-                .disabled(changedValues.isEmpty ? true : false)
+                .disabled(changedValues.changedValues.isEmpty ? true : false)
             }
         }
         .navigationBarTitle("Assets & Liabilities")
@@ -193,7 +193,7 @@ struct AssetsLiabilitiesEditing: View {
     
     // MARK: - handleSaving
     private func handleSaving() {
-        if !changedValues.isEmpty {
+        if !changedValues.changedValues.isEmpty {
             isDone = determineComplete()
             addToApplication()
             presentationMode.wrappedValue.dismiss()
@@ -204,7 +204,7 @@ struct AssetsLiabilitiesEditing: View {
     private func addToApplication() {
         UIApplication.shared.endEditing()
         
-        for (key, value) in changedValues {
+        for (key, value) in changedValues.changedValues {
             if sender == .creator {
                 applicationCreation.application.setValue(value, forKey: key)
             } else {
@@ -215,7 +215,7 @@ struct AssetsLiabilitiesEditing: View {
         do {
             try viewContext.save()
             print("Application Entity Updated")
-            handleChangedValues.cleanChangedValues()
+            changedValues.cleanChangedValues()
         } catch {
             print(error.localizedDescription)
         }

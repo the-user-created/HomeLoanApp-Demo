@@ -13,6 +13,7 @@ struct EmploymentEditing: View {
     @Environment (\.presentationMode) var presentationMode
     @EnvironmentObject var applicationCreation: ApplicationCreation
     @ObservedObject var application: Application
+    @EnvironmentObject var changedValues: ChangedValues
     
     // MARK: - State Variables
     @State var occupationalStatus = 0
@@ -43,12 +44,11 @@ struct EmploymentEditing: View {
     @State var pEDurationYears = ""
     @State var pEDurationMonths = ""
     
-    @State var sender: ChoosePageVer
+    @State var sender: Sender
     @Binding var isDone: Bool
     
     // MARK: - Properties
     let resignPub = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
-    let handleChangedValues = HandleChangedValues()
     
     let occupationalStatusSelection = ["--select--", "Full-time employed (non-Professional)", "--TBA--"]
     let payingSchemeSelection = ["--select--", "Monthly", "--TBA--"]
@@ -57,7 +57,7 @@ struct EmploymentEditing: View {
     let employmentSectorSelection = ["--select--", "Other", "--TBA--"]
     
     // MARK: - init
-    init(isDone: Binding<Bool>, application: Application, sender: ChoosePageVer) {
+    init(isDone: Binding<Bool>, application: Application, sender: Sender) {
         self._isDone = isDone
         self._sender = State(wrappedValue: sender)
         self.application = application
@@ -110,58 +110,58 @@ struct EmploymentEditing: View {
     var body: some View {
         Form() {
             Section(header: Text("OCCUPATION")) {
-                FormPicker(iD: "occupationalStatus", pageNum: 4,
+                FormPicker(iD: "occupationalStatus",
                            question: formQuestions[4][0] ?? "MISSING",
                            selectionOptions: occupationalStatusSelection,
                            selection: $occupationalStatus)
                 
-                FormPicker(iD: "payingScheme", pageNum: 4,
+                FormPicker(iD: "payingScheme",
                            question: formQuestions[4][1] ?? "MISSING",
                            selectionOptions: payingSchemeSelection,
                            selection: $payingScheme)
                 
-                FormPicker(iD: "incomeSource", pageNum: 4,
+                FormPicker(iD: "incomeSource",
                            question: formQuestions[4][2] ?? "MISSING",
                            selectionOptions: sourceIncome,
                            selection: $incomeSource)
                 
-                FormTextField(iD: "natureOfOccupation", pageNum: 4,
+                FormTextField(iD: "natureOfOccupation",
                               question: formQuestions[4][3] ?? "MISSING",
-                              placeholder: "something",
-                              text: $natureOfOccupation)
+                              placeholder: formTextFieldPlaceholders[4][3] ?? "MISSING",
+                              text: $natureOfOccupation, sender: .editor)
                 
-                FormPicker(iD: "occupationLevel", pageNum: 4,
+                FormPicker(iD: "occupationLevel",
                            question: formQuestions[4][4] ?? "MISSING",
                            selectionOptions: occupationLevelSelection,
                            selection: $occupationLevel)
                 
-                FormPicker(iD: "employmentSector", pageNum: 4,
+                FormPicker(iD: "employmentSector",
                            question: formQuestions[4][5] ?? "MISSING",
                            selectionOptions: employmentSectorSelection,
                            selection: $employmentSector)
                 
                 Group() {
-                    FormTextField(iD: "natureOfBusiness", pageNum: 4,
+                    FormTextField(iD: "natureOfBusiness",
                                   question: formQuestions[4][6] ?? "MISSING",
-                                  placeholder: "something",
-                                  text: $natureOfBusiness)
+                                  placeholder: formTextFieldPlaceholders[4][6] ?? "MISSING",
+                                  text: $natureOfBusiness, sender: .editor)
                     
-                    FormTextField(iD: "employer", pageNum: 4,
+                    FormTextField(iD: "employer",
                                   question: formQuestions[4][7] ?? "MISSING",
-                                  placeholder: "something",
-                                  text: $employer)
+                                  placeholder: formTextFieldPlaceholders[4][7] ?? "MISSING",
+                                  text: $employer, sender: .editor)
                     
-                    FormTextField(iD: "companyRegNum", pageNum: 4,
+                    FormTextField(iD: "companyRegNum",
                                   question: formQuestions[4][8] ?? "MISSING",
-                                  placeholder: "something",
-                                  text: $companyRegNum)
+                                  placeholder: formTextFieldPlaceholders[4][8] ?? "MISSING",
+                                  text: $companyRegNum, sender: .editor)
                     
-                    FormTextField(iD: "employeeNum", pageNum: 4,
+                    FormTextField(iD: "employeeNum",
                                   question: formQuestions[4][9] ?? "MISSING",
-                                  placeholder: "something",
-                                  text: $employeeNum)
+                                  placeholder: formTextFieldPlaceholders[4][9] ?? "MISSING",
+                                  text: $employeeNum, sender: .editor)
                     
-                    FormLenAt(iD: "employmentPeriod", pageNum: 4,
+                    FormLenAt(iD: "employmentPeriod",
                               question: formQuestions[4][10] ?? "MISSING",
                               yearsText: $employmentPeriodYears,
                               monthsText: $employmentPeriodMonths)
@@ -169,56 +169,57 @@ struct EmploymentEditing: View {
             }
             
             Section(header: Text("EMPLOYER ADDRESS")) {
-                FormPicker(iD: "employerCountry", pageNum: 4,
+                FormPicker(iD: "employerCountry",
                            question: formQuestions[4][11] ?? "MISSING",
                            selectionOptions: countries,
                            selection: $employerCountry)
                 
-                FormTextField(iD: "employerLine1", pageNum: 4,
+                FormTextField(iD: "employerLine1",
                               question: formQuestions[4][12] ?? "MISSING",
-                              placeholder: "something",
-                              text: $employerLine1)
+                              placeholder: formTextFieldPlaceholders[4][12] ?? "MISSING",
+                              text: $employerLine1, sender: .editor)
                 
-                FormTextField(iD: "employerLine2", pageNum: 4,
+                FormTextField(iD: "employerLine2",
                               question: formQuestions[4][13] ?? "MISSING",
-                              placeholder: "something",
-                              text: $employerLine2)
+                              placeholder: formTextFieldPlaceholders[4][13] ?? "MISSING",
+                              text: $employerLine2, sender: .editor)
                 
-                FormTextField(iD: "employerSuburb", pageNum: 4,
+                FormTextField(iD: "employerSuburb",
                               question: formQuestions[4][14] ?? "MISSING",
-                              placeholder: "something",
-                              text: $employerSuburb)
+                              placeholder: formTextFieldPlaceholders[4][14] ?? "MISSING",
+                              text: $employerSuburb, sender: .editor)
                 
-                FormTextField(iD: "employerCity", pageNum: 4,
+                FormTextField(iD: "employerCity",
                               question: formQuestions[4][15] ?? "MISSING",
-                              placeholder: "something",
-                              text: $employerCity)
+                              placeholder: formTextFieldPlaceholders[4][15] ?? "MISSING",
+                              text: $employerCity, sender: .editor)
                 
-                FormTextField(iD: "employerProvince", pageNum: 4,
+                FormTextField(iD: "employerProvince",
                               question: formQuestions[4][16] ?? "MISSING",
-                              placeholder: "something",
-                              text: $employerProvince)
+                              placeholder: formTextFieldPlaceholders[4][16] ?? "MISSING",
+                              text: $employerProvince, sender: .editor)
                 
-                FormTextField(iD: "employerStreetCode", pageNum: 4,
+                FormTextField(iD: "employerStreetCode",
                               question: formQuestions[4][17] ?? "MISSING",
-                              placeholder: "something",
-                              text: $employerStreetCode)
+                              placeholder: formTextFieldPlaceholders[4][17] ?? "MISSING",
+                              text: $employerStreetCode, sender: .editor)
                 
-                FormTextField(iD: "workPhoneNum", pageNum: 4,
+                FormTextField(iD: "workPhoneNum",
                               question: formQuestions[4][18] ?? "MISSING",
-                              placeholder: "something",
-                              text: $workPhoneNum).keyboardType(.phonePad)
+                              placeholder: formTextFieldPlaceholders[4][18] ?? "MISSING",
+                              text: $workPhoneNum, sender: .editor)
+                    .keyboardType(.phonePad)
                 
                 Group {
-                    FormYesNo(iD: "purchaseJobChange", pageNum: 4,
+                    FormYesNo(iD: "purchaseJobChange",
                               question: formQuestions[4][19] ?? "MISSING",
                               selected: $purchaseJobChange)
                     
-                    FormYesNo(iD: "workInZA", pageNum: 4,
+                    FormYesNo(iD: "workInZA",
                               question: formQuestions[4][20] ?? "MISSING",
                               selected: $workInZA)
                     
-                    FormYesNo(iD: "previouslyEmployed", pageNum: 4,
+                    FormYesNo(iD: "previouslyEmployed",
                               question: formQuestions[4][21] ?? "MISSING",
                               selected: $previouslyEmployed)
                 }
@@ -226,18 +227,18 @@ struct EmploymentEditing: View {
             
             if previouslyEmployed == "Yes" {
                 Section(header: Text("PREVIOUS EMPLOYER")) {
-                    FormTextField(iD: "previousEmployer", pageNum: 4,
+                    FormTextField(iD: "previousEmployer",
                                   question: formQuestions[4][21.1] ?? "MISSING",
-                                  placeholder: "something",
-                                  text: $previousEmployer)
+                                  placeholder: formTextFieldPlaceholders[4][21.1] ?? "MISSING",
+                                  text: $previousEmployer, sender: .editor)
                     
-                    FormTextField(iD: "pEContact", pageNum: 4,
+                    FormTextField(iD: "pEContact",
                                   question: formQuestions[4][21.2] ?? "MISSING",
-                                  placeholder: "something",
-                                  text: $pEContact)
+                                  placeholder: formTextFieldPlaceholders[4][21.2] ?? "MISSING",
+                                  text: $pEContact, sender: .editor)
                         .keyboardType(.phonePad)
                     
-                    FormLenAt(iD: "pEDuration", pageNum: 4,
+                    FormLenAt(iD: "pEDuration",
                               question: formQuestions[4][21.3] ?? "MISSING",
                               yearsText: $pEDurationYears,
                               monthsText: $pEDurationMonths)
@@ -252,7 +253,7 @@ struct EmploymentEditing: View {
                         .foregroundColor(.blue)
                         .font(.headline)
                 }
-                .disabled(changedValues.isEmpty ? true : false)
+                .disabled(changedValues.changedValues.isEmpty ? true : false)
             }
         }
         .navigationBarTitle("Employment")
@@ -273,7 +274,7 @@ struct EmploymentEditing: View {
     
     // MARK: - handleSaving
     private func handleSaving() {
-        if !changedValues.isEmpty {
+        if !changedValues.changedValues.isEmpty {
             isDone = determineComplete()
             addToApplication()
             presentationMode.wrappedValue.dismiss()
@@ -283,7 +284,7 @@ struct EmploymentEditing: View {
     // MARK: - addToApplication
     private func addToApplication() {
         UIApplication.shared.endEditing()
-        for (key, value) in changedValues {
+        for (key, value) in changedValues.changedValues {
             if sender == .creator {
                 applicationCreation.application.setValue(value, forKey: key)
             } else {
@@ -294,7 +295,7 @@ struct EmploymentEditing: View {
         do {
             try viewContext.save()
             print("print - Application Entity Updated")
-            handleChangedValues.cleanChangedValues()
+            changedValues.cleanChangedValues()
         } catch {
             print(error.localizedDescription)
         }
