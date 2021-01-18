@@ -43,6 +43,9 @@ struct Employment: View {
     @State var pEDurationYears = ""
     @State var pEDurationMonths = ""
     
+    @State var alertMessage: String = ""
+    @State var showingAlert: Bool = false
+    @State var isActive: Bool = false
     @Binding var isDone: Bool
     
     // MARK: - Properties
@@ -201,23 +204,40 @@ struct Employment: View {
                         .foregroundColor(.blue)
                         .font(.headline)
                 }
-                .disabled(changedValues.changedValues.isEmpty ? true : false)
             }
         }
         .navigationBarTitle("Employment")
         .onTapGesture(count: 2, perform: UIApplication.shared.endEditing)
         .onReceive(resignPub) { _ in
-            handleSaving()
+            if isActive {
+                handleSaving()
+            }
+        }
+        .onDisappear() {
+            isActive = false
+        }
+        .onAppear() {
+            isActive = true
+        }
+        .alert(isPresented: $showingAlert) {
+            Alert(title: Text(""), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         }
     }
     
     // MARK: - determineComplete
     private func determineComplete() -> Bool {
-        /*if  {
-            return true
-        }*/
+        var isComplete: Bool = false
+        if occupationalStatus != 0 && payingScheme != 0 && incomeSource != 0 && !natureOfOccupation.isEmpty && occupationLevel != 0 && employmentSector != 0 && !natureOfBusiness.isEmpty && !employer.isEmpty && !companyRegNum.isEmpty && (!employmentPeriodYears.isEmpty || !employmentPeriodMonths.isEmpty) && employerCountry != 0 && !employerLine1.isEmpty && !employerSuburb.isEmpty && !employerCity.isEmpty && !employerProvince.isEmpty && !employerStreetCode.isEmpty && !workPhoneNum.isEmpty && !purchaseJobChange.isEmpty && !workInZA.isEmpty && !previouslyEmployed.isEmpty {
+            
+            if previouslyEmployed == "Yes" && (!previousEmployer.isEmpty && !pEContact.isEmpty && (!pEDurationYears.isEmpty || !pEDurationMonths.isEmpty)) {
+                isComplete = true
+            } else if previouslyEmployed == "No" {
+                isComplete = true
+            }
+        }
         
-        return false
+        changedValues.changedValues.updateValue(isComplete, forKey: "employmentDone")
+        return isComplete
     }
     
     // MARK: - handleSaving
@@ -226,6 +246,9 @@ struct Employment: View {
             isDone = determineComplete()
             saveApplication()
             presentationMode.wrappedValue.dismiss()
+        } else {
+            alertMessage = "Please complete some questions before attempting to save."
+            showingAlert = true
         }
     }
     

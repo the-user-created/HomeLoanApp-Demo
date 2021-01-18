@@ -41,12 +41,13 @@ struct PersonalDetails: View {
     @State var publicOfficial = ""
     @State var relatedOfficial = ""
     
-    @State var resignPub: NotificationCenter.Publisher = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
+    @State var alertMessage: String = ""
+    @State var showingAlert: Bool = false
     @State var isActive: Bool = false
-    
     @Binding var isDone: Bool
     
     // MARK: - Properties
+    let resignPub: NotificationCenter.Publisher = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
     let scanButtonInsets = EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
     
     let educationLevels = ["--select--", "Matric", "Bachelor degree", "Masters degree", "Doctorate", "Diploma", "--TBA--"]
@@ -147,8 +148,8 @@ struct PersonalDetails: View {
                                selection: $countryMarriage)
                     
                     FormYesNo(iD: "spouseIncome",
-                               question: formQuestions[1][13.2] ?? "MISSING",
-                               selected: $spouseIncome)
+                              question: formQuestions[1][13.2] ?? "MISSING",
+                              selected: $spouseIncome)
                     
                     FormYesNo(iD: "aNC",
                               question: formQuestions[1][13.3] ?? "MISSING",
@@ -190,10 +191,9 @@ struct PersonalDetails: View {
                     handleSaving()
                 }) {
                     Text("Save")
-                        .foregroundColor(changedValues.changedValues.isEmpty ? .gray : .blue)
+                        .foregroundColor(.blue)
                         .font(.headline)
                 }
-                .disabled(changedValues.changedValues.isEmpty ? true : false)
             }
         }
         .onTapGesture(count: 2, perform: UIApplication.shared.endEditing)
@@ -203,11 +203,22 @@ struct PersonalDetails: View {
                 handleSaving()
             }
         }
+        .onChange(of: maritalStatus) { value in
+            if maritalStatus != 2 {
+                countryMarriage = 0
+                spouseIncome = ""
+                aNC = ""
+                numDependents = ""
+            }
+        }
         .onDisappear() {
             isActive = false
         }
         .onAppear() {
             isActive = true
+        }
+        .alert(isPresented: $showingAlert) {
+            Alert(title: Text(""), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         }
     }
     
@@ -237,6 +248,9 @@ struct PersonalDetails: View {
             isDone = determineComplete()
             saveApplication()
             presentationMode.wrappedValue.dismiss()
+        } else {
+            alertMessage = "Please complete some questions before attempting to save."
+            showingAlert = true
         }
     }
     

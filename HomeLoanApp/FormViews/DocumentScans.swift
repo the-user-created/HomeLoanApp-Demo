@@ -15,7 +15,7 @@ struct DocumentScans: View {
     @ObservedObject var application: Application
     
     // MARK: - State Variables
-    @State var identityType: String = ""
+    //@State var identityType: String = ""
     
     @State var isShowingSheet: Bool = false
     @State var scanSuccess: Bool = false
@@ -40,9 +40,11 @@ struct DocumentScans: View {
         Form() {
             Section(header: Text("Passport OR ID")) {
                 HStack() {
-                    Button(scanString()) {
+                    Button(action: {
                         sheetID = .scannerIDPass
                         isShowingSheet = true
+                    }) {
+                        BackgroundForButton(btnText: scanString())
                     }
                     
                     Spacer()
@@ -65,6 +67,14 @@ struct DocumentScans: View {
                 .foregroundColor(.blue)
                 .buttonStyle(BorderlessButtonStyle())
             }
+            
+            /*Section() {
+                Button(action: {
+                    print("print - \(FileManager.default.urls(for: .documentDirectory))")
+                }) {
+                    Text("print all files")
+                }
+            }*/
         }
         .navigationBarTitle("Documents")
         .sheet(isPresented: $isShowingSheet) {
@@ -72,7 +82,7 @@ struct DocumentScans: View {
                 ScannerView(scanName: "passport_id", applicationID: application.loanID!) { _ in
                     // May have problems later if needing to do more things than just dismiss on completion
                     sheetID = .none
-                    scanSuccess = hasScanned()
+                    //scanSuccess = hasScanned()
                     isShowingSheet = false
                 }
             } else if sheetID == .scannerTips {
@@ -84,14 +94,14 @@ struct DocumentScans: View {
     // MARK: - hasScanned
     private func hasScanned() -> Bool {
         var result: Bool = false
-        if identityType == "Passport" || identityType == "ID Book" { // When the clients ID type is a Passport (or ID Book) they must scan just one side
+        if application.iDType == "Passport" || application.iDType == "ID Book" { // When the clients ID type is a Passport (or ID Book) they must scan just one side
             if let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
                 let fileName = "passport_id_image_\(application.loanID?.uuidString ?? "nil")_0.png"
                 let fileURL = documentsDirectory.appendingPathComponent(fileName)
                 result = FileManager.default.fileExists(atPath: fileURL.path)
             }
             // Failed to get directory, therefore result is false
-        } else if identityType == "SmartCard ID" { // When the clients ID type is a SmartCard ID they must scan both sides of the card
+        } else if application.iDType == "SmartCard ID" { // When the clients ID type is a SmartCard ID they must scan both sides of the card
             if let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
                 var sideOneScanned: Bool = false
                 var sideTwoScanned: Bool = false
@@ -120,8 +130,10 @@ struct DocumentScans: View {
     // MARK: - scanString
     private func scanString() -> String {
         var outString: String = "Scan your "
-        if !identityType.isEmpty {
-            outString += identityType != "--select--" ? identityType.contains("ID") ? "ID" : "Passport" : "passport/ID"
+        if let idType = application.iDType {
+            if !idType.isEmpty {
+                outString += idType != "--select--" ? (idType.contains("ID") ? "ID" : "Passport") : "passport/ID"
+            }
         } else {
             outString += "passport/ID"
         }

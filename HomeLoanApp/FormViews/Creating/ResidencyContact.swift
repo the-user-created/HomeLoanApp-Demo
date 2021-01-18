@@ -15,13 +15,6 @@ struct ResidencyContact: View {
     @EnvironmentObject var applicationCreation: ApplicationCreation
     @EnvironmentObject var changedValues: ChangedValues
     
-    // MARK: - Properties
-    let resignPub = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
-    
-    let permitTypes = ["--select--", "Work permit", "--TBA--"]
-    let languages = ["--select--", "English", "Afrikaans"]
-    let correslanguages = ["--select--", "English", "Afrikaans"]
-    
     // MARK: - State Variables
     @State var sACitizen = ""
     @State var nationality = 0
@@ -59,11 +52,22 @@ struct ResidencyContact: View {
     @State var postalProvince = ""
     @State var postalStreetCode = ""
     
+    @State var alertMessage: String = ""
+    @State var showingAlert: Bool = false
+    @State var isActive: Bool = false
     @Binding var isDone: Bool
+    
+    // MARK: - Properties
+    let resignPub = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
+    
+    let permitTypes = ["--select--", "Work permit", "--TBA--"]
+    let languages = ["--select--", "English", "Afrikaans", "--TBA--"]
+    let correslanguages = ["--select--", "English", "Afrikaans"]
     
     // MARK: - body
     var body: some View {
         Form() {
+            
             Section(header: Text("RESIDENCY")) {
                 FormYesNo(iD: "sACitizen",
                           question: formQuestions[2][0] ?? "MISSING",
@@ -265,13 +269,23 @@ struct ResidencyContact: View {
                         .foregroundColor(.blue)
                         .font(.headline)
                 }
-                .disabled(changedValues.changedValues.isEmpty ? true : false)
             }
         }
         .onTapGesture(count: 2, perform: UIApplication.shared.endEditing)
         .navigationBarTitle("Residency & Contact")
         .onReceive(resignPub) { _ in
-            handleSaving()
+            if isActive {
+                handleSaving()
+            }
+        }
+        .onDisappear() {
+            isActive = false
+        }
+        .onAppear() {
+            isActive = true
+        }
+        .alert(isPresented: $showingAlert) {
+            Alert(title: Text(""), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         }
     }
     
@@ -303,6 +317,7 @@ struct ResidencyContact: View {
         }
         // else isComplete = false
         
+        changedValues.changedValues.updateValue(isComplete, forKey: "residencyContactDone")
         return isComplete
     }
     
@@ -312,6 +327,9 @@ struct ResidencyContact: View {
             isDone = determineComplete()
             saveApplication()
             presentationMode.wrappedValue.dismiss()
+        } else {
+            alertMessage = "Please complete some questions before attempting to save."
+            showingAlert = true
         }
     }
     

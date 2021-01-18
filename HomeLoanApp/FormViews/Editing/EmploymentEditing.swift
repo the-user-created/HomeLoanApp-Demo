@@ -44,7 +44,11 @@ struct EmploymentEditing: View {
     @State var pEDurationYears = ""
     @State var pEDurationMonths = ""
     
+    @State var initValues: Dictionary<String, AnyHashable> = [:]
+    @State var savingValues: Dictionary<String, AnyHashable> = [:]
     @State var sender: Sender
+    @State var showingAlert: Bool = false
+    @State var alertMessage: String = ""
     @Binding var isDone: Bool
     
     // MARK: - Properties
@@ -104,6 +108,8 @@ struct EmploymentEditing: View {
                 self._pEDurationMonths = State(wrappedValue: String(pEDuration[pEDuration.index(openBracketIndices[1], offsetBy: 1)..<closeBracketIndices[1]]))
             }
         }
+        
+        self._initValues = State(wrappedValue: ["occupationalStatus": self.occupationalStatus, "payingScheme": self.payingScheme, "incomeSource": self.incomeSource, "natureOfOccupation": self.natureOfOccupation, "occupationLevel": self.occupationLevel, "employmentSector": self.employmentSector, "natureOfBusiness": self.natureOfBusiness, "employer": self.employer, "companyRegNum": self.companyRegNum, "employeeNum": self.employeeNum, "employmentPeriod": "[\(self.employmentPeriodYears)][\(self.employmentPeriodMonths)]", "employerCountry": self.employerCountry, "employerLine1": self.employerLine1, "employerLine2": self.employerLine2, "employerSuburb": self.employerSuburb, "employerCity": self.employerCity, "employerProvince": self.employerProvince, "employerStreetCode": self.employerStreetCode, "workPhoneNum": self.workPhoneNum, "purchaseJobChange": self.purchaseJobChange, "workInZA": self.workInZA, "previouslyEmployed": self.previouslyEmployed, "previousEmployer": self.previousEmployer, "pEContact": self.pEContact, "pEDuration": "[\(self.pEDurationYears)][\(self.pEDurationMonths)]"])
     }
     
     // MARK: - body
@@ -261,14 +267,39 @@ struct EmploymentEditing: View {
         .onReceive(resignPub) { _ in
             handleSaving()
         }
+        .alert(isPresented: $showingAlert) {
+            Alert(title: Text(""), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+        }
     }
     
     // MARK: - determineComplete
     private func determineComplete() -> Bool {
-        /*if  {
-            return true
-        }*/
+        var isComplete: Bool = false
+        if occupationalStatus != 0 && payingScheme != 0 && incomeSource != 0 && !natureOfOccupation.isEmpty && occupationLevel != 0 && employmentSector != 0 && !natureOfBusiness.isEmpty && !employer.isEmpty && !companyRegNum.isEmpty && (!employmentPeriodYears.isEmpty || !employmentPeriodMonths.isEmpty) && employerCountry != 0 && !employerLine1.isEmpty && !employerSuburb.isEmpty && !employerCity.isEmpty && !employerProvince.isEmpty && !employerStreetCode.isEmpty && !workPhoneNum.isEmpty && !purchaseJobChange.isEmpty && !workInZA.isEmpty && !previouslyEmployed.isEmpty {
+            
+            if previouslyEmployed == "Yes" && (!previousEmployer.isEmpty && !pEContact.isEmpty && (!pEDurationYears.isEmpty || !pEDurationMonths.isEmpty)) {
+                isComplete = true
+            } else if previouslyEmployed == "No" {
+                isComplete = true
+            }
+        }
         
+        changedValues.changedValues.updateValue(isComplete, forKey: "employmentDone")
+        return isComplete
+    }
+    
+    // MARK: - hasChanged
+    private func hasChanged() -> Bool {
+        self.savingValues = ["occupationalStatus": self.occupationalStatus, "payingScheme": self.payingScheme, "incomeSource": self.incomeSource, "natureOfOccupation": self.natureOfOccupation, "occupationLevel": self.occupationLevel, "employmentSector": self.employmentSector, "natureOfBusiness": self.natureOfBusiness, "employer": self.employer, "companyRegNum": self.companyRegNum, "employeeNum": self.employeeNum, "employmentPeriod": "[\(self.employmentPeriodYears)][\(self.employmentPeriodMonths)]", "employerCountry": self.employerCountry, "employerLine1": self.employerLine1, "employerLine2": self.employerLine2, "employerSuburb": self.employerSuburb, "employerCity": self.employerCity, "employerProvince": self.employerProvince, "employerStreetCode": self.employerStreetCode, "workPhoneNum": self.workPhoneNum, "purchaseJobChange": self.purchaseJobChange, "workInZA": self.workInZA, "previouslyEmployed": self.previouslyEmployed, "previousEmployer": self.previousEmployer, "pEContact": self.pEContact, "pEDuration": "[\(self.pEDurationYears)][\(self.pEDurationMonths)]"]
+        
+        if self.savingValues != self.initValues {
+            print("print - hasChanged: true")
+            return true
+        }
+        
+        print("print - hasChanged: false")
+        alertMessage = "No answers were changed."
+        showingAlert = true
         return false
     }
     

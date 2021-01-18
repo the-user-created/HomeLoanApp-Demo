@@ -28,6 +28,9 @@ struct SubsidyCredit: View {
     @State var creditListings = ""
     @State var suretyAgreements = ""
     
+    @State var alertMessage: String = ""
+    @State var showingAlert: Bool = false
+    @State var isActive: Bool = false
     @Binding var isDone: Bool
     
     // MARK: - Properties
@@ -95,24 +98,35 @@ struct SubsidyCredit: View {
                         .foregroundColor(.blue)
                         .font(.headline)
                 }
-                .disabled(changedValues.changedValues.isEmpty ? true : false)
             }
         }
         .navigationBarTitle("Subsidy & Credit")
         .onTapGesture(count: 2, perform: UIApplication.shared.endEditing)
         .onReceive(resignPub) { _ in
-            handleSaving()
+            if isActive {
+                handleSaving()
+            }
+        }
+        .onDisappear() {
+            isActive = false
+        }
+        .onAppear() {
+            isActive = true
+        }
+        .alert(isPresented: $showingAlert) {
+            Alert(title: Text(""), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         }
     }
     
     // MARK: - determineComplete
     private func determineComplete() -> Bool {
+        var isComplete: Bool = false
         if !subsidyForHome.isEmpty && !applyingSubsidy.isEmpty && !housingScheme.isEmpty && !currentAdmin.isEmpty && !previousAdmin.isEmpty && !judgement.isEmpty && !debtReview.isEmpty && !debtReArrange.isEmpty && !insolvent.isEmpty && !creditBureau.isEmpty && !creditListings.isEmpty && !suretyAgreements.isEmpty {
-            changedValues.changedValues.updateValue(true, forKey: "subsidyCreditDone")
-            return true
+            isComplete = true
         }
         
-        return false
+        changedValues.changedValues.updateValue(isComplete, forKey: "subsidyCreditDone")
+        return isComplete
     }
     
     // MARK: - handleSaving
@@ -121,6 +135,9 @@ struct SubsidyCredit: View {
             isDone = determineComplete()
             saveApplication()
             presentationMode.wrappedValue.dismiss()
+        } else {
+            alertMessage = "Please complete some questions before attempting to save."
+            showingAlert = true
         }
     }
     

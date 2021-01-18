@@ -16,17 +16,6 @@ struct PersonalDetailsEditing: View {
     @EnvironmentObject var changedValues: ChangedValues
     @ObservedObject var application: Application
     
-    // MARK: - Properties
-    let resignPub = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
-    let scanButtonInsets = EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
-    
-    let titles = ["--select--","Mr", "Mrs", "Ms", "Dr", "Prof", "--TBA--"]
-    let identityType = ["--select--","Passport", "ID Book", "SmartCard ID", "--TBA--"]
-    let genderSelection = ["--select--", "Male", "Female"]
-    let educationLevels = ["--select--", "Matric", "Bachelor degree", "Masters degree", "Doctorate", "Diploma", "--TBA--"]
-    let ethnicGroups = ["--select--", "Asian", "Black", "Caucasian", "Coloured", "Indian", "--TBA--"]
-    let maritalStatuses = ["--select--", "Divorced", "Married", "Single", "--TBA--"]
-    
     // MARK: - State Variables
     @State var title = 0
     @State var surname = ""
@@ -56,7 +45,20 @@ struct PersonalDetailsEditing: View {
     @State var initValues: Dictionary<String, AnyHashable> = [:]
     @State var savingValues: Dictionary<String, AnyHashable> = [:]
     @State var sender: Sender
+    @State var showingAlert: Bool = false
+    @State var alertMessage: String = ""
     @Binding var isDone: Bool
+    
+    // MARK: - Properties
+    let resignPub = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
+    let scanButtonInsets = EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
+    
+    let titles = ["--select--","Mr", "Mrs", "Ms", "Dr", "Prof", "--TBA--"]
+    let identityType = ["--select--","Passport", "ID Book", "SmartCard ID", "--TBA--"]
+    let genderSelection = ["--select--", "Male", "Female"]
+    let educationLevels = ["--select--", "Matric", "Bachelor degree", "Masters degree", "Doctorate", "Diploma", "--TBA--"]
+    let ethnicGroups = ["--select--", "Asian", "Black", "Caucasian", "Coloured", "Indian", "--TBA--"]
+    let maritalStatuses = ["--select--", "Divorced", "Married", "Single", "--TBA--"]
     
     // MARK: - init
     init(isDone: Binding<Bool>, application: Application, sender: Sender) {
@@ -140,7 +142,7 @@ struct PersonalDetailsEditing: View {
                               text: $iDPassNumber, sender: .editor)
                     .keyboardType(identityType[iDType].contains("ID") ? .numberPad : .default)
                 
-                if !identityType[iDType].lowercased().contains("id") {
+                if !identityType[iDType].lowercased().contains("id") && iDType != 0 {
                     FormDatePicker(iD: "passExpiryDate",
                                    question: formQuestions[1][7] ?? "MISSING",
                                    dateRangeOption: 1,
@@ -232,10 +234,9 @@ struct PersonalDetailsEditing: View {
                     handleSaving()
                 }) {
                     Text("Save changes")
-                        .foregroundColor(changedValues.changedValues.isEmpty ? .gray : .blue)
+                        .foregroundColor(.blue)
                         .font(.headline)
                 }
-                .disabled(changedValues.changedValues.isEmpty ? true : false)
             }
         }
         .navigationBarTitle("Personal Details")
@@ -244,6 +245,27 @@ struct PersonalDetailsEditing: View {
         }
         .onReceive(resignPub) { _ in
             handleSaving()
+        }
+        .onChange(of: maritalStatus) { value in
+            if maritalStatus != 2 {
+                self.countryMarriage = 0
+                changedValues.updateKeyValue("countryMarriage", value: countries[0])
+                self.spouseIncome = ""
+                changedValues.updateKeyValue("spouseIncome", value: "")
+                self.aNC = ""
+                changedValues.updateKeyValue("aNC", value: "")
+                self.numDependents = ""
+                changedValues.updateKeyValue("numDependents", value: "")
+            }
+        }
+        .onChange(of: iDType) { value in
+            if identityType[iDType].lowercased().contains("id") {
+                self.passExpiryDate = Date()
+                changedValues.updateKeyValue("passExpiryDate", value: Date())
+            }
+        }
+        .alert(isPresented: $showingAlert) {
+            Alert(title: Text(""), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         }
     }
     
@@ -269,11 +291,26 @@ struct PersonalDetailsEditing: View {
     
     // MARK: - handleSaving
     private func handleSaving() {
-        if !changedValues.changedValues.isEmpty {
+        if hasChanged() {
             isDone = determineComplete()
             addToApplication()
             presentationMode.wrappedValue.dismiss()
         }
+    }
+    
+    // MARK: - hasChanged
+    private func hasChanged() -> Bool {
+        self.savingValues = ["title": self.title, "surname": self.surname, "firstNames": self.firstNames, "gender": self.gender, "dateOfBirth": self.dateOfBirth, "iDType": self.iDType, "iDPassNumber": self.iDPassNumber, "passExpiryDate": self.passExpiryDate, "taxNumber": self.taxNumber, "taxReturn": self.taxReturn, "educationLevel": self.educationLevel, "ethnicGroup": self.ethnicGroup, "singleHouse": self.singleHouse, "maritalStatus": self.maritalStatus, "countryMarriage": self.countryMarriage, "spouseIncome": self.spouseIncome, "aNC": self.aNC, "numDependents": self.numDependents, "mainResidence": self.mainResidence, "firstTimeHomeBuyer": self.firstTimeHomeBuyer, "socialGrant": self.socialGrant, "publicOfficial": self.publicOfficial, "relatedOfficial": self.relatedOfficial]
+        
+        if self.savingValues != self.initValues {
+            print("print - hasChanged: true")
+            return true
+        }
+        
+        print("print - hasChanged: false")
+        alertMessage = "No answers were changed."
+        showingAlert = true
+        return false
     }
     
     // MARK: - addToApplication()

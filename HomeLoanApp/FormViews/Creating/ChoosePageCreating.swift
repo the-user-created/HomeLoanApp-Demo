@@ -19,11 +19,11 @@ struct ChoosePageCreating: View {
     @State var personalDetailsDone: Bool = false
     @State var generalDetailsDone: Bool = false
     @State var subsidyCreditDone: Bool = false
+    @State var documentScansDone: Bool = false
     @State var notificationDone: Bool = false
     @State var employmentDone: Bool = false
     @State var expensesDone: Bool = false
     @State var incomeDone: Bool = false
-    @State var scansDone: Bool = false
     
     @State var selection: Int?
     
@@ -271,18 +271,18 @@ struct ChoosePageCreating: View {
             
             // Notification & Warranty, Document Scans
             Group() {
-                NavigationLink(destination: DocumentScans(application: applicationCreation.application, sender: .creator, isDone: $scansDone), tag: 16, selection: $selection) {
+                /*NavigationLink(destination: DocumentScans(application: applicationCreation.application, sender: .creator, isDone: $documentScansDone), tag: 16, selection: $selection) {
                     HStack() {
                         Text("Supporting Documents")
                             .font(.headline)
                         
                         Spacer()
                         
-                        Image(systemName: scansDone ? "checkmark.circle.fill" : "checkmark.circle")
-                            .foregroundColor(scansDone ? .green : .red)
+                        Image(systemName: documentScansDone ? "checkmark.circle.fill" : "checkmark.circle")
+                            .foregroundColor(documentScansDone ? .green : .red)
                     }
                 }
-                .disabled(!generalDetailsDone)
+                .disabled(!generalDetailsDone)*/
                 
                 NavigationLink(destination: NotificationView(application: applicationCreation.application, isDone: $notificationDone), tag: 17, selection: $selection) {
                     HStack() {

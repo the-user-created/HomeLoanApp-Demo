@@ -53,7 +53,11 @@ struct ResidencyContactEditing: View {
     @State var postalProvince = ""
     @State var postalStreetCode = ""
     
+    @State var initValues: Dictionary<String, AnyHashable> = [:]
+    @State var savingValues: Dictionary<String, AnyHashable> = [:]
     @State var sender: Sender
+    @State var showingAlert: Bool = false
+    @State var alertMessage: String = ""
     @Binding var isDone: Bool
     
     // MARK: - Properties
@@ -111,6 +115,8 @@ struct ResidencyContactEditing: View {
                 self._lengthAtAddressMonths = State(wrappedValue: String(lengthAtAddress[lengthAtAddress.index(openBracketIndices[1], offsetBy: 1)..<closeBracketIndices[1]]))
             }
         }
+        
+        self._initValues = State(wrappedValue: ["sACitizen": self.sACitizen, "nationality": self.nationality, "countryPassport": self.countryPassport, "countryBirth": self.countryBirth, "cityOfBirth": self.cityOfBirth, "permanentResident": self.permanentResident, "countryOfPermanentResidence": self.countryOfPermanentResidence, "permitType": self.permitType, "countryOfPermit": self.countryOfPermit, "permitIssueDate": self.permitIssueDate, "permitExpiryDate": self.permitExpiryDate, "contractIssueDate": self.contractIssueDate, "contractExpiryDate": self.contractExpiryDate, "workPermitNumber": self.workPermitNumber, "homeLanguage": self.homeLanguage, "corresLanguage": self.corresLanguage, "cellNumber": self.cellNumber, "emailAddress": self.emailAddress, "resCountry": self.resCountry, "resLine1": self.resLine1, "resLine2": self.resLine2, "resSuburb": self.resSuburb, "resCity": self.resCity, "resProvince": self.resProvince, "resStreetCode": self.resStreetCode, "lengthAtAddress": "[\(lengthAtAddressYears)][\(lengthAtAddressMonths)]", "resIsPostal": self.resIsPostal, "postalCountry": self.postalCountry, "postalLine1": self.postalLine1, "postalLine2": self.postalLine2, "postalSuburb": self.postalSuburb, "postalCity": self.postalCity, "postalProvince": self.postalProvince, "postalStreetCode": self.postalStreetCode])
     }
     
     // MARK: - body
@@ -317,7 +323,6 @@ struct ResidencyContactEditing: View {
                         .foregroundColor(.blue)
                         .font(.headline)
                 }
-                .disabled(changedValues.changedValues.isEmpty ? true : false)
             }
         }
         .navigationBarTitle("Residency & Contact")
@@ -326,6 +331,9 @@ struct ResidencyContactEditing: View {
         }
         .onReceive(resignPub) { _ in
             handleSaving()
+        }
+        .alert(isPresented: $showingAlert) {
+            Alert(title: Text(""), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         }
     }
     
@@ -357,12 +365,28 @@ struct ResidencyContactEditing: View {
         }
         // else isComplete = false
         
+        changedValues.changedValues.updateValue(isComplete, forKey: "residencyContactDone")
         return isComplete
+    }
+    
+    // MARK: - hasChanged
+    private func hasChanged() -> Bool {
+        self.savingValues = ["sACitizen": self.sACitizen, "nationality": self.nationality, "countryPassport": self.countryPassport, "countryBirth": self.countryBirth, "cityOfBirth": self.cityOfBirth, "permanentResident": self.permanentResident, "countryOfPermanentResidence": self.countryOfPermanentResidence, "permitType": self.permitType, "countryOfPermit": self.countryOfPermit, "permitIssueDate": self.permitIssueDate, "permitExpiryDate": self.permitExpiryDate, "contractIssueDate": self.contractIssueDate, "contractExpiryDate": self.contractExpiryDate, "workPermitNumber": self.workPermitNumber, "homeLanguage": self.homeLanguage, "corresLanguage": self.corresLanguage, "cellNumber": self.cellNumber, "emailAddress": self.emailAddress, "resCountry": self.resCountry, "resLine1": self.resLine1, "resLine2": self.resLine2, "resSuburb": self.resSuburb, "resCity": self.resCity, "resProvince": self.resProvince, "resStreetCode": self.resStreetCode, "lengthAtAddress": "[\(lengthAtAddressYears)][\(lengthAtAddressMonths)]", "resIsPostal": self.resIsPostal, "postalCountry": self.postalCountry, "postalLine1": self.postalLine1, "postalLine2": self.postalLine2, "postalSuburb": self.postalSuburb, "postalCity": self.postalCity, "postalProvince": self.postalProvince, "postalStreetCode": self.postalStreetCode]
+        
+        if self.savingValues != self.initValues {
+            print("print - hasChanged: true")
+            return true
+        }
+        
+        print("print - hasChanged: false")
+        alertMessage = "No answers were changed."
+        showingAlert = true
+        return false
     }
     
     // MARK: - handleSaving
     private func handleSaving() {
-        if !changedValues.changedValues.isEmpty {
+        if hasChanged() {
             isDone = determineComplete()
             addToApplication()
             presentationMode.wrappedValue.dismiss()

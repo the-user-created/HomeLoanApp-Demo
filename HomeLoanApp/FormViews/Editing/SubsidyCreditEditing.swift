@@ -29,7 +29,11 @@ struct SubsidyCreditEditing: View {
     @State var creditListings = ""
     @State var suretyAgreements = ""
     
+    @State var initValues: Dictionary<String, AnyHashable> = [:]
+    @State var savingValues: Dictionary<String, AnyHashable> = [:]
     @State var sender: Sender
+    @State var showingAlert: Bool = false
+    @State var alertMessage: String = ""
     @Binding var isDone: Bool
     
     // MARK: - Properties
@@ -52,6 +56,8 @@ struct SubsidyCreditEditing: View {
         self._creditBureau = State(wrappedValue: self.application.creditBureau ?? "")
         self._creditListings = State(wrappedValue: self.application.creditListings ?? "")
         self._suretyAgreements = State(wrappedValue: self.application.suretyAgreements ?? "")
+        
+        self._initValues = State(wrappedValue: ["subsidyForHome": self.subsidyForHome, "applyingSubsidy": self.applyingSubsidy, "housingScheme": self.housingScheme, "currentAdmin": self.currentAdmin, "previousAdmin": self.previousAdmin, "judgement": self.judgement, "debtReview": self.debtReview, "debtReArrange": self.debtReArrange, "insolvent": self.insolvent, "creditBureau": self.creditBureau, "creditListings": self.creditListings, "suretyAgreements": self.suretyAgreements])
     }
     
     // MARK: - body
@@ -117,7 +123,6 @@ struct SubsidyCreditEditing: View {
                         .foregroundColor(.blue)
                         .font(.headline)
                 }
-                .disabled(changedValues.changedValues.isEmpty ? true : false)
             }
         }
         .navigationBarTitle("Subsidy & Credit")
@@ -127,20 +132,40 @@ struct SubsidyCreditEditing: View {
         .onReceive(resignPub) { _ in
             handleSaving()
         }
+        .alert(isPresented: $showingAlert) {
+            Alert(title: Text(""), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+        }
     }
     
     // MARK: - determineComplete
     private func determineComplete() -> Bool {
-        /*if {
-            return true
-        }*/
+        var isComplete: Bool = false
+        if !subsidyForHome.isEmpty && !applyingSubsidy.isEmpty && !housingScheme.isEmpty && !currentAdmin.isEmpty && !previousAdmin.isEmpty && !judgement.isEmpty && !debtReview.isEmpty && !debtReArrange.isEmpty && !insolvent.isEmpty && !creditBureau.isEmpty && !creditListings.isEmpty && !suretyAgreements.isEmpty {
+            isComplete = true
+        }
         
+        changedValues.changedValues.updateValue(isComplete, forKey: "subsidyCreditDone")
+        return isComplete
+    }
+    
+    // MARK: - hasChanged
+    private func hasChanged() -> Bool {
+        self.savingValues = ["subsidyForHome": self.subsidyForHome, "applyingSubsidy": self.applyingSubsidy, "housingScheme": self.housingScheme, "currentAdmin": self.currentAdmin, "previousAdmin": self.previousAdmin, "judgement": self.judgement, "debtReview": self.debtReview, "debtReArrange": self.debtReArrange, "insolvent": self.insolvent, "creditBureau": self.creditBureau, "creditListings": self.creditListings, "suretyAgreements": self.suretyAgreements]
+        
+        if self.savingValues != self.initValues {
+            print("print - hasChanged: true")
+            return true
+        }
+        
+        print("print - hasChanged: false")
+        alertMessage = "No answers were changed."
+        showingAlert = true
         return false
     }
     
     // MARK: - handleSaving
     private func handleSaving() {
-        if !changedValues.changedValues.isEmpty {
+        if hasChanged() {
             isDone = determineComplete()
             addToApplication()
             presentationMode.wrappedValue.dismiss()

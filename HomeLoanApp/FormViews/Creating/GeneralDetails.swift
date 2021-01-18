@@ -129,12 +129,14 @@ struct GeneralDetails: View {
                 }
             }
             
-            Button(action: {
-                handleSaving()
-            }) {
-                Text("Save")
-                    .foregroundColor(.blue)
-                    .font(.headline)
+            Section() {
+                Button(action: {
+                    handleSaving()
+                }) {
+                    Text("Save")
+                        .foregroundColor(.blue)
+                        .font(.headline)
+                }
             }
         }
         .onTapGesture(count: 2, perform: UIApplication.shared.endEditing)
