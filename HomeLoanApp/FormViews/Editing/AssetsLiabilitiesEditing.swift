@@ -35,7 +35,11 @@ struct AssetsLiabilitiesEditing: View {
     @State var otherLiabilities = ""
     @State var otherLiabilitiesText = ""
     
+    @State var initValues: Dictionary<String, AnyHashable> = [:]
+    @State var savingValues: Dictionary<String, AnyHashable> = [:]
     @State var sender: Sender
+    @State var showingAlert: Bool = false
+    @State var alertMessage: String = ""
     @Binding var isDone: Bool
     
     // MARK: - Properties
@@ -88,6 +92,8 @@ struct AssetsLiabilitiesEditing: View {
                 self._otherLiabilities = State(wrappedValue: String(otherLiabilities[otherLiabilities.index(openBracketIndices[1], offsetBy: 1)..<closeBracketIndices[1]]))
             }
         }
+        
+        self._initValues = State(wrappedValue: ["fixedProperty": self.fixedProperty, "vehicles": self.vehicles, "furnitureFittings": self.furnitureFittings, "assetLiabilityInvestments": self.assetLiabilityInvestments, "cashOnHand": self.cashOnHand, "otherAsset": "[\(self.otherAsset)][\(self.otherAssetText)]", "mortgageBonds": self.mortgageBonds, "installmentSales": self.installmentSales, "creditCards": self.creditCards, "currentAcc": self.currentAcc, "personalLoans": self.personalLoans, "retailAcc": self.retailAcc, "otherDebt": self.otherDebt, "otherAcc": "[\(self.otherAcc)][\(self.otherAccText)]", "otherLiabilities": "[\(self.otherLiabilities)][\(self.otherLiabilitiesText)]"])
     }
     
     // MARK: - body
@@ -172,7 +178,6 @@ struct AssetsLiabilitiesEditing: View {
                         .foregroundColor(.blue)
                         .font(.headline)
                 }
-                .disabled(changedValues.changedValues.isEmpty ? true : false)
             }
         }
         .navigationBarTitle("Assets & Liabilities")
@@ -180,20 +185,53 @@ struct AssetsLiabilitiesEditing: View {
         .onReceive(resignPub) { _ in
             handleSaving()
         }
+        .onDisappear() {
+            UIApplication.shared.endEditing()
+        }
+        .alert(isPresented: $showingAlert) {
+            Alert(title: Text(""), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+        }
     }
     
     // MARK: - determineComplete
     private func determineComplete() -> Bool {
-        /*if {
-            return true
-        }*/
+        var isComplete: Bool = false
         
+        let assetResult = otherQuestionCheck(other: otherAsset, otherText: otherAssetText)
+        let accountResult = otherQuestionCheck(other: otherAcc, otherText: otherAccText)
+        let liabilityResult = otherQuestionCheck(other: otherLiabilities, otherText: otherLiabilitiesText)
+        
+        let groupResult = !fixedProperty.dropFirst().isEmpty || !vehicles.dropFirst().isEmpty || !furnitureFittings.dropFirst().isEmpty || !assetLiabilityInvestments.dropFirst().isEmpty || !cashOnHand.dropFirst().isEmpty || !mortgageBonds.dropFirst().isEmpty || !installmentSales.dropFirst().isEmpty || !creditCards.dropFirst().isEmpty || !currentAcc.dropFirst().isEmpty || !personalLoans.dropFirst().isEmpty || !retailAcc.dropFirst().isEmpty || !otherDebt.dropFirst().isEmpty
+        
+        if assetResult == .one || accountResult == .one || liabilityResult == .one { // If any are half-complete, the section is incomplete
+            isComplete = false
+        } else if assetResult == .both || accountResult == .both || liabilityResult == .both { // will never be reached if one 'other' question is half-complete, therefore one (or more) of the 'other' questions are complete
+            isComplete = true
+        } else if groupResult { // If all 'other' questions are .neither and there is a input somewhere, the section is complete
+            isComplete = true
+        }
+        // else isComplete = false
+        
+        changedValues.changedValues.updateValue(isComplete, forKey: "assetsLiabilitiesDone")
+        return isComplete
+    }
+    
+    // MARK: - hasChanged
+    private func hasChanged() -> Bool {
+        self.savingValues = ["fixedProperty": self.fixedProperty, "vehicles": self.vehicles, "furnitureFittings": self.furnitureFittings, "assetLiabilityInvestments": self.assetLiabilityInvestments, "cashOnHand": self.cashOnHand, "otherAsset": "[\(self.otherAsset)][\(self.otherAssetText)]", "mortgageBonds": self.mortgageBonds, "installmentSales": self.installmentSales, "creditCards": self.creditCards, "currentAcc": self.currentAcc, "personalLoans": self.personalLoans, "retailAcc": self.retailAcc, "otherDebt": self.otherDebt, "otherAcc": "[\(self.otherAcc)][\(self.otherAccText)]", "otherLiabilities": "[\(self.otherLiabilities)][\(self.otherLiabilitiesText)]"]
+        
+        if self.savingValues != self.initValues {
+            return true
+        }
+        
+        alertMessage = "No answers were changed."
+        showingAlert = true
         return false
     }
     
     // MARK: - handleSaving
     private func handleSaving() {
-        if !changedValues.changedValues.isEmpty {
+        if hasChanged() {
             isDone = determineComplete()
             addToApplication()
             presentationMode.wrappedValue.dismiss()
@@ -215,6 +253,7 @@ struct AssetsLiabilitiesEditing: View {
         do {
             try viewContext.save()
             print("Application Entity Updated")
+            
             changedValues.cleanChangedValues()
         } catch {
             print(error.localizedDescription)

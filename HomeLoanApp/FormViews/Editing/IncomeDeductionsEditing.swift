@@ -39,7 +39,14 @@ struct IncomeDeductionsEditing: View {
     @State var otherDeduction = ""
     @State var otherDeductionText = ""
     
+    @State var initValues: Dictionary<String, AnyHashable> = [:]
+    @State var savingValues: Dictionary<String, AnyHashable> = [:]
     @State var sender: Sender
+    @State var showingAlert: Bool = false
+    @State var alertMessage: String = ""
+    @State var calculatedIncome: String = ""
+    @State var calculatedDeductions: String = ""
+    @State var netSalary: String = ""
     @Binding var isDone: Bool
     
     // MARK: - Properties
@@ -88,48 +95,55 @@ struct IncomeDeductionsEditing: View {
                 self._otherDeduction = State(wrappedValue: String(otherDeductions[otherDeductions.index(openBracketIndices[1], offsetBy: 1)..<closeBracketIndices[1]]))
             }
         }
-
+        
+        self._initValues = State(wrappedValue: ["basicSalary": self.basicSalary, "wages": self.wages, "averageComm": self.averageComm, "investments": self.investments, "rentIncome": self.rentIncome, "futureRentIncome": self.futureRentIncome, "housingSub": self.housingSub, "averageOvertime": self.averageOvertime, "monthCarAllowance": self.monthCarAllowance, "interestIncome": self.interestIncome, "travelAllowance": self.travelAllowance, "entertainment": self.entertainment, "incomeFromSureties": self.incomeFromSureties, "maintenanceAlimony": self.maintenanceAlimony, "other": "[\(otherIncome)][\(otherIncomeText)]", "tax": self.tax, "pension": self.pension, "uIF": self.uIF, "medicalAid": self.medicalAid, "otherDeductions": "[\(self.otherDeduction)][\(self.otherDeductionText)]"])
+        
+        self._calculatedIncome = State(wrappedValue: calculateIncome())
+        self._calculatedDeductions = State(wrappedValue: calculateDeductions())
+        self._netSalary = State(wrappedValue: String(format: "%.2f", (Float(self.calculatedIncome) ?? 0.0) - (Float(self.calculatedDeductions) ?? 0.0)))
     }
     
     // MARK: - body
     var body: some View {
         Form() {
             Section(header: Text("INCOME")) {
-                FormRandTextField(iD: "basicSalary",
-                                  question: formQuestions[5][0] ?? "MISSING",
-                                  text: $basicSalary)
-            
-                FormRandTextField(iD: "wages",
-                                  question: formQuestions[5][1] ?? "MISSING",
-                                  text: $wages)
+                Group() {
+                    FormRandTextField(iD: "basicSalary",
+                                      question: formQuestions[5][0] ?? "MISSING",
+                                      text: $basicSalary)
                 
-                FormRandTextField(iD: "averageComm",
-                                  question: formQuestions[5][2] ?? "MISSING",
-                                  text: $averageComm)
-                
-                FormRandTextField(iD: "investments",
-                                  question: formQuestions[5][3] ?? "MISSING",
-                                  text: $investments)
-                
-                FormRandTextField(iD: "rentIncome",
-                                  question: formQuestions[5][4] ?? "MISSING",
-                                  text: $rentIncome)
-                
-                FormRandTextField(iD: "futureRentIncome",
-                                  question: formQuestions[5][5] ?? "MISSING",
-                                  text: $futureRentIncome)
-                
-                FormRandTextField(iD: "housingSub",
-                                  question: formQuestions[5][6] ?? "MISSING",
-                                  text: $housingSub)
-                
-                FormRandTextField(iD: "averageOvertime",
-                                  question: formQuestions[5][7] ?? "MISSING",
-                                  text: $averageOvertime)
-                
-                FormRandTextField(iD: "monthCarAllowance",
-                                  question: formQuestions[5][8] ?? "MISSING",
-                                  text: $monthCarAllowance)
+                    FormRandTextField(iD: "wages",
+                                      question: formQuestions[5][1] ?? "MISSING",
+                                      text: $wages)
+                    
+                    FormRandTextField(iD: "averageComm",
+                                      question: formQuestions[5][2] ?? "MISSING",
+                                      text: $averageComm)
+                    
+                    FormRandTextField(iD: "investments",
+                                      question: formQuestions[5][3] ?? "MISSING",
+                                      text: $investments)
+                    
+                    FormRandTextField(iD: "rentIncome",
+                                      question: formQuestions[5][4] ?? "MISSING",
+                                      text: $rentIncome)
+                    
+                    FormRandTextField(iD: "futureRentIncome",
+                                      question: formQuestions[5][5] ?? "MISSING",
+                                      text: $futureRentIncome)
+                    
+                    FormRandTextField(iD: "housingSub",
+                                      question: formQuestions[5][6] ?? "MISSING",
+                                      text: $housingSub)
+                    
+                    FormRandTextField(iD: "averageOvertime",
+                                      question: formQuestions[5][7] ?? "MISSING",
+                                      text: $averageOvertime)
+                    
+                    FormRandTextField(iD: "monthCarAllowance",
+                                      question: formQuestions[5][8] ?? "MISSING",
+                                      text: $monthCarAllowance)
+                }
                 
                 Group() {
                     FormRandTextField(iD: "interestIncome",
@@ -157,6 +171,11 @@ struct IncomeDeductionsEditing: View {
                                       other: $otherIncome,
                                       otherText: $otherIncomeText)
                 }
+                
+                Section(header: Text("Total Income").font(.headline)) {
+                    Text("R\(calculatedIncome)")
+                        .font(.headline)
+                }
             }
             
             Section(header: Text("DEDUCTIONS")) {
@@ -180,6 +199,16 @@ struct IncomeDeductionsEditing: View {
                                   question: formQuestions[5][19] ?? "MISSING",
                                   other: $otherDeduction,
                                   otherText: $otherDeductionText)
+                
+                Section(header: Text("Total Deductions").font(.headline)) {
+                    Text("R\(calculatedDeductions)")
+                        .font(.headline)
+                }
+            }
+            
+            Section(header: Text("Net Salary").font(.headline)) {
+                Text("R\(netSalary)")
+                    .font(.headline)
             }
             
             Section() {
@@ -190,7 +219,6 @@ struct IncomeDeductionsEditing: View {
                         .foregroundColor(.blue)
                         .font(.headline)
                 }
-                .disabled(changedValues.changedValues.isEmpty ? true : false)
             }
         }
         .navigationBarTitle("Income")
@@ -198,24 +226,87 @@ struct IncomeDeductionsEditing: View {
         .onReceive(resignPub) { _ in
             handleSaving()
         }
+        .onDisappear() {
+            UIApplication.shared.endEditing()
+        }
+        .onChange(of: [basicSalary, wages, averageComm, investments, rentIncome, futureRentIncome, housingSub, averageOvertime, monthCarAllowance, interestIncome, travelAllowance, entertainment, incomeFromSureties, maintenanceAlimony, otherIncome]) { _ in
+            calculatedIncome = calculateIncome()
+            netSalary = String(format: "%.2f", (Float(self.calculatedIncome) ?? 0.0) - (Float(self.calculatedDeductions) ?? 0.0))
+        }
+        .onChange(of: [tax, pension, uIF, medicalAid, otherDeduction]) { _ in
+            calculatedDeductions = calculateDeductions()
+            netSalary = String(format: "%.2f", (Float(self.calculatedIncome) ?? 0.0) - (Float(self.calculatedDeductions) ?? 0.0))
+        }
+        .alert(isPresented: $showingAlert) {
+            Alert(title: Text(""), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+        }
     }
     
     // MARK: - determineComplete
     private func determineComplete() -> Bool {
-        /*if  {
-            return true
-        }*/
+        var isComplete: Bool = false
         
+        let incomeResult = otherQuestionCheck(other: otherIncome, otherText: otherIncomeText)
+        let deductionResult = otherQuestionCheck(other: otherDeduction, otherText: otherDeductionText)
+        
+        let groupResult = !basicSalary.dropFirst().isEmpty || !wages.dropFirst().isEmpty || !averageComm.dropFirst().isEmpty || !investments.dropFirst().isEmpty || !rentIncome.dropFirst().isEmpty || !futureRentIncome.dropFirst().isEmpty || !housingSub.dropFirst().isEmpty || !averageOvertime.dropFirst().isEmpty || !monthCarAllowance.dropFirst().isEmpty || !interestIncome.dropFirst().isEmpty || !travelAllowance.dropFirst().isEmpty || !entertainment.dropFirst().isEmpty || !incomeFromSureties.dropFirst().isEmpty || !maintenanceAlimony.dropFirst().isEmpty || !tax.dropFirst().isEmpty || !pension.dropFirst().isEmpty || !uIF.dropFirst().isEmpty || !medicalAid.dropFirst().isEmpty
+        
+        if incomeResult == .one || deductionResult == .one {
+            isComplete = false
+        } else if incomeResult == .both || deductionResult == .both {
+            isComplete = true
+        } else if groupResult {
+            isComplete = true
+        }
+        
+        changedValues.changedValues.updateValue(isComplete, forKey: "incomeDeductionsDone")
+        return isComplete
+    }
+    
+    // MARK: - hasChanged
+    private func hasChanged() -> Bool {
+        self.savingValues = ["basicSalary": self.basicSalary, "wages": self.wages, "averageComm": self.averageComm, "investments": self.investments, "rentIncome": self.rentIncome, "futureRentIncome": self.futureRentIncome, "housingSub": self.housingSub, "averageOvertime": self.averageOvertime, "monthCarAllowance": self.monthCarAllowance, "interestIncome": self.interestIncome, "travelAllowance": self.travelAllowance, "entertainment": self.entertainment, "incomeFromSureties": self.incomeFromSureties, "maintenanceAlimony": self.maintenanceAlimony, "other": "[\(otherIncome)][\(otherIncomeText)]", "tax": self.tax, "pension": self.pension, "uIF": self.uIF, "medicalAid": self.medicalAid, "otherDeductions": "[\(self.otherDeduction)][\(self.otherDeductionText)]"]
+        
+        if self.savingValues != self.initValues {
+            return true
+        }
+        
+        alertMessage = "No answers were changed."
+        showingAlert = true
         return false
     }
     
     // MARK: - handleSaving
     private func handleSaving() {
-        if !changedValues.changedValues.isEmpty {
+        if hasChanged() {
             isDone = determineComplete()
             addToApplication()
             presentationMode.wrappedValue.dismiss()
         }
+    }
+    
+    // MARK: - calculateIncome
+    private func calculateIncome() -> String {
+        var totalIncome: Float = 0.0
+        let incomeList: [String] = [String(basicSalary.dropFirst()), String(wages.dropFirst()), String(averageComm.dropFirst()), String(investments.dropFirst()), String(rentIncome.dropFirst()), String(futureRentIncome.dropFirst()), String(housingSub.dropFirst()), String(averageOvertime.dropFirst()), String(monthCarAllowance.dropFirst()), String(interestIncome.dropFirst()), String(travelAllowance.dropFirst()), String(entertainment.dropFirst()), String(incomeFromSureties.dropFirst()), String(maintenanceAlimony.dropFirst()), String(otherIncome.dropFirst())]
+        
+        for income in incomeList {
+            totalIncome = totalIncome.advanced(by: Float(income.replacingOccurrences(of: ",", with: ".")) ?? 0.0)
+        }
+        
+        return String(format: "%.2f", totalIncome)
+    }
+    
+    // MARK: - calculateDeductions
+    private func calculateDeductions() -> String {
+        var totalIncome: Float = 0.0
+        let incomeList: [String] = [String(tax.dropFirst()), String(pension.dropFirst()), String(uIF.dropFirst()), String(medicalAid.dropFirst()), String(otherDeduction.dropFirst())]
+        
+        for income in incomeList {
+            totalIncome = totalIncome.advanced(by: Float(income.replacingOccurrences(of: ",", with: ".")) ?? 0.0)
+        }
+        
+        return String(format: "%.2f", totalIncome)
     }
     
     // MARK: - addToApplication()

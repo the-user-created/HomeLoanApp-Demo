@@ -182,6 +182,7 @@ extension Application {
     @NSManaged public var medical: String?
     @NSManaged public var donations: String?
     @NSManaged public var cellphone: String?
+    @NSManaged public var mNetDSTV: String?
     @NSManaged public var telephoneISP: String?
     @NSManaged public var expensesMaintenanceAlimony: String?
     @NSManaged public var installmentExp: String?

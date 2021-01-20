@@ -165,3 +165,21 @@ extension FileManager {
         return fileURLs
     }
 }
+
+extension Dictionary {
+    mutating func merge(dict: [Key: Value]){
+        for (k, v) in dict {
+            updateValue(v, forKey: k)
+        }
+    }
+}
+
+extension Float {
+    func removeZerosFromEnd() -> String {
+        let formatter = NumberFormatter()
+        let number = NSNumber(value: self)
+        formatter.minimumFractionDigits = 2
+        formatter.maximumFractionDigits = 2 // maximum digits in Float after dot (maximum precision)
+        return String(formatter.string(from: number) ?? "")
+    }
+}

@@ -332,6 +332,40 @@ struct ResidencyContactEditing: View {
         .onReceive(resignPub) { _ in
             handleSaving()
         }
+        .onChange(of: sACitizen) { _ in
+            if sACitizen != "No" {
+                self.nationality = 0
+                self.countryPassport = 0
+                self.permanentResident = ""
+                self.countryOfPermanentResidence = 0
+                self.permitType = 0
+                self.countryOfPermit = 0
+                self.permitIssueDate = Date()
+                self.permitExpiryDate = Date()
+                self.contractIssueDate = Date()
+                self.contractExpiryDate = Date()
+                self.workPermitNumber = ""
+                changedValues.changedValues.merge(dict: ["nationality": countries[0], "countryPassport": countries[0], "permanentResident": "", "countryOfPermanentResidence": countries[0], "permitType": permitTypes[0], "countryOfPermit": countries[0], "permitIssueDate": Date(), "permitExpiryDate": Date(), "contractIssueDate": Date(), "contractExpiryDate": Date(), "workPermitNumber": ""])
+            }
+        }
+        .onChange(of: permanentResident) { _ in
+            if permanentResident != "No" {
+                self.countryOfPermanentResidence = 0
+                changedValues.updateKeyValue("countryOfPermanentResidence", value: countries[0])
+            }
+        }
+        .onChange(of: resIsPostal) { _ in
+            if resIsPostal != "No" {
+                self.postalCountry = 0
+                self.postalLine1 = ""
+                self.postalLine2 = ""
+                self.postalSuburb = ""
+                self.postalCity = ""
+                self.postalProvince = ""
+                self.postalStreetCode = ""
+                changedValues.changedValues.merge(dict: ["postalCountry": countries[0], "postalLine1": "", "postalLine2": "", "postalSuburb": "", "postalCity": "", "postalProvince": "", "postalStreetCode": ""])
+            }
+        }
         .alert(isPresented: $showingAlert) {
             Alert(title: Text(""), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         }
@@ -344,21 +378,22 @@ struct ResidencyContactEditing: View {
         // Handle the non-optional questions
         if !sACitizen.isEmpty && countryBirth != 0 && !cityOfBirth.isEmpty && homeLanguage != 0 && corresLanguage != 0 && !cellNumber.isEmpty && !emailAddress.isEmpty && resCountry != 0 && !resLine1.isEmpty && !resLine2.isEmpty && !resSuburb.isEmpty && !resCity.isEmpty && !resProvince.isEmpty && !resStreetCode.isEmpty && (!lengthAtAddressYears.isEmpty || !lengthAtAddressMonths.isEmpty) && !resIsPostal.isEmpty {
             
-            // Handle whether residential and postal addresses are identical
-            if resIsPostal == "No" && (postalCountry != 0 && !postalLine1.isEmpty && !postalLine2.isEmpty && !postalSuburb.isEmpty && !postalCity.isEmpty && !postalProvince.isEmpty && !postalStreetCode.isEmpty) {
-                isComplete = true
-            } else if resIsPostal == "Yes" {
-                isComplete = true
-            }
-            // else isComplete = false
-            
-            // Handle whether the client is a south african citizen or not
-            if sACitizen == "No" && (nationality != 0 && countryPassport != 0 && !permanentResident.isEmpty && permitType != 0 && countryOfPermit != 0 && !workPermitNumber.isEmpty) {
-                if permanentResident == "No" && countryOfPermanentResidence != 0 {
+            if sACitizen == "No" && resIsPostal == "No" {
+                if nationality != 0 && countryPassport != 0 && permitType != 0 && countryOfPermit != 0 && !workPermitNumber.isEmpty && postalCountry != 0 && !postalLine1.isEmpty && !postalLine2.isEmpty && !postalSuburb.isEmpty && !postalCity.isEmpty && !postalProvince.isEmpty && !postalStreetCode.isEmpty && ((permanentResident == "No" && countryOfPermanentResidence != 0) || permanentResident == "Yes") {
                     isComplete = true
                 }
                 // else isComplete = false
-            } else if sACitizen == "Yes" {
+            } else if sACitizen == "No" && resIsPostal == "Yes" {
+                if nationality != 0 && countryPassport != 0 && permitType != 0 && countryOfPermit != 0 && !workPermitNumber.isEmpty && ((permanentResident == "No" && countryOfPermanentResidence != 0) || permanentResident == "Yes") {
+                    isComplete = true
+                }
+                // else isComplete = false
+            } else if sACitizen == "Yes" && resIsPostal == "No" {
+                if postalCountry != 0 && !postalLine1.isEmpty && !postalLine2.isEmpty && !postalSuburb.isEmpty && !postalCity.isEmpty && !postalProvince.isEmpty && !postalStreetCode.isEmpty {
+                    isComplete = true
+                }
+                // else isComplete = false
+            } else if sACitizen == "Yes" && resIsPostal == "Yes" {
                 isComplete = true
             }
             // else isComplete = false
@@ -374,11 +409,9 @@ struct ResidencyContactEditing: View {
         self.savingValues = ["sACitizen": self.sACitizen, "nationality": self.nationality, "countryPassport": self.countryPassport, "countryBirth": self.countryBirth, "cityOfBirth": self.cityOfBirth, "permanentResident": self.permanentResident, "countryOfPermanentResidence": self.countryOfPermanentResidence, "permitType": self.permitType, "countryOfPermit": self.countryOfPermit, "permitIssueDate": self.permitIssueDate, "permitExpiryDate": self.permitExpiryDate, "contractIssueDate": self.contractIssueDate, "contractExpiryDate": self.contractExpiryDate, "workPermitNumber": self.workPermitNumber, "homeLanguage": self.homeLanguage, "corresLanguage": self.corresLanguage, "cellNumber": self.cellNumber, "emailAddress": self.emailAddress, "resCountry": self.resCountry, "resLine1": self.resLine1, "resLine2": self.resLine2, "resSuburb": self.resSuburb, "resCity": self.resCity, "resProvince": self.resProvince, "resStreetCode": self.resStreetCode, "lengthAtAddress": "[\(lengthAtAddressYears)][\(lengthAtAddressMonths)]", "resIsPostal": self.resIsPostal, "postalCountry": self.postalCountry, "postalLine1": self.postalLine1, "postalLine2": self.postalLine2, "postalSuburb": self.postalSuburb, "postalCity": self.postalCity, "postalProvince": self.postalProvince, "postalStreetCode": self.postalStreetCode]
         
         if self.savingValues != self.initValues {
-            print("print - hasChanged: true")
             return true
         }
         
-        print("print - hasChanged: false")
         alertMessage = "No answers were changed."
         showingAlert = true
         return false

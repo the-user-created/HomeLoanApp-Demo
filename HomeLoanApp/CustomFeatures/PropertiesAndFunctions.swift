@@ -47,11 +47,11 @@ let formQuestions: [[Double: String]] = [
      7: "Average Overtime", 8: "Monthly Car Allowance", 9: "Interest Income", 10: "Travel Allowance", 11: "Entertainment", 12: "Income from Sureties",
      13: "Maintenance/Alimony", 14: "Other (specify)", 15: "Tax - PAYE/SITE", 16: "Pension", 17: "UIF", 18: "Medical Aid", 19: "Other (specify)"],
     // EXPENSES
-    [0: "Rental", 1: "Investments\n(Unit Trusts, Endowments)", 2: "Rates & Taxes", 3: "Water & Lights", 4: "Home Maintenance / Garden Services",
-     5: "Insurance & Funeral Policies", 6: "Assurance\n(Life, Retirement Annuities)", 7: "Timeshare", 8: "Groceries", 9: "Clothing", 10: "Levies",
-     11: "Domestic Wages", 12: "Education", 13: "Entertainment", 14: "Security", 15: "Property Rental Expenses", 16: "Medical", 17: "Donations",
-     18: "Cellphone", 19: "M-Net, DSTV & TV License", 20: "Telephone & ISP", 21: "Maintenance / Alimony", 22: "Installment Expenses",
-     23: "Other (specify)"],
+    [0: "Rental", 1: "Investments", 2: "Rates & Taxes", 3: "Water & Lights", 4: "Home Maintenance / Garden Services", 5: "Petrol & Car Maintenance",
+     6: "Insurance & Funeral Policies", 7: "Assurance", 8: "Timeshare", 9: "Groceries", 10: "Clothing", 11: "Levies",
+     12: "Domestic Wages", 13: "Education", 14: "Entertainment", 15: "Security", 16: "Property Rental Expenses", 17: "Medical", 18: "Donations",
+     19: "Cellphone", 20: "M-Net, DSTV & TV License", 21: "Telephone & ISP", 22: "Maintenance / Alimony", 23: "Installment Expenses",
+     24: "Other (specify)"],
     // ASSETS & LIABILITIES
     [0: "Fixed Property", 1: "Vehicles", 2: "Furniture & fittings", 3: "Investments", 4: "Cash on Hand", 5: "Other Assets (specify)", 6: "Mortgage bonds",
      7: "Installment sales/lease agreements", 8: "Credit Cards", 9: "Current / Cheque Account", 10: "Personal Loans", 11: "Retail Accounts", 12: "Other Revolving debt", 13: "Other Accounts (specify)", 14: "Other Liabilities (specify)"]
@@ -92,4 +92,16 @@ func findNth(_ query: String, text: String) -> [String.Index] {
     }
     
     return indices
+}
+
+func otherQuestionCheck(other: String, otherText: String) -> OtherQuestionCheck {
+    var result: OtherQuestionCheck = .neither
+    if !other.dropFirst().isEmpty && !otherText.isEmpty { // Both textfields have a input
+        result = .both
+    } else if other.dropFirst().isEmpty != otherText.isEmpty { // One textfield has a input
+        result = .one
+    }
+    // If both textfields are empty the result is nil
+    
+    return result
 }

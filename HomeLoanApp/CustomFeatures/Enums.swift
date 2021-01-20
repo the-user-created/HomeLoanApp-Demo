@@ -17,3 +17,9 @@ enum Sheets {
     case scannerTips
     case none
 }
+
+enum OtherQuestionCheck {
+    case both
+    case one
+    case neither
+}

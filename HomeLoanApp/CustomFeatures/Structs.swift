@@ -155,29 +155,25 @@ struct FormRandTextField: View {
     var commit: ()->() = { }
     
     var body: some View {
+        let binding = Binding<String>(get: {
+            self.text
+        }, set: {
+            self.text = $0.contains("R") ? $0 : "R" + $0
+        })
+        
         HStack() {
             Text(question)
             
             TextField("R",
-                      text: $text,
+                      text: binding,
                       onEditingChanged: { _ in
                         changedValues.updateKeyValue(iD, value: text == "R" ? "" : text)
-                        /*if text == "R" {
-                            changedValues.removeValue(forKey: iD)
-                        } else {
-                            changedValues.updateKeyValue(iD, value: text)
-                        }*/
                       },
                       onCommit: commit)
                 .foregroundColor(.primary)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .multilineTextAlignment(.trailing)
                 .keyboardType(.decimalPad)
-                .onChange(of: text, perform: { value in
-                    if !text.contains("R") {
-                        text = "R" + text
-                    }
-                })
         }
     }
 }
@@ -202,22 +198,23 @@ struct FormOtherRand: View {
             self.otherText = $0.uppercased()
         })
         
+        let randBinding = Binding<String>(get: {
+            self.other
+        }, set: {
+            self.other = $0.contains("R") ? $0 : "R" + $0
+        })
+        
         VStack() {
             HStack() {
                 Text(question)
                 
                 TextField("R",
-                          text: $other, onEditingChanged: { _ in updateChangedValues() },
+                          text: randBinding, onEditingChanged: { _ in updateChangedValues() },
                           onCommit: commit)
                     .foregroundColor(.primary)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .multilineTextAlignment(.trailing)
                     .keyboardType(.decimalPad)
-                    .onChange(of: other, perform: { value in
-                        if !other.contains("R") {
-                            other = "R" + other
-                        }
-                    })
                 }
             
                 TextField("specify...",
@@ -231,11 +228,7 @@ struct FormOtherRand: View {
     }
     
     private func updateChangedValues() {
-        if other != "R"  && (!otherText.isEmpty || !other.dropFirst().isEmpty) { // When either (or both) textfields have an input
-            changedValues.updateKeyValue(iD, value: "[\(otherText)][\(other)]")
-        } else if other == "R" { // When 
-            changedValues.updateKeyValue(iD, value: "[][]")
-        }
+        changedValues.updateKeyValue(iD, value: "[\(otherText)][\(other == "R" ? "" : other)]")
     }
 }
 
@@ -368,6 +361,10 @@ struct FormYesNo: View {
                 
                 Spacer()
             }
+        }
+        .onChange(of: selected == "") { _ in
+            buttonOneChecked = false
+            buttonTwoChecked = false
         }
     }
     

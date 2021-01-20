@@ -25,6 +25,8 @@ struct ChoosePageCreating: View {
     @State var expensesDone: Bool = false
     @State var incomeDone: Bool = false
     
+    @State var identityDone: Bool?
+    
     @State var selection: Int?
     
     // MARK: - body
@@ -62,7 +64,7 @@ struct ChoosePageCreating: View {
             // Personal Details
             Group() {
                 if !applicationCreation.personalDetailsSaved {
-                    NavigationLink(destination: PersonalDetails(isDone: $personalDetailsDone), tag: 2, selection: $selection) {
+                    NavigationLink(destination: PersonalDetails(isDone: $personalDetailsDone, identityDoneBinding: $identityDone), tag: 2, selection: $selection) {
                         HStack() {
                             Text("Personal Details")
                                 .font(.headline)
@@ -75,7 +77,7 @@ struct ChoosePageCreating: View {
                     }
                     .disabled(!generalDetailsDone)
                 } else {
-                    NavigationLink(destination: PersonalDetailsEditing(isDone: $personalDetailsDone, application: applicationCreation.application, sender: .creator), tag: 3, selection: $selection) {
+                    NavigationLink(destination: PersonalDetailsEditing(isDone: $personalDetailsDone, identityDoneBinding: $identityDone, application: applicationCreation.application, sender: .creator), tag: 3, selection: $selection) {
                         HStack() {
                             Text("Personal Details")
                                 .font(.headline)
@@ -271,7 +273,7 @@ struct ChoosePageCreating: View {
             
             // Notification & Warranty, Document Scans
             Group() {
-                /*NavigationLink(destination: DocumentScans(application: applicationCreation.application, sender: .creator, isDone: $documentScansDone), tag: 16, selection: $selection) {
+                NavigationLink(destination: DocumentScans(sender: .creator, isDone: $documentScansDone), tag: 16, selection: $selection) {
                     HStack() {
                         Text("Supporting Documents")
                             .font(.headline)
@@ -282,7 +284,7 @@ struct ChoosePageCreating: View {
                             .foregroundColor(documentScansDone ? .green : .red)
                     }
                 }
-                .disabled(!generalDetailsDone)*/
+                .disabled(generalDetailsDone ? !(identityDone ?? false) : true)
                 
                 NavigationLink(destination: NotificationView(application: applicationCreation.application, isDone: $notificationDone), tag: 17, selection: $selection) {
                     HStack() {

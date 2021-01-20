@@ -45,6 +45,7 @@ struct PersonalDetails: View {
     @State var showingAlert: Bool = false
     @State var isActive: Bool = false
     @Binding var isDone: Bool
+    @Binding var identityDoneBinding: Bool?
     
     // MARK: - Properties
     let resignPub: NotificationCenter.Publisher = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
@@ -205,10 +206,11 @@ struct PersonalDetails: View {
         }
         .onChange(of: maritalStatus) { value in
             if maritalStatus != 2 {
-                countryMarriage = 0
-                spouseIncome = ""
-                aNC = ""
-                numDependents = ""
+                self.countryMarriage = 0
+                self.spouseIncome = ""
+                self.aNC = ""
+                self.numDependents = ""
+                changedValues.changedValues.merge(dict: ["countryMarriage": countries[0], "spouseIncome": "", "aNC": "", "numDependents": ""])
             }
         }
         .onDisappear() {
@@ -259,6 +261,10 @@ struct PersonalDetails: View {
         UIApplication.shared.endEditing()
         for (key, value) in changedValues.changedValues {
             applicationCreation.application.setValue(value, forKey: key)
+            if key == "iDType" {
+                let value = value as? String
+                identityDoneBinding = value != "--select--" && value != ""
+            }
         }
         
         do {

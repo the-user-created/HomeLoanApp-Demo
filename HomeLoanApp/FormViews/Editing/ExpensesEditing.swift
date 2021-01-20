@@ -43,7 +43,12 @@ struct ExpensesEditing: View {
     @State var otherExpenses = ""
     @State var otherExpensesText = ""
     
+    @State var initValues: Dictionary<String, AnyHashable> = [:]
+    @State var savingValues: Dictionary<String, AnyHashable> = [:]
     @State var sender: Sender
+    @State var showingAlert: Bool = false
+    @State var alertMessage: String = ""
+    @State var calculatedExpenses: String = ""
     @Binding var isDone: Bool
     
     // MARK: - Properties
@@ -55,28 +60,29 @@ struct ExpensesEditing: View {
         self._sender = State(wrappedValue: sender)
         self.application = application
         self._rental = State(wrappedValue: self.application.rental ?? "")
-        self._expensesInvestments = State(wrappedValue: self.application.rental ?? "")
-        self._ratesTaxes = State(wrappedValue: self.application.rental ?? "")
-        self._waterLights = State(wrappedValue: self.application.rental ?? "")
-        self._homeMain = State(wrappedValue: self.application.rental ?? "")
-        self._petrolCar = State(wrappedValue: self.application.rental ?? "")
-        self._insurance = State(wrappedValue: self.application.rental ?? "")
-        self._assurance = State(wrappedValue: self.application.rental ?? "")
-        self._timeshare = State(wrappedValue: self.application.rental ?? "")
-        self._groceries = State(wrappedValue: self.application.rental ?? "")
-        self._clothing = State(wrappedValue: self.application.rental ?? "")
-        self._levies = State(wrappedValue: self.application.rental ?? "")
-        self._domesticWages = State(wrappedValue: self.application.rental ?? "")
-        self._education = State(wrappedValue: self.application.rental ?? "")
-        self._expensesEntertainment = State(wrappedValue: self.application.rental ?? "")
-        self._security = State(wrappedValue: self.application.rental ?? "")
-        self._propertyRentExp = State(wrappedValue: self.application.rental ?? "")
-        self._medical = State(wrappedValue: self.application.rental ?? "")
-        self._donations = State(wrappedValue: self.application.rental ?? "")
-        self._cellphone = State(wrappedValue: self.application.rental ?? "")
-        self._telephoneISP = State(wrappedValue: self.application.rental ?? "")
-        self._expensesMaintenanceAlimony = State(wrappedValue: self.application.rental ?? "")
-        self._installmentExp = State(wrappedValue: self.application.rental ?? "")
+        self._expensesInvestments = State(wrappedValue: self.application.expensesInvestments ?? "")
+        self._ratesTaxes = State(wrappedValue: self.application.ratesTaxes ?? "")
+        self._waterLights = State(wrappedValue: self.application.waterLights ?? "")
+        self._homeMain = State(wrappedValue: self.application.homeMain ?? "")
+        self._petrolCar = State(wrappedValue: self.application.petrolCar ?? "")
+        self._insurance = State(wrappedValue: self.application.insurance ?? "")
+        self._assurance = State(wrappedValue: self.application.assurance ?? "")
+        self._timeshare = State(wrappedValue: self.application.timeshare ?? "")
+        self._groceries = State(wrappedValue: self.application.groceries ?? "")
+        self._clothing = State(wrappedValue: self.application.clothing ?? "")
+        self._levies = State(wrappedValue: self.application.levies ?? "")
+        self._domesticWages = State(wrappedValue: self.application.domesticWages ?? "")
+        self._education = State(wrappedValue: self.application.education ?? "")
+        self._expensesEntertainment = State(wrappedValue: self.application.expensesEntertainment ?? "")
+        self._security = State(wrappedValue: self.application.security ?? "")
+        self._propertyRentExp = State(wrappedValue: self.application.propertyRentExp ?? "")
+        self._medical = State(wrappedValue: self.application.medical ?? "")
+        self._donations = State(wrappedValue: self.application.donations ?? "")
+        self._cellphone = State(wrappedValue: self.application.cellphone ?? "")
+        self._mNetDSTV = State(wrappedValue: self.application.mNetDSTV ?? "")
+        self._telephoneISP = State(wrappedValue: self.application.telephoneISP ?? "")
+        self._expensesMaintenanceAlimony = State(wrappedValue: self.application.expensesMaintenanceAlimony ?? "")
+        self._installmentExp = State(wrappedValue: self.application.installmentExp ?? "")
         
         if let otherExpenses = self.application.otherExpenses {
             let openBracketIndices = findNth("[", text: otherExpenses)
@@ -87,12 +93,20 @@ struct ExpensesEditing: View {
                 self._otherExpenses = State(wrappedValue: String(otherExpenses[otherExpenses.index(openBracketIndices[1], offsetBy: 1)..<closeBracketIndices[1]]))
             }
         }
+        
+        self._calculatedExpenses = State(wrappedValue: calculateExpenses())
+        
+        self._initValues = State(wrappedValue: ["rental": self.rental, "expensesInvestments": self.expensesInvestments, "ratesTaxes": self.ratesTaxes, "waterLights": self.waterLights, "homeMain": self.homeMain, "petrolCar": self.petrolCar, "insurance": self.insurance, "assurance": self.assurance, "timeshare": self.timeshare, "groceries": self.groceries, "clothing": self.clothing, "levies": self.levies, "domesticWages": self.domesticWages, "education": self.education, "expensesEntertainment": self.expensesEntertainment, "security": self.security, "propertyRentExp": self.propertyRentExp, "medical": self.medical, "donations": self.donations, "cellphone": self.cellphone, "mNetDSTV": self.mNetDSTV, "telephoneISP": self.telephoneISP, "expensesMaintenanceAlimony": self.expensesMaintenanceAlimony, "installmentExp": self.installmentExp, "otherExpenses": "[\(self.otherExpenses)][\(self.otherExpensesText)]"])
     }
     
     // MARK: - body
     var body: some View {
         Form() {
             Section(header: Text("EXPENSES")) {
+                Section(header: Text("Total Expenses").font(.headline)) {
+                    Text("R\(calculatedExpenses)")
+                }
+                
                 Group {
                     FormRandTextField(iD: "rental",
                                       question: formQuestions[6][0] ?? "MISSING",
@@ -182,22 +196,30 @@ struct ExpensesEditing: View {
                 }
                 
                 Group {
-                    FormRandTextField(iD: "telephoneISP",
+                    FormRandTextField(iD: "mNetDSTV",
                                       question: formQuestions[6][20] ?? "MISSING",
+                                      text: $mNetDSTV)
+                    
+                    FormRandTextField(iD: "telephoneISP",
+                                      question: formQuestions[6][21] ?? "MISSING",
                                       text: $telephoneISP)
                     
                     FormRandTextField(iD: "expensesMaintenanceAlimony",
-                                      question: formQuestions[6][21] ?? "MISSING",
+                                      question: formQuestions[6][22] ?? "MISSING",
                                       text: $expensesMaintenanceAlimony)
                     
                     FormRandTextField(iD: "installmentExp",
-                                      question: formQuestions[6][22] ?? "MISSING",
+                                      question: formQuestions[6][23] ?? "MISSING",
                                       text: $installmentExp)
                     
                     FormOtherRand(iD: "otherExpenses",
-                                      question: formQuestions[6][23] ?? "MISSING",
+                                      question: formQuestions[6][24] ?? "MISSING",
                                       other: $otherExpenses,
                                       otherText: $otherExpensesText)
+                }
+                
+                Section(header: Text("Total Expenses").font(.headline)) {
+                    Text("R\(calculatedExpenses)")
                 }
             }
             
@@ -209,7 +231,6 @@ struct ExpensesEditing: View {
                         .foregroundColor(.blue)
                         .font(.headline)
                 }
-                .disabled(changedValues.changedValues.isEmpty ? true : false)
             }
         }
         .navigationBarTitle("Expenses")
@@ -217,24 +238,67 @@ struct ExpensesEditing: View {
         .onReceive(resignPub) { _ in
             handleSaving()
         }
+        .onDisappear() {
+            UIApplication.shared.endEditing()
+        }
+        .onChange(of: [rental, expensesInvestments, ratesTaxes, waterLights, homeMain, petrolCar, insurance, assurance, timeshare, groceries, clothing, levies, domesticWages, education, expensesEntertainment, security, propertyRentExp, medical, donations, cellphone, mNetDSTV, telephoneISP, expensesMaintenanceAlimony, installmentExp, otherExpenses]) { _ in
+            calculatedExpenses = calculateExpenses()
+        }
+        .alert(isPresented: $showingAlert) {
+            Alert(title: Text(""), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+        }
     }
     
     // MARK: - determineComplete
     private func determineComplete() -> Bool {
-        /*if {
-            return true
-        }*/
+        var isComplete: Bool = false
         
+        let expensesResult = otherQuestionCheck(other: otherExpenses, otherText: otherExpensesText)
+        
+        let groupResult = !rental.dropFirst().isEmpty || !expensesInvestments.dropFirst().isEmpty || !ratesTaxes.dropFirst().isEmpty || !waterLights.dropFirst().isEmpty || !homeMain.dropFirst().isEmpty || !petrolCar.dropFirst().isEmpty || !insurance.dropFirst().isEmpty || !assurance.dropFirst().isEmpty || !timeshare.dropFirst().isEmpty || !groceries.dropFirst().isEmpty || !clothing.dropFirst().isEmpty || !levies.dropFirst().isEmpty || !domesticWages.dropFirst().isEmpty || !education.dropFirst().isEmpty || !expensesEntertainment.dropFirst().isEmpty  || !security.dropFirst().isEmpty || !propertyRentExp.dropFirst().isEmpty || !medical.dropFirst().isEmpty || !donations.dropFirst().isEmpty || !cellphone.dropFirst().isEmpty || !mNetDSTV.dropFirst().isEmpty || !telephoneISP.dropFirst().isEmpty || !expensesMaintenanceAlimony.dropFirst().isEmpty || !installmentExp.dropFirst().isEmpty
+        
+        if expensesResult == .both {
+            isComplete = true
+        } else if groupResult && expensesResult != .one{
+            isComplete = true
+        }
+        
+        changedValues.changedValues.updateValue(isComplete, forKey: "expensesDone")
+        return isComplete
+    }
+    
+    // MARK: - hasChanged
+    private func hasChanged() -> Bool {
+        self.savingValues = ["rental": self.rental, "expensesInvestments": self.expensesInvestments, "ratesTaxes": self.ratesTaxes, "waterLights": self.waterLights, "homeMain": self.homeMain, "petrolCar": self.petrolCar, "insurance": self.insurance, "assurance": self.assurance, "timeshare": self.timeshare, "groceries": self.groceries, "clothing": self.clothing, "levies": self.levies, "domesticWages": self.domesticWages, "education": self.education, "expensesEntertainment": self.expensesEntertainment, "security": self.security, "propertyRentExp": self.propertyRentExp, "medical": self.medical, "donations": self.donations, "cellphone": self.cellphone, "mNetDSTV": self.mNetDSTV, "telephoneISP": self.telephoneISP, "expensesMaintenanceAlimony": self.expensesMaintenanceAlimony, "installmentExp": self.installmentExp, "otherExpenses": "[\(self.otherExpenses)][\(self.otherExpensesText)]"]
+        
+        if self.savingValues != self.initValues {
+            return true
+        }
+        
+        alertMessage = "No answers were changed."
+        showingAlert = true
         return false
     }
     
     // MARK: - handleSaving
     private func handleSaving() {
-        if !changedValues.changedValues.isEmpty {
+        if hasChanged() {
             isDone = determineComplete()
             addToApplication()
             presentationMode.wrappedValue.dismiss()
         }
+    }
+    
+    // MARK: - calculateIncome
+    private func calculateExpenses() -> String {
+        var totalIncome: Float = 0.0
+        let incomeList: [String] = [String(rental.dropFirst()), String(expensesInvestments.dropFirst()), String(ratesTaxes.dropFirst()), String(waterLights.dropFirst()), String(homeMain.dropFirst()), String(petrolCar.dropFirst()), String(insurance.dropFirst()), String(assurance.dropFirst()), String(domesticWages.dropFirst()), String(education.dropFirst()), String(expensesEntertainment.dropFirst()), String(security.dropFirst()), String(propertyRentExp.dropFirst()), String(medical.dropFirst()), String(donations.dropFirst()), String(cellphone.dropFirst()), String(mNetDSTV.dropFirst()), String(telephoneISP.dropFirst()), String(expensesMaintenanceAlimony.dropFirst()), String(installmentExp.dropFirst()), String(otherExpenses.dropFirst())]
+        
+        for income in incomeList {
+            totalIncome = totalIncome.advanced(by: Float(income.replacingOccurrences(of: ",", with: ".")) ?? 0.0)
+        }
+        
+        return String(format: "%.2f", totalIncome)
     }
     
     // MARK: - addToApplication()

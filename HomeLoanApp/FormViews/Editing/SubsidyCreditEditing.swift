@@ -153,11 +153,9 @@ struct SubsidyCreditEditing: View {
         self.savingValues = ["subsidyForHome": self.subsidyForHome, "applyingSubsidy": self.applyingSubsidy, "housingScheme": self.housingScheme, "currentAdmin": self.currentAdmin, "previousAdmin": self.previousAdmin, "judgement": self.judgement, "debtReview": self.debtReview, "debtReArrange": self.debtReArrange, "insolvent": self.insolvent, "creditBureau": self.creditBureau, "creditListings": self.creditListings, "suretyAgreements": self.suretyAgreements]
         
         if self.savingValues != self.initValues {
-            print("print - hasChanged: true")
             return true
         }
         
-        print("print - hasChanged: false")
         alertMessage = "No answers were changed."
         showingAlert = true
         return false

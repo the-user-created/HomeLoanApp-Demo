@@ -34,6 +34,9 @@ struct AssetsLiabilities: View {
     @State var otherLiabilities = ""
     @State var otherLiabilitiesText = ""
     
+    @State var alertMessage: String = ""
+    @State var showingAlert: Bool = false
+    @State var isActive: Bool = false
     @Binding var isDone: Bool
     
     // MARK: - Properties
@@ -120,23 +123,47 @@ struct AssetsLiabilities: View {
                         .foregroundColor(.blue)
                         .font(.headline)
                 }
-                .disabled(changedValues.changedValues.isEmpty ? true : false)
             }
         }
         .navigationBarTitle("Assets & Liabilities")
         .onTapGesture(count: 2, perform: UIApplication.shared.endEditing)
         .onReceive(resignPub) { _ in
-            handleSaving()
+            if isActive {
+                handleSaving()
+            }
+        }
+        .onDisappear() {
+            isActive = false
+        }
+        .onAppear() {
+            isActive = true
+        }
+        .alert(isPresented: $showingAlert) {
+            Alert(title: Text(""), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         }
     }
     
     // MARK: - determineComplete
     private func determineComplete() -> Bool {
-        /*if  {
-            return true
-        }*/
+        var isComplete: Bool = false
         
-        return false
+        let assetResult = otherQuestionCheck(other: otherAsset, otherText: otherAssetText)
+        let accountResult = otherQuestionCheck(other: otherAcc, otherText: otherAccText)
+        let liabilityResult = otherQuestionCheck(other: otherLiabilities, otherText: otherLiabilitiesText)
+        
+        let groupResult = !fixedProperty.dropFirst().isEmpty || !vehicles.dropFirst().isEmpty || !furnitureFittings.dropFirst().isEmpty || !assetLiabilityInvestments.dropFirst().isEmpty || !cashOnHand.dropFirst().isEmpty || !mortgageBonds.dropFirst().isEmpty || !installmentSales.dropFirst().isEmpty || !creditCards.dropFirst().isEmpty || !currentAcc.dropFirst().isEmpty || !personalLoans.dropFirst().isEmpty || !retailAcc.dropFirst().isEmpty || !otherDebt.dropFirst().isEmpty
+        
+        if assetResult == .one || accountResult == .one || liabilityResult == .one { // If any are half-complete, the section is incomplete
+            isComplete = false
+        } else if assetResult == .both || accountResult == .both || liabilityResult == .both { // will never be reached if one 'other' question is half-complete, therefore one (or more) of the 'other' questions are complete
+            isComplete = true
+        } else if groupResult { // If all 'other' questions are .neither and there is a input somewhere, the section is complete
+            isComplete = true
+        }
+        // else isComplete = false
+        
+        changedValues.changedValues.updateValue(isComplete, forKey: "assetsLiabilitiesDone")
+        return isComplete
     }
     
     // MARK: - handleSaving
@@ -145,6 +172,9 @@ struct AssetsLiabilities: View {
             isDone = determineComplete()
             saveApplication()
             presentationMode.wrappedValue.dismiss()
+        } else {
+            alertMessage = "Please complete some questions before attempting to save."
+            showingAlert = true
         }
     }
     

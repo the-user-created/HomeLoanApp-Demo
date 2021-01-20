@@ -25,6 +25,8 @@ struct ChoosePageEditing: View {
     @State var expensesDone: Bool = false
     @State var scansDone: Bool = false
     
+    @State var identityDone: Bool?
+    
     init(application: Application) {
         self.application = application
         self._generalDetailsDone = State(wrappedValue: self.application.generalDetailsDone)
@@ -36,6 +38,8 @@ struct ChoosePageEditing: View {
         self._expensesDone = State(wrappedValue: self.application.expensesDone)
         self._assetsLiabilitiesDone = State(wrappedValue: self.application.assetsLiabilitiesDone)
         self._scansDone = State(wrappedValue: self.application.scansDone)
+        
+        self._identityDone = State(wrappedValue: self.application.iDType != "--select--" && self.application.iDType != "" && self.application.iDType != nil)
     }
     
     // MARK: - body
@@ -54,7 +58,7 @@ struct ChoosePageEditing: View {
                     }
                 }
                 
-                NavigationLink(destination: PersonalDetailsEditing(isDone: $personalDetailsDone, application: application, sender: .editor)) {
+                NavigationLink(destination: PersonalDetailsEditing(isDone: $personalDetailsDone, identityDoneBinding: $identityDone, application: application, sender: .editor)) {
                     HStack() {
                         Text("Personal Details")
                             .font(.headline)
@@ -147,7 +151,7 @@ struct ChoosePageEditing: View {
                 }
                 .disabled(!generalDetailsDone)
                 
-                NavigationLink(destination: DocumentScans(application: application, sender: .editor, isDone: $scansDone)) {
+                NavigationLink(destination: DocumentScansEditing(application: application, isDone: $scansDone)) {
                     HStack() {
                         Text("Supporting Documents")
                             .font(.headline)
@@ -158,7 +162,7 @@ struct ChoosePageEditing: View {
                             .foregroundColor(scansDone ? .green : .red)
                     }
                 }
-                .disabled(!generalDetailsDone)
+                .disabled(generalDetailsDone ? !identityDone! : true)
             }
             
             NavigationLink(destination: NotificationView(application: application, isDone: $notificationDone)) {

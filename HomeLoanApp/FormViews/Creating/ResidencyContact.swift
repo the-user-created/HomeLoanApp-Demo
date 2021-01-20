@@ -67,13 +67,12 @@ struct ResidencyContact: View {
     // MARK: - body
     var body: some View {
         Form() {
-            
             Section(header: Text("RESIDENCY")) {
                 FormYesNo(iD: "sACitizen",
                           question: formQuestions[2][0] ?? "MISSING",
                           selected: $sACitizen)
                 
-                if sACitizen.lowercased() == "no" {
+                if sACitizen == "No" {
                     FormPicker(iD: "nationality",
                                question: formQuestions[2][0.1] ?? "MISSING",
                                selectionOptions: countries,
@@ -95,12 +94,12 @@ struct ResidencyContact: View {
                               placeholder: formTextFieldPlaceholders[2][2] ?? "MISSING",
                               text: $cityOfBirth)
                 
-                if sACitizen.lowercased() == "no" {
+                if sACitizen == "No" {
                     FormYesNo(iD: "permanentResident",
                               question: formQuestions[2][3] ?? "MISSING",
                               selected: $permanentResident)
                 
-                    if permanentResident.lowercased() == "no" {
+                    if permanentResident == "No" {
                         FormPicker(iD: "countryOfPermanentResidence",
                                    question: formQuestions[2][3.1] ?? "MISSING",
                                    selectionOptions: countries,
@@ -278,6 +277,40 @@ struct ResidencyContact: View {
                 handleSaving()
             }
         }
+        .onChange(of: sACitizen) { _ in
+            if sACitizen != "No" {
+                self.nationality = 0
+                self.countryPassport = 0
+                self.permanentResident = ""
+                self.countryOfPermanentResidence = 0
+                self.permitType = 0
+                self.countryOfPermit = 0
+                self.permitIssueDate = Date()
+                self.permitExpiryDate = Date()
+                self.contractIssueDate = Date()
+                self.contractExpiryDate = Date()
+                self.workPermitNumber = ""
+                changedValues.changedValues.merge(dict: ["nationality": countries[0], "countryPassport": countries[0], "permanentResident": "", "countryOfPermanentResidence": countries[0], "permitType": permitTypes[0], "countryOfPermit": countries[0], "permitIssueDate": Date(), "permitExpiryDate": Date(), "contractIssueDate": Date(), "contractExpiryDate": Date(), "workPermitNumber": ""])
+            }
+        }
+        .onChange(of: permanentResident) { _ in
+            if permanentResident != "No" {
+                self.countryOfPermanentResidence = 0
+                changedValues.updateKeyValue("countryOfPermanentResidence", value: countries[0])
+            }
+        }
+        .onChange(of: resIsPostal) { _ in
+            if resIsPostal != "No" {
+                self.postalCountry = 0
+                self.postalLine1 = ""
+                self.postalLine2 = ""
+                self.postalSuburb = ""
+                self.postalCity = ""
+                self.postalProvince = ""
+                self.postalStreetCode = ""
+                changedValues.changedValues.merge(dict: ["postalCountry": countries[0], "postalLine1": "", "postalLine2": "", "postalSuburb": "", "postalCity": "", "postalProvince": "", "postalStreetCode": ""])
+            }
+        }
         .onDisappear() {
             isActive = false
         }
@@ -296,21 +329,22 @@ struct ResidencyContact: View {
         // Handle the non-optional questions
         if !sACitizen.isEmpty && countryBirth != 0 && !cityOfBirth.isEmpty && homeLanguage != 0 && corresLanguage != 0 && !cellNumber.isEmpty && !emailAddress.isEmpty && resCountry != 0 && !resLine1.isEmpty && !resLine2.isEmpty && !resSuburb.isEmpty && !resCity.isEmpty && !resProvince.isEmpty && !resStreetCode.isEmpty && (!lengthAtAddressYears.isEmpty || !lengthAtAddressMonths.isEmpty) && !resIsPostal.isEmpty {
             
-            // Handle whether residential and postal addresses are identical
-            if resIsPostal == "No" && (postalCountry != 0 && !postalLine1.isEmpty && !postalLine2.isEmpty && !postalSuburb.isEmpty && !postalCity.isEmpty && !postalProvince.isEmpty && !postalStreetCode.isEmpty) {
-                isComplete = true
-            } else if resIsPostal == "Yes" {
-                isComplete = true
-            }
-            // else isComplete = false
-            
-            // Handle whether the client is a south african citizen or not
-            if sACitizen == "No" && (nationality != 0 && countryPassport != 0 && !permanentResident.isEmpty && permitType != 0 && countryOfPermit != 0 && !workPermitNumber.isEmpty) {
-                if permanentResident == "No" && countryOfPermanentResidence != 0 {
+            if sACitizen == "No" && resIsPostal == "No" {
+                if nationality != 0 && countryPassport != 0 && permitType != 0 && countryOfPermit != 0 && !workPermitNumber.isEmpty && postalCountry != 0 && !postalLine1.isEmpty && !postalLine2.isEmpty && !postalSuburb.isEmpty && !postalCity.isEmpty && !postalProvince.isEmpty && !postalStreetCode.isEmpty && ((permanentResident == "No" && countryOfPermanentResidence != 0) || permanentResident == "Yes") {
                     isComplete = true
                 }
                 // else isComplete = false
-            } else if sACitizen == "Yes" {
+            } else if sACitizen == "No" && resIsPostal == "Yes" {
+                if nationality != 0 && countryPassport != 0 && permitType != 0 && countryOfPermit != 0 && !workPermitNumber.isEmpty && ((permanentResident == "No" && countryOfPermanentResidence != 0) || permanentResident == "Yes") {
+                    isComplete = true
+                }
+                // else isComplete = false
+            } else if sACitizen == "Yes" && resIsPostal == "No" {
+                if postalCountry != 0 && !postalLine1.isEmpty && !postalLine2.isEmpty && !postalSuburb.isEmpty && !postalCity.isEmpty && !postalProvince.isEmpty && !postalStreetCode.isEmpty {
+                    isComplete = true
+                }
+                // else isComplete = false
+            } else if sACitizen == "Yes" && resIsPostal == "Yes" {
                 isComplete = true
             }
             // else isComplete = false

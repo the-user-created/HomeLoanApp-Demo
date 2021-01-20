@@ -25,29 +25,24 @@ class UserDetails: ObservableObject {
 class ChangedValues: ObservableObject {
     // Stores each of the changed key-value pairs of the questions and answers in the form
     @Published var changedValues: Dictionary<String, Any> = [:]
-    //@Published var incompleteValues: [String] = []
+    @Published var hasChanged: Bool = false
     
     func updateKeyValue(_ key: String, value: Any) {
         changedValues.updateValue(value, forKey: key)
+        hasChanged.toggle()
         print("print - changedValues: \(changedValues)")
     }
     
     func removeValue(forKey key: String) {
         changedValues.removeValue(forKey: key)
+        hasChanged.toggle()
         print("print - changedValues: \(changedValues)")
     }
     
     func cleanChangedValues() {
         changedValues.removeAll()
+        hasChanged.toggle()
     }
-    
-    /*func addIncomplete(values: [String: Any?]) {
-        for (key, value) in values {
-            if value == nil {
-                incompleteValues.append(key)
-            }
-        }
-    }*/
 }
 
 class ApplicationDetails: ObservableObject {

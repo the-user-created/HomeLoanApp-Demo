@@ -259,13 +259,21 @@ struct EmploymentEditing: View {
                         .foregroundColor(.blue)
                         .font(.headline)
                 }
-                .disabled(changedValues.changedValues.isEmpty ? true : false)
             }
         }
         .navigationBarTitle("Employment")
         .onTapGesture(count: 2, perform: UIApplication.shared.endEditing)
         .onReceive(resignPub) { _ in
             handleSaving()
+        }
+        .onChange(of: previouslyEmployed) { _ in
+            if previouslyEmployed != "Yes" {
+                self.previousEmployer = ""
+                self.pEContact = ""
+                self.pEDurationYears = ""
+                self.pEDurationMonths = ""
+                changedValues.changedValues.merge(dict: ["previousEmployer": "", "pEContact": "", "pEDuration": "[][]"])
+            }
         }
         .alert(isPresented: $showingAlert) {
             Alert(title: Text(""), message: Text(alertMessage), dismissButton: .default(Text("OK")))
@@ -293,11 +301,9 @@ struct EmploymentEditing: View {
         self.savingValues = ["occupationalStatus": self.occupationalStatus, "payingScheme": self.payingScheme, "incomeSource": self.incomeSource, "natureOfOccupation": self.natureOfOccupation, "occupationLevel": self.occupationLevel, "employmentSector": self.employmentSector, "natureOfBusiness": self.natureOfBusiness, "employer": self.employer, "companyRegNum": self.companyRegNum, "employeeNum": self.employeeNum, "employmentPeriod": "[\(self.employmentPeriodYears)][\(self.employmentPeriodMonths)]", "employerCountry": self.employerCountry, "employerLine1": self.employerLine1, "employerLine2": self.employerLine2, "employerSuburb": self.employerSuburb, "employerCity": self.employerCity, "employerProvince": self.employerProvince, "employerStreetCode": self.employerStreetCode, "workPhoneNum": self.workPhoneNum, "purchaseJobChange": self.purchaseJobChange, "workInZA": self.workInZA, "previouslyEmployed": self.previouslyEmployed, "previousEmployer": self.previousEmployer, "pEContact": self.pEContact, "pEDuration": "[\(self.pEDurationYears)][\(self.pEDurationMonths)]"]
         
         if self.savingValues != self.initValues {
-            print("print - hasChanged: true")
             return true
         }
         
-        print("print - hasChanged: false")
         alertMessage = "No answers were changed."
         showingAlert = true
         return false
@@ -305,7 +311,7 @@ struct EmploymentEditing: View {
     
     // MARK: - handleSaving
     private func handleSaving() {
-        if !changedValues.changedValues.isEmpty {
+        if hasChanged() {
             isDone = determineComplete()
             addToApplication()
             presentationMode.wrappedValue.dismiss()

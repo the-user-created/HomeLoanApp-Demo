@@ -150,19 +150,16 @@ struct GeneralDetails: View {
             switch Int(value) {
                 case 1:
                     self.coApplicantOneName = ""
-                    changedValues.removeValue(forKey: "coApplicantOneName")
                     self.coApplicantTwoName = ""
-                    changedValues.removeValue(forKey: "coApplicantTwoName")
                     self.coApplicantThreeName = ""
-                    changedValues.removeValue(forKey: "coApplicantThreeName")
+                    changedValues.changedValues.merge(dict: ["coApplicantOneName": "", "coApplicantTwoName": "", "coApplicantThreeName": ""])
                 case 2:
                     self.coApplicantTwoName = ""
-                    changedValues.removeValue(forKey: "coApplicantTwoName")
                     self.coApplicantThreeName = ""
-                    changedValues.removeValue(forKey: "coApplicantThreeName")
+                    changedValues.changedValues.merge(dict: ["coApplicantTwoName": "", "coApplicantThreeName": ""])
                 case 3:
                     self.coApplicantThreeName = ""
-                    changedValues.removeValue(forKey: "coApplicantThreeName")
+                    changedValues.updateKeyValue("coApplicantThreeName", value: "")
                 default:
                     return
             }

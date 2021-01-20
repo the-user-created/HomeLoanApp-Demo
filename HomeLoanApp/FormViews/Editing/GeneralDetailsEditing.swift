@@ -162,32 +162,29 @@ struct GeneralDetailsEditing: View {
         .onReceive(resignPub) { _ in
             handleSaving()
         }
-        .alert(isPresented: $showingAlert) {
-            Alert(title: Text(""), message: Text(alertMessage), dismissButton: .default(Text("OK")))
-        }
         .onChange(of: numberOfApplicants) { value in
-            // Handles the removal of coApplicant names if the numberOfApplicants changes
             switch Int(value) {
                 case 1:
                     self.coApplicantOneName = ""
-                    changedValues.removeValue(forKey: "coApplicantOneName")
                     self.coApplicantTwoName = ""
-                    changedValues.removeValue(forKey: "coApplicantTwoName")
                     self.coApplicantThreeName = ""
-                    changedValues.removeValue(forKey: "coApplicantThreeName")
+                    changedValues.changedValues.merge(dict: ["coApplicantOneName": "", "coApplicantTwoName": "", "coApplicantThreeName": ""])
                 case 2:
                     self.coApplicantTwoName = ""
-                    changedValues.removeValue(forKey: "coApplicantTwoName")
                     self.coApplicantThreeName = ""
-                    changedValues.removeValue(forKey: "coApplicantThreeName")
+                    changedValues.changedValues.merge(dict: ["coApplicantTwoName": "", "coApplicantThreeName": ""])
                 case 3:
                     self.coApplicantThreeName = ""
-                    changedValues.removeValue(forKey: "coApplicantThreeName")
+                    changedValues.updateKeyValue("coApplicantThreeName", value: "")
                 default:
                     return
             }
         }
+        .alert(isPresented: $showingAlert) {
+            Alert(title: Text(""), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+        }
     }
+    
     
     // MARK: - determineComplete
     private func determineComplete() -> Bool {
@@ -218,11 +215,9 @@ struct GeneralDetailsEditing: View {
         self.savingValues = ["salesConsultant": self.salesConsultantIndex, "applicationType": self.applicationTypeIndex, "applicantType": self.applicantTypeIndex, "loanPurpose": self.loanPurposeIndex, "propertyType": self.propertyTypeIndex, "numberOfApplicants": self.numberOfApplicants, "coApplicantOneName": self.coApplicantOneName, "coApplicantTwoName": self.coApplicantTwoName, "coApplicantThreeName": self.coApplicantThreeName]
         
         if self.savingValues != self.initValues {
-            print("print - hasChanged: true")
             return true
         }
         
-        print("print - hasChanged: false")
         alertMessage = "No answers were changed."
         showingAlert = true
         return false

@@ -48,6 +48,7 @@ struct PersonalDetailsEditing: View {
     @State var showingAlert: Bool = false
     @State var alertMessage: String = ""
     @Binding var isDone: Bool
+    @Binding var identityDoneBinding: Bool?
     
     // MARK: - Properties
     let resignPub = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
@@ -61,8 +62,9 @@ struct PersonalDetailsEditing: View {
     let maritalStatuses = ["--select--", "Divorced", "Married", "Single", "--TBA--"]
     
     // MARK: - init
-    init(isDone: Binding<Bool>, application: Application, sender: Sender) {
+    init(isDone: Binding<Bool>, identityDoneBinding: Binding<Bool?>, application: Application, sender: Sender) {
         self._isDone = isDone
+        self._identityDoneBinding = identityDoneBinding
         self._sender = State(wrappedValue: sender)
         self.application = application
         self._title = State(wrappedValue: titles.firstIndex(of: self.application.title ?? "--select--") ?? 0)
@@ -72,20 +74,14 @@ struct PersonalDetailsEditing: View {
         self._dateOfBirth = State(wrappedValue: self.application.dateOfBirth ?? Date())
         self._iDType = State(wrappedValue: identityType.firstIndex(of: self.application.iDType ?? "--select--") ?? 0)
         self._iDPassNumber = State(wrappedValue: self.application.iDPassNumber ?? "")
-        
         self._passExpiryDate = State(wrappedValue: self.application.passExpiryDate ?? Date())
-        
         self._taxNumber = State(wrappedValue: self.application.taxNumber ?? "")
         self._taxReturn = State(wrappedValue: self.application.taxReturn ?? "")
-        
         self._educationLevel = State(wrappedValue: educationLevels.firstIndex(of: self.application.educationLevel ?? "--select--") ?? 0)
         self._ethnicGroup = State(wrappedValue: ethnicGroups.firstIndex(of: self.application.ethnicGroup ?? "--select--") ?? 0)
-        
         self._singleHouse = State(wrappedValue: self.application.singleHouse ?? "")
-        
         self._maritalStatus = State(wrappedValue: maritalStatuses.firstIndex(of: self.application.maritalStatus ?? "--select--") ?? 0)
         self._countryMarriage = State(wrappedValue: countries.firstIndex(of: self.application.countryMarriage ?? "--select--") ?? 0)
-        
         self._spouseIncome = State(wrappedValue: self.application.spouseIncome ?? "")
         self._aNC = State(wrappedValue: self.application.aNC ?? "")
         self._numDependents = State(wrappedValue: self.application.numDependents ?? "")
@@ -249,13 +245,10 @@ struct PersonalDetailsEditing: View {
         .onChange(of: maritalStatus) { value in
             if maritalStatus != 2 {
                 self.countryMarriage = 0
-                changedValues.updateKeyValue("countryMarriage", value: countries[0])
                 self.spouseIncome = ""
-                changedValues.updateKeyValue("spouseIncome", value: "")
                 self.aNC = ""
-                changedValues.updateKeyValue("aNC", value: "")
                 self.numDependents = ""
-                changedValues.updateKeyValue("numDependents", value: "")
+                changedValues.changedValues.merge(dict: ["countryMarriage": countries[0], "spouseIncome": "", "aNC": "", "numDependents": ""])
             }
         }
         .onChange(of: iDType) { value in
@@ -303,11 +296,9 @@ struct PersonalDetailsEditing: View {
         self.savingValues = ["title": self.title, "surname": self.surname, "firstNames": self.firstNames, "gender": self.gender, "dateOfBirth": self.dateOfBirth, "iDType": self.iDType, "iDPassNumber": self.iDPassNumber, "passExpiryDate": self.passExpiryDate, "taxNumber": self.taxNumber, "taxReturn": self.taxReturn, "educationLevel": self.educationLevel, "ethnicGroup": self.ethnicGroup, "singleHouse": self.singleHouse, "maritalStatus": self.maritalStatus, "countryMarriage": self.countryMarriage, "spouseIncome": self.spouseIncome, "aNC": self.aNC, "numDependents": self.numDependents, "mainResidence": self.mainResidence, "firstTimeHomeBuyer": self.firstTimeHomeBuyer, "socialGrant": self.socialGrant, "publicOfficial": self.publicOfficial, "relatedOfficial": self.relatedOfficial]
         
         if self.savingValues != self.initValues {
-            print("print - hasChanged: true")
             return true
         }
         
-        print("print - hasChanged: false")
         alertMessage = "No answers were changed."
         showingAlert = true
         return false
@@ -322,6 +313,11 @@ struct PersonalDetailsEditing: View {
                 applicationCreation.application.setValue(value, forKey: key)
             } else {
                 application.setValue(value, forKey: key)
+            }
+            
+            if key == "iDType" {
+                let value = value as? String
+                identityDoneBinding = value != "--select--" && value != ""
             }
         }
         

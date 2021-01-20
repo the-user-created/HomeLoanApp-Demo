@@ -42,6 +42,10 @@ struct Expenses: View {
     @State var otherExpenses = ""
     @State var otherExpensesText = ""
     
+    @State var alertMessage: String = ""
+    @State var showingAlert: Bool = false
+    @State var isActive: Bool = false
+    @State var calculatedExpenses: String = ""
     @Binding var isDone: Bool
     
     // MARK: - Properties
@@ -51,6 +55,10 @@ struct Expenses: View {
     var body: some View {
         Form() {
             Section(header: Text("EXPENSES")) {
+                Section(header: Text("Total Expenses").font(.headline)) {
+                    Text("R\(calculatedExpenses)")
+                }
+                
                 Group {
                     FormRandTextField(iD: "rental",
                                       question: formQuestions[6][0] ?? "MISSING",
@@ -140,22 +148,30 @@ struct Expenses: View {
                 }
                 
                 Group {
-                    FormRandTextField(iD: "telephoneISP",
+                    FormRandTextField(iD: "mNetDSTV",
                                       question: formQuestions[6][20] ?? "MISSING",
+                                      text: $mNetDSTV)
+                    
+                    FormRandTextField(iD: "telephoneISP",
+                                      question: formQuestions[6][21] ?? "MISSING",
                                       text: $telephoneISP)
                     
                     FormRandTextField(iD: "expensesMaintenanceAlimony",
-                                      question: formQuestions[6][21] ?? "MISSING",
+                                      question: formQuestions[6][22] ?? "MISSING",
                                       text: $expensesMaintenanceAlimony)
                     
                     FormRandTextField(iD: "installmentExp",
-                                      question: formQuestions[6][22] ?? "MISSING",
+                                      question: formQuestions[6][23] ?? "MISSING",
                                       text: $installmentExp)
                     
                     FormOtherRand(iD: "otherExpenses",
-                                      question: formQuestions[6][23] ?? "MISSING",
+                                      question: formQuestions[6][24] ?? "MISSING",
                                       other: $otherExpenses,
                                       otherText: $otherExpensesText)
+                }
+                
+                Section(header: Text("Total Expenses").font(.headline)) {
+                    Text("R\(calculatedExpenses)")
                 }
             }
             
@@ -167,23 +183,45 @@ struct Expenses: View {
                         .foregroundColor(.blue)
                         .font(.headline)
                 }
-                .disabled(changedValues.changedValues.isEmpty ? true : false)
             }
         }
         .navigationBarTitle("Expenses")
         .onTapGesture(count: 2, perform: UIApplication.shared.endEditing)
         .onReceive(resignPub) { _ in
-            handleSaving()
+            if isActive {
+                handleSaving()
+            }
+        }
+        .onDisappear() {
+            isActive = false
+        }
+        .onAppear() {
+            isActive = true
+        }
+        .onChange(of: [rental, expensesInvestments, ratesTaxes, waterLights, homeMain, petrolCar, insurance, assurance, timeshare, groceries, clothing, levies, domesticWages, education, expensesEntertainment, security, propertyRentExp, medical, donations, cellphone, mNetDSTV, telephoneISP, expensesMaintenanceAlimony, installmentExp, otherExpenses]) { _ in
+            calculatedExpenses = calculateExpenses()
+        }
+        .alert(isPresented: $showingAlert) {
+            Alert(title: Text(""), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         }
     }
     
     // MARK: - determineComplete
     private func determineComplete() -> Bool {
-        /*if  {
-            return true
-        }*/
+        var isComplete: Bool = false
         
-        return false
+        let expensesResult = otherQuestionCheck(other: otherExpenses, otherText: otherExpensesText)
+        
+        let groupResult = !rental.dropFirst().isEmpty || !expensesInvestments.dropFirst().isEmpty || !ratesTaxes.dropFirst().isEmpty || !waterLights.dropFirst().isEmpty || !homeMain.dropFirst().isEmpty || !petrolCar.dropFirst().isEmpty || !insurance.dropFirst().isEmpty || !assurance.dropFirst().isEmpty || !timeshare.dropFirst().isEmpty || !groceries.dropFirst().isEmpty || !clothing.dropFirst().isEmpty || !levies.dropFirst().isEmpty || !domesticWages.dropFirst().isEmpty || !education.dropFirst().isEmpty || !expensesEntertainment.dropFirst().isEmpty  || !security.dropFirst().isEmpty || !propertyRentExp.dropFirst().isEmpty || !medical.dropFirst().isEmpty || !donations.dropFirst().isEmpty || !cellphone.dropFirst().isEmpty || !mNetDSTV.dropFirst().isEmpty || !telephoneISP.dropFirst().isEmpty || !expensesMaintenanceAlimony.dropFirst().isEmpty || !installmentExp.dropFirst().isEmpty
+        
+        if expensesResult == .both {
+            isComplete = true
+        } else if groupResult && expensesResult != .one{
+            isComplete = true
+        }
+        
+        changedValues.changedValues.updateValue(isComplete, forKey: "expensesDone")
+        return isComplete
     }
     
     // MARK: - handleSaving
@@ -192,7 +230,22 @@ struct Expenses: View {
             isDone = determineComplete()
             saveApplication()
             presentationMode.wrappedValue.dismiss()
+        } else {
+            alertMessage = "Please complete some questions before attempting to save."
+            showingAlert = true
         }
+    }
+    
+    // MARK: - calculateIncome
+    private func calculateExpenses() -> String {
+        var totalIncome: Float = 0.0
+        let incomeList: [String] = [String(rental.dropFirst()), String(expensesInvestments.dropFirst()), String(ratesTaxes.dropFirst()), String(waterLights.dropFirst()), String(homeMain.dropFirst()), String(petrolCar.dropFirst()), String(insurance.dropFirst()), String(assurance.dropFirst()), String(domesticWages.dropFirst()), String(education.dropFirst()), String(expensesEntertainment.dropFirst()), String(security.dropFirst()), String(propertyRentExp.dropFirst()), String(medical.dropFirst()), String(donations.dropFirst()), String(cellphone.dropFirst()), String(mNetDSTV.dropFirst()), String(telephoneISP.dropFirst()), String(expensesMaintenanceAlimony.dropFirst()), String(installmentExp.dropFirst()), String(otherExpenses.dropFirst())]
+        
+        for income in incomeList {
+            totalIncome = totalIncome.advanced(by: Float(income.replacingOccurrences(of: ",", with: ".")) ?? 0.0)
+        }
+        
+        return String(format: "%.2f", totalIncome)
     }
     
     // MARK: - saveApplication

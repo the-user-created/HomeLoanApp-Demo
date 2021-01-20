@@ -219,6 +219,15 @@ struct Employment: View {
         .onAppear() {
             isActive = true
         }
+        .onChange(of: previouslyEmployed) { _ in
+            if previouslyEmployed != "Yes" {
+                self.previousEmployer = ""
+                self.pEContact = ""
+                self.pEDurationYears = ""
+                self.pEDurationMonths = ""
+                changedValues.changedValues.merge(dict: ["previousEmployer": "", "pEContact": "", "pEDuration": "[][]"])
+            }
+        }
         .alert(isPresented: $showingAlert) {
             Alert(title: Text(""), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         }

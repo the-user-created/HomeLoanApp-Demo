@@ -94,6 +94,7 @@
         <attribute name="maritalStatus" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="medical" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="medicalAid" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="mNetDSTV" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="monthCarAllowance" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="mortgageBonds" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="nationality" optional="YES" attributeType="String" defaultValueString=""/>
@@ -178,6 +179,6 @@
         <attribute name="workPhoneNum" optional="YES" attributeType="String" defaultValueString=""/>
     </entity>
     <elements>
-        <element name="Application" positionX="-63" positionY="-18" width="128" height="2668"/>
+        <element name="Application" positionX="-63" positionY="-18" width="128" height="2683"/>
     </elements>
 </model>
