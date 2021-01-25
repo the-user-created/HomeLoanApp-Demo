@@ -23,13 +23,13 @@ struct ResidencyContact: View {
     @State var cityOfBirth = ""
     @State var permanentResident = ""
     @State var countryOfPermanentResidence = 0
-    @State var permitType = 0
+    /*@State var permitType = 0
     @State var countryOfPermit = 0
     @State var permitIssueDate = Date()
     @State var permitExpiryDate = Date()
     @State var contractIssueDate = Date()
     @State var contractExpiryDate = Date()
-    @State var workPermitNumber = ""
+    @State var workPermitNumber = ""*/
     @State var homeLanguage = 0
     @State var corresLanguage = 0
     @State var cellNumber = ""
@@ -60,9 +60,9 @@ struct ResidencyContact: View {
     // MARK: - Properties
     let resignPub = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
     
-    let permitTypes = ["--select--", "Work permit", "--TBA--"]
-    let languages = ["--select--", "English", "Afrikaans", "--TBA--"]
-    let correslanguages = ["--select--", "English", "Afrikaans"]
+    //let permitTypes = ["--select--", "Work permit", "--TBA--"]
+    let languages = ["--select--", "English", "Afrikaans", "IsiNdebele", "IsiXhosa", "IsiZulu", "Other", "Sepedi", "Sesotho", "Setswana", "SiSwati", "Tshivenda", "Xitsonga"]
+    let correslanguages = ["--select--", "English", "Afrikaans", "IsiZulu", "Sesotho", "Xitsonga"]
     
     // MARK: - body
     var body: some View {
@@ -92,12 +92,12 @@ struct ResidencyContact: View {
                 FormTextField(iD: "cityOfBirth",
                               question: formQuestions[2][2] ?? "MISSING",
                               placeholder: formTextFieldPlaceholders[2][2] ?? "MISSING",
-                              text: $cityOfBirth)
+                              text: $cityOfBirth, sender: .editor)
                 
                 if sACitizen == "No" {
-                    FormYesNo(iD: "permanentResident",
-                              question: formQuestions[2][3] ?? "MISSING",
-                              selected: $permanentResident)
+                FormYesNo(iD: "permanentResident",
+                          question: formQuestions[2][3] ?? "MISSING",
+                          selected: $permanentResident)
                 
                     if permanentResident == "No" {
                         FormPicker(iD: "countryOfPermanentResidence",
@@ -106,7 +106,7 @@ struct ResidencyContact: View {
                                    selection: $countryOfPermanentResidence)
                     }
                     
-                    Group() {
+                    /*Group() {
                         FormPicker(iD: "permitType",
                                    question: formQuestions[2][4] ?? "MISSING",
                                    selectionOptions: permitTypes,
@@ -140,9 +140,9 @@ struct ResidencyContact: View {
                         FormTextField(iD: "workPermitNumber",
                                       question: formQuestions[2][10] ?? "MISSING",
                                       placeholder: formTextFieldPlaceholders[2][10] ?? "MISSING",
-                                      text: $workPermitNumber)
+                                      text: $workPermitNumber, sender: .editor)
                         
-                    }
+                    }*/
                 }
                 
             }
@@ -161,13 +161,13 @@ struct ResidencyContact: View {
                 FormTextField(iD: "cellNumber",
                               question: formQuestions[2][13] ?? "MISSING",
                               placeholder: formTextFieldPlaceholders[2][13] ?? "MISSING",
-                              text: $cellNumber)
+                              text: $cellNumber, sender: .editor)
                     .keyboardType(.phonePad)
                 
                 FormTextField(iD: "emailAddress",
                               question: formQuestions[2][14] ?? "MISSING",
                               placeholder: formTextFieldPlaceholders[2][14] ?? "MISSING",
-                              text: $emailAddress)
+                              text: $emailAddress, sender: .editor)
                     .keyboardType(.emailAddress)
                 
             }
@@ -181,32 +181,32 @@ struct ResidencyContact: View {
                 FormTextField(iD: "resLine1",
                               question: formQuestions[2][15.1] ?? "MISSING",
                               placeholder: formTextFieldPlaceholders[2][15.1] ?? "MISSING",
-                              text: $resLine1)
+                              text: $resLine1, sender: .editor)
                 
                 FormTextField(iD: "resLine2",
                               question: formQuestions[2][15.2] ?? "MISSING",
                               placeholder: formTextFieldPlaceholders[2][15.2] ?? "MISSING",
-                              text: $resLine2)
+                              text: $resLine2, sender: .editor)
                 
                 FormTextField(iD: "resSuburb",
                               question: formQuestions[2][15.3] ?? "MISSING",
                               placeholder: formTextFieldPlaceholders[2][15.3] ?? "MISSING",
-                              text: $resSuburb)
+                              text: $resSuburb, sender: .editor)
                 
                 FormTextField(iD: "resCity",
                               question: formQuestions[2][15.4] ?? "MISSING",
                               placeholder: formTextFieldPlaceholders[2][15.4] ?? "MISSING",
-                              text: $resCity)
+                              text: $resCity, sender: .editor)
                 
                 FormTextField(iD: "resProvince",
                               question: formQuestions[2][15.5] ?? "MISSING",
                               placeholder: formTextFieldPlaceholders[2][15.5] ?? "MISSING",
-                              text: $resProvince)
+                              text: $resProvince, sender: .editor)
                 
                 FormTextField(iD: "resStreetCode",
                               question: formQuestions[2][15.6] ?? "MISSING",
                               placeholder: formTextFieldPlaceholders[2][15.6] ?? "MISSING",
-                              text: $resStreetCode)
+                              text: $resStreetCode, sender: .editor)
                     .keyboardType(.numberPad)
                 
                 FormLenAt(iD: "lengthAtAddress",
@@ -230,32 +230,32 @@ struct ResidencyContact: View {
                     FormTextField(iD: "postalLine1",
                                   question: formQuestions[2][15.1] ?? "MISSING",
                                   placeholder: formTextFieldPlaceholders[2][15.1] ?? "MISSING",
-                                  text: $postalLine1)
+                                  text: $postalLine1, sender: .editor)
                     
                     FormTextField(iD: "postalLine2",
                                   question: formQuestions[2][15.2] ?? "MISSING",
                                   placeholder: formTextFieldPlaceholders[2][15.2] ?? "MISSING",
-                                  text: $postalLine2)
+                                  text: $postalLine2, sender: .editor)
                     
                     FormTextField(iD: "postalSuburb",
                                   question: formQuestions[2][15.3] ?? "MISSING",
                                   placeholder: formTextFieldPlaceholders[2][15.3] ?? "MISSING",
-                                  text: $postalSuburb)
+                                  text: $postalSuburb, sender: .editor)
                     
                     FormTextField(iD: "postalCity",
                                   question: formQuestions[2][15.4] ?? "MISSING",
                                   placeholder: formTextFieldPlaceholders[2][15.4] ?? "MISSING",
-                                  text: $postalCity)
+                                  text: $postalCity, sender: .editor)
                     
                     FormTextField(iD: "postalProvince",
                                   question: formQuestions[2][15.5] ?? "MISSING",
                                   placeholder: formTextFieldPlaceholders[2][15.5] ?? "MISSING",
-                                  text: $postalProvince)
+                                  text: $postalProvince, sender: .editor)
                     
                     FormTextField(iD: "postalStreetCode",
                                   question: formQuestions[2][15.6] ?? "MISSING",
                                   placeholder: formTextFieldPlaceholders[2][15.6] ?? "MISSING",
-                                  text: $postalStreetCode)
+                                  text: $postalStreetCode, sender: .editor)
                         .keyboardType(.numberPad)
                 }
             }
@@ -283,14 +283,15 @@ struct ResidencyContact: View {
                 self.countryPassport = 0
                 self.permanentResident = ""
                 self.countryOfPermanentResidence = 0
-                self.permitType = 0
+                /*self.permitType = 0
                 self.countryOfPermit = 0
                 self.permitIssueDate = Date()
                 self.permitExpiryDate = Date()
                 self.contractIssueDate = Date()
                 self.contractExpiryDate = Date()
                 self.workPermitNumber = ""
-                changedValues.changedValues.merge(dict: ["nationality": countries[0], "countryPassport": countries[0], "permanentResident": "", "countryOfPermanentResidence": countries[0], "permitType": permitTypes[0], "countryOfPermit": countries[0], "permitIssueDate": Date(), "permitExpiryDate": Date(), "contractIssueDate": Date(), "contractExpiryDate": Date(), "workPermitNumber": ""])
+                changedValues.changedValues.merge(dict: ["nationality": countries[0], "countryPassport": countries[0], "permanentResident": "", "countryOfPermanentResidence": countries[0], "permitType": permitTypes[0], "countryOfPermit": countries[0], "permitIssueDate": Date(), "permitExpiryDate": Date(), "contractIssueDate": Date(), "contractExpiryDate": Date(), "workPermitNumber": ""])*/
+                changedValues.changedValues.merge(dict: ["nationality": countries[0], "countryPassport": countries[0], "permanentResident": "", "countryOfPermanentResidence": countries[0]])
             }
         }
         .onChange(of: permanentResident) { _ in
@@ -327,20 +328,26 @@ struct ResidencyContact: View {
         var isComplete: Bool = false
         
         // Handle the non-optional questions
-        if !sACitizen.isEmpty && countryBirth != 0 && !cityOfBirth.isEmpty && homeLanguage != 0 && corresLanguage != 0 && !cellNumber.isEmpty && !emailAddress.isEmpty && resCountry != 0 && !resLine1.isEmpty && !resLine2.isEmpty && !resSuburb.isEmpty && !resCity.isEmpty && !resProvince.isEmpty && !resStreetCode.isEmpty && (!lengthAtAddressYears.isEmpty || !lengthAtAddressMonths.isEmpty) && !resIsPostal.isEmpty {
+        if !sACitizen.isEmpty && countryBirth != 0 && !cityOfBirth.isEmpty && homeLanguage != 0 && corresLanguage != 0 && !cellNumber.isEmpty && !emailAddress.isEmpty && resCountry != 0 && !resLine1.isEmpty && !resSuburb.isEmpty && !resCity.isEmpty && !resProvince.isEmpty && !resStreetCode.isEmpty && (!lengthAtAddressYears.isEmpty || !lengthAtAddressMonths.isEmpty) && !resIsPostal.isEmpty {
             
             if sACitizen == "No" && resIsPostal == "No" {
-                if nationality != 0 && countryPassport != 0 && permitType != 0 && countryOfPermit != 0 && !workPermitNumber.isEmpty && postalCountry != 0 && !postalLine1.isEmpty && !postalLine2.isEmpty && !postalSuburb.isEmpty && !postalCity.isEmpty && !postalProvince.isEmpty && !postalStreetCode.isEmpty && ((permanentResident == "No" && countryOfPermanentResidence != 0) || permanentResident == "Yes") {
+                /*if nationality != 0 && countryPassport != 0 && permitType != 0 && countryOfPermit != 0 && !workPermitNumber.isEmpty && postalCountry != 0 && !postalLine1.isEmpty && !postalSuburb.isEmpty && !postalCity.isEmpty && !postalProvince.isEmpty && !postalStreetCode.isEmpty && ((permanentResident == "No" && countryOfPermanentResidence != 0) || permanentResident == "Yes") {
+                    isComplete = true
+                }*/
+                if nationality != 0 && countryPassport != 0 && postalCountry != 0 && !postalLine1.isEmpty && !postalSuburb.isEmpty && !postalCity.isEmpty && !postalProvince.isEmpty && !postalStreetCode.isEmpty && ((permanentResident == "No" && countryOfPermanentResidence != 0) || permanentResident == "Yes") {
                     isComplete = true
                 }
                 // else isComplete = false
             } else if sACitizen == "No" && resIsPostal == "Yes" {
-                if nationality != 0 && countryPassport != 0 && permitType != 0 && countryOfPermit != 0 && !workPermitNumber.isEmpty && ((permanentResident == "No" && countryOfPermanentResidence != 0) || permanentResident == "Yes") {
+                /*if nationality != 0 && countryPassport != 0 && permitType != 0 && countryOfPermit != 0 && !workPermitNumber.isEmpty && ((permanentResident == "No" && countryOfPermanentResidence != 0) || permanentResident == "Yes") {
+                    isComplete = true
+                }*/
+                if nationality != 0 && countryPassport != 0 && ((permanentResident == "No" && countryOfPermanentResidence != 0) || permanentResident == "Yes") {
                     isComplete = true
                 }
                 // else isComplete = false
             } else if sACitizen == "Yes" && resIsPostal == "No" {
-                if postalCountry != 0 && !postalLine1.isEmpty && !postalLine2.isEmpty && !postalSuburb.isEmpty && !postalCity.isEmpty && !postalProvince.isEmpty && !postalStreetCode.isEmpty {
+                if postalCountry != 0 && !postalLine1.isEmpty && !postalSuburb.isEmpty && !postalCity.isEmpty && !postalProvince.isEmpty && !postalStreetCode.isEmpty {
                     isComplete = true
                 }
                 // else isComplete = false

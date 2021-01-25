@@ -36,6 +36,7 @@ struct SubsidyCredit: View {
     // MARK: - Properties
     let resignPub = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
     
+    // MARK: - body
     var body: some View {
         Form() {
             Section(header: Text("SUBSIDY")) {

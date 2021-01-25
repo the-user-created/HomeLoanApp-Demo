@@ -31,6 +31,7 @@ struct PersonalDetailsEditing: View {
     @State var educationLevel = 0
     @State var ethnicGroup = 0
     @State var singleHouse = ""
+    @State var currentResStatus = 0
     @State var maritalStatus = 0
     @State var countryMarriage = 0
     @State var spouseIncome = ""
@@ -54,12 +55,13 @@ struct PersonalDetailsEditing: View {
     let resignPub = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
     let scanButtonInsets = EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
     
-    let titles = ["--select--","Mr", "Mrs", "Ms", "Dr", "Prof", "--TBA--"]
-    let identityType = ["--select--","Passport", "ID Book", "SmartCard ID", "--TBA--"]
+    let titles = ["--select--", "Dr", "Me", "Mej", "Mev", "Miss", "Mnr", "Mr", "Mrs", "Ms", "Prof"]
+    let identityType = ["--select--", "ID Book", "Passport", "Recognised Refugee in SA (Section 24)", "SA Refugee Identity (Maroon ID)", "Smart ID Card"]
     let genderSelection = ["--select--", "Male", "Female"]
-    let educationLevels = ["--select--", "Matric", "Bachelor degree", "Masters degree", "Doctorate", "Diploma", "--TBA--"]
-    let ethnicGroups = ["--select--", "Asian", "Black", "Caucasian", "Coloured", "Indian", "--TBA--"]
-    let maritalStatuses = ["--select--", "Divorced", "Married", "Single", "--TBA--"]
+    let educationLevels = ["--select--", "Cretificate 24 Months", "Degree", "Diploma 1 Years", "Diploma 2 Years", "Diploma 3 Years", "Doctorate", "Honours", "Masters", "Matric", "No Matric", "Post Graduate Diploma"]
+    let ethnicGroups = ["--select--", "Asian", "Black", "Coloured", "White"]
+    let maritalStatuses = ["--select--", "Divorced", "Married Antenuptial Contract", "Married in Community of Property", "Other (Including Common Law)", "Single"]
+    let currentResStatuses = ["--select--", "Other", "Owner", "Tenant"]
     
     // MARK: - init
     init(isDone: Binding<Bool>, identityDoneBinding: Binding<Bool?>, application: Application, sender: Sender) {
@@ -80,6 +82,7 @@ struct PersonalDetailsEditing: View {
         self._educationLevel = State(wrappedValue: educationLevels.firstIndex(of: self.application.educationLevel ?? "--select--") ?? 0)
         self._ethnicGroup = State(wrappedValue: ethnicGroups.firstIndex(of: self.application.ethnicGroup ?? "--select--") ?? 0)
         self._singleHouse = State(wrappedValue: self.application.singleHouse ?? "")
+        self._currentResStatus = State(wrappedValue: currentResStatuses.firstIndex(of: self.application.currentResStatus ?? "--select--") ?? 0)
         self._maritalStatus = State(wrappedValue: maritalStatuses.firstIndex(of: self.application.maritalStatus ?? "--select--") ?? 0)
         self._countryMarriage = State(wrappedValue: countries.firstIndex(of: self.application.countryMarriage ?? "--select--") ?? 0)
         self._spouseIncome = State(wrappedValue: self.application.spouseIncome ?? "")
@@ -138,7 +141,7 @@ struct PersonalDetailsEditing: View {
                               text: $iDPassNumber, sender: .editor)
                     .keyboardType(identityType[iDType].contains("ID") ? .numberPad : .default)
                 
-                if !identityType[iDType].lowercased().contains("id") && iDType != 0 {
+                if iDType == 2 {
                     FormDatePicker(iD: "passExpiryDate",
                                    question: formQuestions[1][7] ?? "MISSING",
                                    dateRangeOption: 1,
@@ -172,8 +175,13 @@ struct PersonalDetailsEditing: View {
                           question: formQuestions[1][12] ?? "MISSING",
                           selected: $singleHouse)
                 
-                FormPicker(iD: "maritalStatus",
+                FormPicker(iD: "currentResStatus",
                            question: formQuestions[1][13] ?? "MISSING",
+                           selectionOptions: currentResStatuses,
+                           selection: $currentResStatus)
+                
+                FormPicker(iD: "maritalStatus",
+                           question: formQuestions[1][14] ?? "MISSING",
                            selectionOptions: maritalStatuses,
                            selection: $maritalStatus)
                 
@@ -182,21 +190,21 @@ struct PersonalDetailsEditing: View {
             if maritalStatuses[maritalStatus] == "Married" {
                 Section(header: Text("MARRIAGE INFO")) {
                     FormPicker(iD: "countryMarriage",
-                               question: formQuestions[1][13.1] ?? "MISSING",
+                               question: formQuestions[1][14.1] ?? "MISSING",
                                selectionOptions: countries,
                                selection: $countryMarriage)
                     
                     FormYesNo(iD: "spouseIncome",
-                               question: formQuestions[1][13.2] ?? "MISSING",
+                               question: formQuestions[1][14.2] ?? "MISSING",
                                selected: $spouseIncome)
                     
                     FormYesNo(iD: "aNC",
-                              question: formQuestions[1][13.3] ?? "MISSING",
+                              question: formQuestions[1][14.3] ?? "MISSING",
                               selected: $aNC)
                     
                     FormTextField(iD: "numDependents",
-                                  question: formQuestions[1][13.4] ?? "MISSING",
-                                  placeholder: formTextFieldPlaceholders[1][13.4] ?? "MISSING",
+                                  question: formQuestions[1][14.4] ?? "MISSING",
+                                  placeholder: formTextFieldPlaceholders[1][14.4] ?? "MISSING",
                                   text: $numDependents, sender: .editor)
                         .keyboardType(.numberPad)
                     
@@ -205,23 +213,23 @@ struct PersonalDetailsEditing: View {
             
             Section(header: Text("PERSONAL DETAILS")) {
                 FormYesNo(iD: "mainResidence",
-                          question: formQuestions[1][14] ?? "MISSING",
+                          question: formQuestions[1][15] ?? "MISSING",
                           selected: $mainResidence)
                 
                 FormYesNo(iD: "firstTimeHomeBuyer",
-                          question: formQuestions[1][15] ?? "MISSING",
+                          question: formQuestions[1][16] ?? "MISSING",
                           selected: $firstTimeHomeBuyer)
                 
                 FormYesNo(iD: "socialGrant",
-                          question: formQuestions[1][16] ?? "MISSING",
+                          question: formQuestions[1][17] ?? "MISSING",
                           selected: $socialGrant)
                 
                 FormYesNo(iD: "publicOfficial",
-                          question: formQuestions[1][17] ?? "MISSING",
+                          question: formQuestions[1][18] ?? "MISSING",
                           selected: $publicOfficial)
                 
                 FormYesNo(iD: "relatedOfficial",
-                          question: formQuestions[1][18] ?? "MISSING",
+                          question: formQuestions[1][19] ?? "MISSING",
                           selected: $relatedOfficial)
             }
             
@@ -243,7 +251,7 @@ struct PersonalDetailsEditing: View {
             handleSaving()
         }
         .onChange(of: maritalStatus) { value in
-            if maritalStatus != 2 {
+            if maritalStatus != 2 && maritalStatus != 3 {
                 self.countryMarriage = 0
                 self.spouseIncome = ""
                 self.aNC = ""
@@ -252,7 +260,7 @@ struct PersonalDetailsEditing: View {
             }
         }
         .onChange(of: iDType) { value in
-            if identityType[iDType].lowercased().contains("id") {
+            if iDType != 2 {
                 self.passExpiryDate = Date()
                 changedValues.updateKeyValue("passExpiryDate", value: Date())
             }
@@ -295,7 +303,12 @@ struct PersonalDetailsEditing: View {
     private func hasChanged() -> Bool {
         self.savingValues = ["title": self.title, "surname": self.surname, "firstNames": self.firstNames, "gender": self.gender, "dateOfBirth": self.dateOfBirth, "iDType": self.iDType, "iDPassNumber": self.iDPassNumber, "passExpiryDate": self.passExpiryDate, "taxNumber": self.taxNumber, "taxReturn": self.taxReturn, "educationLevel": self.educationLevel, "ethnicGroup": self.ethnicGroup, "singleHouse": self.singleHouse, "maritalStatus": self.maritalStatus, "countryMarriage": self.countryMarriage, "spouseIncome": self.spouseIncome, "aNC": self.aNC, "numDependents": self.numDependents, "mainResidence": self.mainResidence, "firstTimeHomeBuyer": self.firstTimeHomeBuyer, "socialGrant": self.socialGrant, "publicOfficial": self.publicOfficial, "relatedOfficial": self.relatedOfficial]
         
-        if self.savingValues != self.initValues {
+        if savingValues != initValues {
+            let initIDType = initValues["iDType"]
+            if initIDType != savingValues["iDType"] {
+                deleteScans(initIDType: initIDType)
+            }
+            
             return true
         }
         
@@ -304,7 +317,7 @@ struct PersonalDetailsEditing: View {
         return false
     }
     
-    // MARK: - addToApplication()
+    // MARK: - addToApplication
     private func addToApplication() {
         UIApplication.shared.endEditing()
         
@@ -330,14 +343,57 @@ struct PersonalDetailsEditing: View {
         }
     }
     
-    // MARK: - switchIDPassport()
+    private func deleteScans(initIDType: AnyHashable?) {
+        let loanID: String = self.application.loanID?.uuidString ?? ""
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        
+        let idType = initIDType?.description
+        
+        if idType == "3" && !loanID.isEmpty { // Deletes the scans for Smart ID Card scans
+            for scanNumber in 0..<2 {
+                let fileName = "passport_id_image_\(loanID)_\(scanNumber).png"
+                let fileURL = documentsDirectory.appendingPathComponent(fileName)
+                
+                // Checks if file exists, removes it if so.
+                if FileManager.default.fileExists(atPath: fileURL.path) {
+                    do {
+                        try FileManager.default.removeItem(atPath: fileURL.path)
+                        print("print - Removed old image")
+                    } catch let removeError {
+                        print("print - Couldn't remove file at path", removeError)
+                    }
+
+                }
+            }
+            
+            self.application.idPassScanned = false
+        } else if (idType == "1" || idType == "2") && !loanID.isEmpty { // Deletes the scans for Passport or ID Book scans
+            let fileName = "passport_id_image_\(loanID)_0.png"
+            let fileURL = documentsDirectory.appendingPathComponent(fileName)
+            
+            // Checks if file exists, removes it if so.
+            if FileManager.default.fileExists(atPath: fileURL.path) {
+                do {
+                    try FileManager.default.removeItem(atPath: fileURL.path)
+                    print("print - Removed old image")
+                } catch let removeError {
+                    print("print - Couldn't remove file at path", removeError)
+                }
+
+            }
+            
+            self.application.idPassScanned = false
+        }
+    }
+    
+    // MARK: - switchIDPassport
     private func switchIDPassport(value: String, loc: Double)  -> Double {
         var location: Double = loc
         
         if value.lowercased().contains("id") {
             location += 0.1
             return location
-        } else if value.lowercased().contains("passport") {
+        } else if value == "Passport" {
             location += 0.2
             return location
         } else {

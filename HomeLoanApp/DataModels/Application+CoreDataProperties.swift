@@ -46,6 +46,7 @@ extension Application {
     @NSManaged public var educationLevel: String?
     @NSManaged public var ethnicGroup: String?
     @NSManaged public var singleHouse: String?
+    @NSManaged public var currentResStatus: String?
     @NSManaged public var maritalStatus: String?
     @NSManaged public var countryMarriage: String?
     @NSManaged public var spouseIncome: String?
@@ -66,13 +67,13 @@ extension Application {
     @NSManaged public var cityOfBirth: String?
     @NSManaged public var permanentResident: String?
     @NSManaged public var countryOfPermanentResidence: String?
-    @NSManaged public var permitType: String?
+    /*@NSManaged public var permitType: String?
     @NSManaged public var countryOfPermit: String?
     @NSManaged public var permitIssueDate: Date?
     @NSManaged public var permitExpiryDate: Date?
     @NSManaged public var contractIssueDate: Date?
     @NSManaged public var contractExpiryDate: Date?
-    @NSManaged public var workPermitNumber: String?
+    @NSManaged public var workPermitNumber: String?*/
     @NSManaged public var homeLanguage: String?
     @NSManaged public var corresLanguage: String?
     @NSManaged public var cellNumber: String?
@@ -207,7 +208,11 @@ extension Application {
     @NSManaged public var otherLiabilities: String?
     
     // MARK: - Document Scans
-    @NSManaged public var scansDone: Bool
+    @NSManaged public var documentScansDone: Bool
+    @NSManaged public var idPassScanned: Bool
+    @NSManaged public var incomeStructure: String?
+    @NSManaged public var salaryPaySlipsScanned: Bool
+    @NSManaged public var bankStatementsScanned: Bool
     
     // MARK: - Notification/Warranty
     @NSManaged public var notificationsCheck: String?

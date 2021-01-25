@@ -12,9 +12,14 @@ enum Sender {
     case creator
 }
 
-enum Sheets {
+enum ScannerSheets {
     case scannerIDPass
     case scannerTips
+    case scannerBankStatements
+    case scannerSalaryPay
+    case idPassScan
+    case bankStatementsScan
+    case salaryPayScan
     case none
 }
 

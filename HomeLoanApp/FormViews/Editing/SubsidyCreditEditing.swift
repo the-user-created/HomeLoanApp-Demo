@@ -12,8 +12,8 @@ struct SubsidyCreditEditing: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment (\.presentationMode) var presentationMode
     @EnvironmentObject var applicationCreation: ApplicationCreation
-    @ObservedObject var application: Application
     @EnvironmentObject var changedValues: ChangedValues
+    @ObservedObject var application: Application
     
     // MARK: - State Variables
     @State var subsidyForHome = ""

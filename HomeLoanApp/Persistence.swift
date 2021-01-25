@@ -32,7 +32,7 @@ struct PersistenceController {
         newApplication.firstNames = "David Samuel"
         newApplication.gender = "Male"
         newApplication.dateOfBirth = Date()
-        newApplication.iDType = "Smartcard ID"
+        newApplication.iDType = "Smart ID Card"
         newApplication.iDPassNumber = "982868624224"
         newApplication.iDPassExpiryDate = Date()
         newApplication.taxNumber = "38728626825"

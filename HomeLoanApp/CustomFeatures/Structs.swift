@@ -10,6 +10,40 @@ import Combine
 import SwiftUI
 import Vision
 import VisionKit
+import MessageUI
+
+// MARK: - FormLabel
+struct FormLabel: View {
+    var question: String
+    var textColor: Color = .primary
+    var infoButton: Bool = false
+    var formSender: String = ""
+    @State var alertShowing: Bool = false
+    
+    var body: some View {
+        HStack() {
+            Text(question)
+                .foregroundColor(textColor)
+                .multilineTextAlignment(formSender == "YesNo" ? .center : .leading)
+            
+            if infoButton && formSender != "YesNo" {
+                Button(action: {
+                    self.alertShowing = true
+                }) {
+                    Image(systemName: "info.circle")
+                        .resizable()
+                        .scaledToFit()
+                }
+                .frame(width: 22.0, height: 22.0)
+            }
+        }
+        .buttonStyle(BorderlessButtonStyle())
+        .alert(isPresented: $alertShowing) {
+            Alert(title: Text("INFO"), message: Text("something"), dismissButton: .default(Text("OK")))
+        }
+    }
+}
+
 
 // MARK: - FormDatePicker
 struct FormDatePicker: View {
@@ -17,6 +51,7 @@ struct FormDatePicker: View {
     
     var iD: String
     var textColor: Color = .primary
+    var infoButton: Bool = false
     var question: String
     var dateRangeOption: Int
     @Binding var dateSelection: Date
@@ -28,9 +63,7 @@ struct FormDatePicker: View {
                        in: ...Date(),
                        displayedComponents: .date) {
                 
-                Text(question)
-                    .foregroundColor(textColor)
-                    .multilineTextAlignment(.leading)
+                FormLabel(question: question, infoButton: infoButton)
             }
             .onChange(of: self.dateSelection, perform: { _ in
                 changedValues.updateKeyValue(iD, value: dateSelection)
@@ -40,9 +73,7 @@ struct FormDatePicker: View {
                        in: Date()...,
                        displayedComponents: .date) {
                 
-                Text(question)
-                    .foregroundColor(textColor)
-                    .multilineTextAlignment(.leading)
+                FormLabel(question: question, infoButton: infoButton)
             }
             .onChange(of: self.dateSelection, perform: { _ in
                 changedValues.updateKeyValue(iD, value: dateSelection)
@@ -58,23 +89,15 @@ struct FormPicker: View {
     
     var iD: String
     var textColor: Color = .primary
+    var infoButton: Bool = false
     var question: String
     var selectionOptions: Array<String>
-    var infoButton: Bool = false
     @Binding var selection: Int
     
     var body: some View {
-        /*HStack() {
-            if infoButton {
-                Text(question)
-                    .foregroundColor(textColor)
-                    .multilineTextAlignment(.leading)
-            }*/
-            
+        HStack() {
             Picker(selection: $selection,
-                   label: Text(question)
-                    .foregroundColor(textColor)
-                    .multilineTextAlignment(.leading)) {
+                   label: FormLabel(question: question, infoButton: infoButton)) {
                 ForEach(0 ..< selectionOptions.count) {
                     Text(self.selectionOptions[$0])
                         .foregroundColor(self.selectionOptions[$0] == "--select--" ? .secondary: .blue)
@@ -82,24 +105,9 @@ struct FormPicker: View {
             }
             .onChange(of: selection) { value in
                 changedValues.updateKeyValue(iD, value: selectionOptions[value])
-                /*if selection != 0 {
-                    changedValues.updateKeyValue(iD, value: selectionOptions[selection])
-                } else {
-                    changedValues.removeValue(forKey: iD)
-                }*/
-            }
-            
-            /*if infoButton {
-                Button(action: {
-                    
-                }) {
-                    Image(systemName: "info.circle")
-                        .resizable()
-                        .frame(width: 22.0, height: 22.0)
-                }
             }
         }
-        .buttonStyle(BorderlessButtonStyle())*/
+        .buttonStyle(BorderlessButtonStyle())
     }
 }
 
@@ -109,6 +117,7 @@ struct FormTextField: View {
     @EnvironmentObject var changedValues: ChangedValues
     
     var iD: String
+    var infoButton: Bool = false
     var question: String
     var placeholder: String
     var textColor: Color = .primary
@@ -126,7 +135,7 @@ struct FormTextField: View {
         
         HStack() {
             if question != "" {
-                Text(question)
+                FormLabel(question: question, infoButton: infoButton)
             }
             
             TextField("e.g. " + placeholder.uppercased(),
@@ -148,6 +157,7 @@ struct FormRandTextField: View {
     @EnvironmentObject var changedValues: ChangedValues
     
     var iD: String
+    var infoButton: Bool = false
     var question: String
     var textColor: Color = .primary
     @Binding var text: String
@@ -162,7 +172,7 @@ struct FormRandTextField: View {
         })
         
         HStack() {
-            Text(question)
+            FormLabel(question: question, infoButton: infoButton)
             
             TextField("R",
                       text: binding,
@@ -184,6 +194,7 @@ struct FormOtherRand: View {
     @EnvironmentObject var changedValues: ChangedValues
     
     var iD: String
+    var infoButton: Bool = false
     var question: String
     var textColor: Color = .primary
     @Binding var other: String
@@ -206,7 +217,7 @@ struct FormOtherRand: View {
         
         VStack() {
             HStack() {
-                Text(question)
+                FormLabel(question: question, infoButton: infoButton)
                 
                 TextField("R",
                           text: randBinding, onEditingChanged: { _ in updateChangedValues() },
@@ -238,6 +249,7 @@ struct FormLenAt: View {
     @EnvironmentObject var changedValues: ChangedValues
     
     var iD: String
+    var infoButton: Bool = false
     var question: String
     var textColor: Color = .primary
     @Binding var yearsText: String
@@ -247,7 +259,7 @@ struct FormLenAt: View {
     
     var body: some View {
         VStack() {
-            Text(question)
+            FormLabel(question: question, infoButton: infoButton)
             
             HStack() {
                 TextField("",
@@ -292,23 +304,28 @@ struct FormYesNo: View {
     @EnvironmentObject var changedValues: ChangedValues
     
     var iD: String
+    var infoButton: Bool = false
     var question: String
-    let buttonOneText: String = "Yes"
-    let buttonTwoText: String = "No"
     var buttonOneImage: String = "checkmark.circle"
     var buttonTwoImage: String = "checkmark.circle"
-    @Binding var selected: String
+    @State var buttonOneText: String
+    @State var buttonTwoText: String
     @State var buttonOneChecked: Bool = false
     @State var buttonTwoChecked: Bool = false
+    @State var alertShowing: Bool = false
+    @Binding var selected: String
     var padding: CGFloat = 10
     
-    init(iD: String, question: String, selected: Binding<String>) {
+    init(iD: String, infoButton: Bool = false, question: String, selected: Binding<String>, buttonOneText: String = "Yes", buttonTwoText: String = "No") {
         self.iD = iD
+        self.infoButton = infoButton
         self.question = question
+        self._buttonOneText = State(wrappedValue: buttonOneText)
+        self._buttonTwoText = State(wrappedValue: buttonTwoText)
         self._selected = selected
-        if self.selected == "Yes" {
+        if self.selected == self.buttonOneText {//"Yes" {
             self._buttonOneChecked = State(wrappedValue: true)
-        } else if self.selected == "No" {
+        } else if self.selected == self.buttonTwoText {//"No" {
             self._buttonTwoChecked = State(wrappedValue: true)
         }
         
@@ -319,8 +336,7 @@ struct FormYesNo: View {
     
     var body: some View {
         VStack(alignment: .center) {
-            Text(question)
-                .multilineTextAlignment(.center)
+            FormLabel(question: question, infoButton: infoButton, formSender: "YesNo")
             
             HStack() {
                 Spacer()
@@ -328,7 +344,7 @@ struct FormYesNo: View {
                 Button(action: {
                     handleButtons(buttonOneText)
                 }, label: {
-                    if buttonOneChecked || selected == "Yes" {
+                    if buttonOneChecked || selected == buttonOneText {//"Yes" {
                         Image(systemName: buttonOneImage + ".fill")
                             .foregroundColor(.blue)
                     } else {
@@ -346,7 +362,7 @@ struct FormYesNo: View {
                 Button(action: {
                     handleButtons(buttonTwoText)
                 }, label: {
-                    if buttonTwoChecked || selected == "No" {
+                    if buttonTwoChecked || selected == buttonTwoText {//"No" {
                         Image(systemName: buttonTwoImage + ".fill")
                             .foregroundColor(.blue)
                     } else {
@@ -361,15 +377,27 @@ struct FormYesNo: View {
                 
                 Spacer()
             }
+            
+            Button(action: {
+                self.alertShowing = true
+            }) {
+                Image(systemName: "info.circle")
+                    .resizable()
+                    .scaledToFit()
+            }
+            .frame(width: 22.0, height: 22.0)
         }
         .onChange(of: selected == "") { _ in
             buttonOneChecked = false
             buttonTwoChecked = false
         }
+        .alert(isPresented: $alertShowing) {
+            Alert(title: Text("INFO"), message: Text("something"), dismissButton: .default(Text("OK")))
+        }
     }
     
     private func handleButtons(_ checkedButton: String) {
-        if checkedButton == "Yes" {
+        if checkedButton == buttonOneText {//"Yes" {
             if !buttonOneChecked {
                 buttonOneChecked.toggle()
                 selected = buttonOneText
@@ -381,7 +409,7 @@ struct FormYesNo: View {
             if buttonTwoChecked {
                 buttonTwoChecked.toggle()
             }
-        } else if checkedButton == "No" {
+        } else if checkedButton == buttonTwoText {//"No" {
             if !buttonTwoChecked {
                 buttonTwoChecked.toggle()
                 selected = buttonTwoText
@@ -455,7 +483,7 @@ struct ScannerView: UIViewControllerRepresentable {
         }
          
         func documentCameraViewControllerDidCancel(_ controller: VNDocumentCameraViewController) {
-            // nil
+            controller.navigationController?.popViewController(animated: true)
             completionHandler(nil)
         }
          
@@ -495,6 +523,93 @@ struct ScannerView: UIViewControllerRepresentable {
 }
 
 
+// MARK: - ScannedImageView
+struct ImageWithURL: View {
+    @Environment(\.presentationMode) var presentationMode
+    
+    @State var image: UIImage?
+    @State var image2: UIImage?
+    @State var identityType: String
+    
+    var documentsURL: URL {
+        return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    }
+    
+    init(url: String, identityType: String) {
+        self._identityType = State(wrappedValue: identityType)
+        
+        if self.identityType == "Passport" || self.identityType == "ID Book" {
+            self._image = State(wrappedValue: load(fileName: url))
+        } else if self.identityType == "Smart ID Card" {
+            self._image = State(wrappedValue: load(fileName: url + "0.png"))
+            self._image2 = State(wrappedValue: load(fileName: url + "1.png"))
+        }
+    }
+
+    var body: some View {
+        ScrollView() {
+            Group() {
+                HStack() {
+                    Spacer()
+                    
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        Text("Done")
+                            .foregroundColor(.blue)
+                            .font(.headline)
+                    }
+                    .padding(.trailing, 10)
+                }
+                
+                Divider()
+                
+                Text(identityType == "Smart ID Card" ? "\(identityType) Scan #1" : "\(identityType) Scan")
+                    .font(.title2)
+                
+                Divider()
+                
+                Image(uiImage: self.image ?? UIImage())
+                    .resizable()
+                    .scaledToFit()
+                    .clipped()
+                    .padding()
+                
+                if identityType == "Smart ID Card" {
+                    Divider()
+                    
+                    Text("\(identityType) Scan #2")
+                        .font(.title2)
+                    
+                    Divider()
+                    
+                    Image(uiImage: self.image2 ?? UIImage())
+                        .resizable()
+                        .scaledToFit()
+                        .clipped()
+                        .padding()
+                }
+            }
+            .padding()
+        }
+    }
+    
+    private func load(fileName: String) -> UIImage? {
+        let fileURL = documentsURL.appendingPathComponent(fileName)
+        
+        do {
+            let imageData = try Data(contentsOf: fileURL)
+            print("print - Loaded image")
+            return UIImage(data: imageData)
+        } catch {
+            print("print - Error loading image : \(error)")
+        }
+        
+        return nil
+    }
+}
+
+
 // MARK: - CustomTextField
 struct CustomTextField: View {
     var placeholder: String
@@ -516,6 +631,56 @@ struct CustomTextField: View {
                       onCommit: commit)
                 .foregroundColor(textColor)
         }
+    }
+}
+
+
+// MARK: - MailView
+struct MailView: UIViewControllerRepresentable {
+    
+    @State var clientName: String
+    @State var emailBody: String
+    @Binding var isShowing: Bool
+    @Binding var result: Result<MFMailComposeResult, Error>?
+
+    class Coordinator: NSObject, MFMailComposeViewControllerDelegate {
+        
+        //@State var clientName: String
+        @Binding var isShowing: Bool
+        @Binding var result: Result<MFMailComposeResult, Error>?
+
+        init(isShowing: Binding<Bool>, result: Binding<Result<MFMailComposeResult, Error>?>) {//clientName: String, isShowing: Binding<Bool>, result: Binding<Result<MFMailComposeResult, Error>?>) {
+            //_clientName = State(wrappedValue: clientName)
+            _isShowing = isShowing
+            _result = result
+        }
+
+        func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+            defer {
+                isShowing = false
+            }
+            guard error == nil else {
+                self.result = .failure(error!)
+                return
+            }
+            self.result = .success(result)
+        }
+    }
+
+    func makeCoordinator() -> Coordinator {
+        return Coordinator(isShowing: $isShowing, result: $result)//clientName: clientName, isShowing: $isShowing, result: $result)
+    }
+
+    func makeUIViewController(context: UIViewControllerRepresentableContext<MailView>) -> MFMailComposeViewController {
+        let vc = MFMailComposeViewController()
+        vc.mailComposeDelegate = context.coordinator
+        vc.setSubject("Loan Application for \(clientName)")
+        vc.setMessageBody(emailBody, isHTML: false)
+        return vc
+    }
+
+    func updateUIViewController(_ uiViewController: MFMailComposeViewController, context: UIViewControllerRepresentableContext<MailView>) {
+
     }
 }
 

@@ -7,15 +7,19 @@
 
 import SwiftUI
 import CoreData
+import MessageUI
 
 struct ChoosePageCreating: View {
     // MARK: - Wrapped Objects
     @Environment(\.managedObjectContext) var viewContext
+    @Environment(\.openURL) var openURL
     @EnvironmentObject var applicationCreation: ApplicationCreation
+    @EnvironmentObject var changedValues: ChangedValues
     
     // MARK: - State Variables
     @State var assetsLiabilitiesDone: Bool = false
     @State var residencyContactDone: Bool = false
+    @State var incomeDeductionsDone: Bool = false
     @State var personalDetailsDone: Bool = false
     @State var generalDetailsDone: Bool = false
     @State var subsidyCreditDone: Bool = false
@@ -23,11 +27,15 @@ struct ChoosePageCreating: View {
     @State var notificationDone: Bool = false
     @State var employmentDone: Bool = false
     @State var expensesDone: Bool = false
-    @State var incomeDone: Bool = false
-    
-    @State var identityDone: Bool?
     
     @State var selection: Int?
+    
+    @State var identityDone: Bool?
+    @State var notificationsCheck: String = ""
+    
+    @State var result: Result<MFMailComposeResult, Error>? = nil
+    @State var isShowingMailView = false
+    @State var canSendMail: Bool = MFMailComposeViewController.canSendMail()
     
     // MARK: - body
     var body: some View {
@@ -184,28 +192,28 @@ struct ChoosePageCreating: View {
             // Income & Deductions
             Group() {
                 if !applicationCreation.incomeSaved {
-                    NavigationLink(destination: IncomeDeductions(isDone: $incomeDone), tag: 10, selection: $selection) {
+                    NavigationLink(destination: IncomeDeductions(isDone: $incomeDeductionsDone), tag: 10, selection: $selection) {
                         HStack() {
                             Text("Income & Deductions")
                                 .font(.headline)
                             
                             Spacer()
                             
-                            Image(systemName: incomeDone ? "checkmark.circle.fill": "checkmark.circle")
-                                .foregroundColor(incomeDone ? .green: .red)
+                            Image(systemName: incomeDeductionsDone ? "checkmark.circle.fill": "checkmark.circle")
+                                .foregroundColor(incomeDeductionsDone ? .green: .red)
                         }
                     }
                     .disabled(!generalDetailsDone)
                 } else {
-                    NavigationLink(destination: IncomeDeductionsEditing(isDone: $incomeDone, application: applicationCreation.application, sender: .creator), tag: 11, selection: $selection) {
+                    NavigationLink(destination: IncomeDeductionsEditing(isDone: $incomeDeductionsDone, application: applicationCreation.application, sender: .creator), tag: 11, selection: $selection) {
                         HStack() {
                             Text("Income & Deductions")
                                 .font(.headline)
                             
                             Spacer()
                             
-                            Image(systemName: incomeDone ? "checkmark.circle.fill": "checkmark.circle")
-                                .foregroundColor(incomeDone ? .green: .red)
+                            Image(systemName: incomeDeductionsDone ? "checkmark.circle.fill": "checkmark.circle")
+                                .foregroundColor(incomeDeductionsDone ? .green: .red)
                         }
                     }
                 }
@@ -271,22 +279,40 @@ struct ChoosePageCreating: View {
                 }
             }
             
-            // Notification & Warranty, Document Scans
+            // Document Scans
             Group() {
-                NavigationLink(destination: DocumentScans(sender: .creator, isDone: $documentScansDone), tag: 16, selection: $selection) {
-                    HStack() {
-                        Text("Supporting Documents")
-                            .font(.headline)
-                        
-                        Spacer()
-                        
-                        Image(systemName: documentScansDone ? "checkmark.circle.fill" : "checkmark.circle")
-                            .foregroundColor(documentScansDone ? .green : .red)
+                if !applicationCreation.documentScansSaved {
+                    NavigationLink(destination: DocumentScans(isDone: $documentScansDone), tag: 16, selection: $selection) {
+                        HStack() {
+                            Text("Supporting Documents")
+                                .font(.headline)
+                            
+                            Spacer()
+                            
+                            Image(systemName: documentScansDone ? "checkmark.circle.fill" : "checkmark.circle")
+                                .foregroundColor(documentScansDone ? .green : .red)
+                        }
                     }
+                    .disabled(generalDetailsDone ? !(identityDone ?? false) : true)
+                } else {
+                    NavigationLink(destination: DocumentScansEditing(application: applicationCreation.application, isDone: $documentScansDone, sender: .creator), tag: 17, selection: $selection) {
+                        HStack() {
+                            Text("Supporting Documents")
+                                .font(.headline)
+                            
+                            Spacer()
+                            
+                            Image(systemName: documentScansDone ? "checkmark.circle.fill" : "checkmark.circle")
+                                .foregroundColor(documentScansDone ? .green : .red)
+                        }
+                    }
+                    .disabled(generalDetailsDone ? !identityDone! : true)
                 }
-                .disabled(generalDetailsDone ? !(identityDone ?? false) : true)
-                
-                NavigationLink(destination: NotificationView(application: applicationCreation.application, isDone: $notificationDone), tag: 17, selection: $selection) {
+            }
+            
+            // Notification & Warranty, Submission
+            Group() {
+                NavigationLink(destination: NotificationView(application: applicationCreation.application, notificationsCheck: $notificationsCheck, isDone: $notificationDone, sender: .creator), tag: 18, selection: $selection) {
                     HStack() {
                         Text("Notification")
                             .font(.headline)
@@ -297,24 +323,52 @@ struct ChoosePageCreating: View {
                             .foregroundColor(notificationDone ? .green: .red)
                     }
                 }
-                .disabled(!canSignOff())
+                .disabled(!canSubmit())
+                
+                // Submit Application
+                Section() {
+                    if !canSendMail { // Mail app is not installed
+                        HStack() {
+                            Text("Please download the Mail app to submit your application.")
+                            
+                            Spacer()
+                            
+                            Button(action: {
+                                openURL(URL(string: "https://apps.apple.com/za/app/mail/id1108187098")!)
+                            }) {
+                                Text("Get Mail")
+                                    .font(.headline)
+                            }
+                        }
+                    } else if canSendMail && notificationDone && canSubmit() { // Mail installed, notification accepted, sections completed
+                        Button(action: {
+                            self.isShowingMailView.toggle()
+                        }) {
+                            Text("Submit Application")
+                                .font(.title3)
+                                .bold()
+                        }
+                    } else if !notificationDone && canSendMail && canSubmit() { // Mail installed, notification not accepted, sections completed
+                        Text("Please accept the notification above to submit your application.")
+                    } else if !canSubmit() && canSendMail { // Mail installed, sections incomplete
+                        Text("Please complete the form sections above to submit your application")
+                    }
+                }
+                .buttonStyle(BorderlessButtonStyle())
             }
-            
-            // Submit Application
-            NavigationLink(destination: EmptyView(), tag: 18, selection: $selection) {
-                Text("Submit Application")
-                    .font(.title3)
-                    .bold()
-                    .foregroundColor(.blue)
-            }
-            .disabled(!canSignOff() && !notificationDone)
         }
         .navigationBarTitle("Creating", displayMode: .large)
+        .onChange(of: selection) { _ in
+            changedValues.cleanChangedValues()
+        }
+        /*.sheet(isPresented: $isShowingMailView) {
+            MailView(clientName: "\(String(describing: applicationCreation.application.surname)), \(String(describing: applicationCreation.application.firstNames))", isShowing: self.$isShowingMailView, result: self.$result)
+        }*/
     }
     
-    // MARK: - canSignOff
-    private func canSignOff() -> Bool {
-        if generalDetailsDone && personalDetailsDone && residencyContactDone && subsidyCreditDone && employmentDone && incomeDone && expensesDone && assetsLiabilitiesDone {
+    // MARK: - canSubmit
+    private func canSubmit() -> Bool {
+        if generalDetailsDone && personalDetailsDone && residencyContactDone && subsidyCreditDone && employmentDone && incomeDeductionsDone && expensesDone && assetsLiabilitiesDone {
             return true
         }
         

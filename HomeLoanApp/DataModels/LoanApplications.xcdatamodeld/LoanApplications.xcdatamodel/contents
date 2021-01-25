@@ -10,6 +10,7 @@
         <attribute name="assurance" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="averageComm" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="averageOvertime" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="bankStatementsScanned" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="basicSalary" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="cashOnHand" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="cellNumber" optional="YES" attributeType="String"/>
@@ -20,8 +21,6 @@
         <attribute name="coApplicantThreeName" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="coApplicantTwoName" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="companyRegNum" optional="YES" attributeType="String" defaultValueString=""/>
-        <attribute name="contractExpiryDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="contractIssueDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="corresLanguage" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="countryBirth" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="countryMarriage" optional="YES" attributeType="String" defaultValueString=""/>
@@ -33,9 +32,11 @@
         <attribute name="creditListings" optional="YES" attributeType="String"/>
         <attribute name="currentAcc" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="currentAdmin" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="currentResStatus" optional="YES" attributeType="String"/>
         <attribute name="dateOfBirth" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="debtReArrange" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="debtReview" optional="YES" attributeType="String"/>
+        <attribute name="documentScansDone" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="domesticWages" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="donations" optional="YES" attributeType="String"/>
         <attribute name="education" optional="YES" attributeType="String" defaultValueString=""/>
@@ -72,10 +73,12 @@
         <attribute name="housingScheme" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="housingSub" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="iDPassNumber" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="idPassScanned" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="iDType" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="incomeDeductionsDone" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="incomeFromSureties" optional="YES" attributeType="String"/>
         <attribute name="incomeSource" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="incomeStructure" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="insolvent" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="installmentExp" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="installmentSales" optional="YES" attributeType="String" defaultValueString=""/>
@@ -118,9 +121,6 @@
         <attribute name="pEDuration" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="pension" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="permanentResident" optional="YES" attributeType="String" defaultValueString=""/>
-        <attribute name="permitExpiryDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="permitIssueDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="permitType" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="personalDetailsDone" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="personalLoans" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="petrolCar" optional="YES" attributeType="String" defaultValueString=""/>
@@ -153,8 +153,8 @@
         <attribute name="resSuburb" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="retailAcc" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="sACitizen" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="salaryPaySlipsScanned" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="salesConsultant" optional="YES" attributeType="String" defaultValueString=""/>
-        <attribute name="scansDone" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="security" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="singleHouse" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="socialGrant" optional="YES" attributeType="String" defaultValueString=""/>
@@ -175,10 +175,9 @@
         <attribute name="wages" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="waterLights" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="workInZA" optional="YES" attributeType="String" defaultValueString=""/>
-        <attribute name="workPermitNumber" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="workPhoneNum" optional="YES" attributeType="String" defaultValueString=""/>
     </entity>
     <elements>
-        <element name="Application" positionX="-63" positionY="-18" width="128" height="2683"/>
+        <element name="Application" positionX="-63" positionY="-18" width="128" height="2668"/>
     </elements>
 </model>

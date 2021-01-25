@@ -36,11 +36,11 @@ struct GeneralDetails: View {
     // MARK: - Properties
     let resignPub = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
     
-    let loanPurpose = ["--select--","Buy an existing home", "--TBA--"]
-    let propertyType = ["--select--","Normal residential", "--TBA--"]
-    let salesConsultants = ["--select--","Gavin Young", "--TBA--"]
-    let applicationType = ["--select--","New loan", "--TBA--"]
-    let applicantType = ["--select--","Individual", "--TBA--"]
+    let salesConsultants = ["--select--", "Gavin Young", "--TBA--"]
+    let applicationType = ["--select--", "Further Loan", "New loan", "Pledge Application", "Switch from other institution"]
+    let applicantType = ["--select--","Closed Corporation", "Clubs", "Estate Late Client", "Incorporated Company", "Individual", "Joint with other person", "Joint with other persons", "Joint with spouse", "Joint with spouse and other person", "Joint with spouse and other persons", "Non-Profit Organisations and Friendly Societies", "Partnerships", "Private Company", "Public Company", "Schools", "Sole Proprietor", "Trust"]
+    let loanPurpose = ["--select--", "Bond Existing Home/Unbonded", "Build a new home", "Buy an existing home", "Buy vacant land", "Further Advance (ordinary)", "Home improvements"]
+    let propertyType = ["--select--", "Duets - Sectional Title", "Normal residential", "Sectional title", "Small Holdings Residential", "Vacant land"]
     
     // MARK: - body
     var body: some View {
@@ -76,7 +76,7 @@ struct GeneralDetails: View {
                 FormTextField(iD: "numberOfApplicants",
                               question: formQuestions[0][5] ?? "MISSING",
                               placeholder: formTextFieldPlaceholders[0][5] ?? "MISSING",
-                              text: $numberOfApplicants)
+                              text: $numberOfApplicants, sender: .editor)
                     .keyboardType(.numberPad)
             }
             
@@ -84,46 +84,44 @@ struct GeneralDetails: View {
                 Section(header: Text("CO-APPLICANTS")) {
                     VStack() {
                         switch numberOfApplicants {
-                        case "2":
-                            FormTextField(iD: "coApplicantOneName",
-                                          question: "Co-Applicant #1: ",
-                                          placeholder: "Steve Jobs",
-                                          text: $coApplicantOneName)
-                            
-                        case "3":
-                            FormTextField(iD: "coApplicantOneName",
-                                          question: "Co-Applicant #1: ",
-                                          placeholder: "Steve Jobs",
-                                          text: $coApplicantOneName)
-                            FormTextField(iD: "coApplicantTwoName",
-                                          question: "Co-Applicant #2: ",
-                                          placeholder: "Steve Jobs",
-                                          text: $coApplicantTwoName)
-                            
-                        case "4":
-                            FormTextField(iD: "coApplicantOneName",
-                                          question: "Co-Applicant #1: ",
-                                          placeholder: "Steve Jobs",
-                                          text: $coApplicantOneName)
-                            FormTextField(iD: "coApplicantTwoName",
-                                          question: "Co-Applicant #2: ",
-                                          placeholder: "Steve Jobs",
-                                          text: $coApplicantTwoName)
-                            FormTextField(iD: "coApplicantThreeName",
-                                          question: "Co-Applicant #3: ",
-                                          placeholder: "Steve Jobs",
-                                          text: $coApplicantThreeName)
-                            
-                        case let x where Int(x) ?? 0 < 1:
-                            Text("Please enter a valid number of applicants.")
-                                .foregroundColor(.blue)
-                            
-                        case let x where Int(x) ?? 5 > 4:
-                            Text("We currently only support in-app applications of up to 4 applicants. Please proceed to contact the Sales Consultant directly to get your application started.")
-                                .multilineTextAlignment(.leading)
-                                .foregroundColor(.blue)
-                        default:
-                            EmptyView()
+                            case "2":
+                                FormTextField(iD: "coApplicantOneName",
+                                              question: "Co-Applicant #1: ",
+                                              placeholder: "Steve Jobs",
+                                              text: $coApplicantOneName, sender: .editor)
+                                
+                            case "3":
+                                FormTextField(iD: "coApplicantOneName",
+                                              question: "Co-Applicant #1: ",
+                                              placeholder: "Steve Jobs",
+                                              text: $coApplicantOneName, sender: .editor)
+                                FormTextField(iD: "coApplicantTwoName",
+                                              question: "Co-Applicant #2: ",
+                                              placeholder: "Steve Jobs",
+                                              text: $coApplicantTwoName, sender: .editor)
+                                
+                            case "4":
+                                FormTextField(iD: "coApplicantOneName",
+                                              question: "Co-Applicant #1: ",
+                                              placeholder: "Steve Jobs",
+                                              text: $coApplicantOneName, sender: .editor)
+                                FormTextField(iD: "coApplicantTwoName",
+                                              question: "Co-Applicant #2: ",
+                                              placeholder: "Steve Jobs",
+                                              text: $coApplicantTwoName, sender: .editor)
+                                FormTextField(iD: "coApplicantThreeName",
+                                              question: "Co-Applicant #3: ",
+                                              placeholder: "Steve Jobs",
+                                              text: $coApplicantThreeName, sender: .editor)
+                                
+                            case let x where Int(x) ?? 0 < 1:
+                                Text("Please enter a valid number of applicants.")
+                            case let x where Int(x) ?? 5 > 4:
+                                Text("We currently only support in-app applications of up to 4 applicants. Please proceed to contact the Sales Consultant directly to get your application started.")
+                                    .multilineTextAlignment(.leading)
+                                    .foregroundColor(.blue)
+                            default:
+                                EmptyView()
                         }
                     }
                 }

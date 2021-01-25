@@ -12,14 +12,28 @@ struct NotificationView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment (\.presentationMode) var presentationMode
     @EnvironmentObject var applicationCreation: ApplicationCreation
-    @ObservedObject var application: Application
     @EnvironmentObject var changedValues: ChangedValues
+    @ObservedObject var application: Application
     
     // MARK: - State Variables
-    @State var notificationsCheck = ""
+    @Binding var notificationsCheck: String
     @Binding var isDone: Bool
+    @State var sender: Sender
     
     // MARK: - Properties
+    
+    // MARK: - init
+    /*init(application: Application, isDone: Binding<Bool>, sender: Sender) {
+        self.application = application
+        self._isDone = isDone
+        self._sender = State(wrappedValue: sender)
+        
+        if sender == .creator {
+            self._notificationsCheck = State(wrappedValue: applicationCreation.application.notificationsCheck ?? "")
+        } else if sender == .editor {
+            self._notificationsCheck = State(wrappedValue: self.application.notificationsCheck ?? "")
+        }
+    }*/
     
     // MARK: - body
     var body: some View {
@@ -62,36 +76,36 @@ struct NotificationView: View {
                     handleSaving()
                 }) {
                     Text("Save")
-                        .foregroundColor(.blue)
+                        .foregroundColor(notificationsCheck == "Yes" ? .blue : .gray)
                         .font(.headline)
                 }
-                .disabled(notificationsCheck.lowercased() == "yes" ? false : true)
+                .disabled(notificationsCheck == "Yes" ? false : true)
             }
         }
         .navigationBarTitle("Notification")
-    }
-    
-    // MARK: - determineComplete
-    private func determineComplete() -> Bool {
-        if notificationsCheck.lowercased() == "yes" {
-            return true
-        }
-        
-        return false
+        .onChange(of: notificationsCheck, perform: { value in
+            if value == "Yes" {
+                isDone = true
+            } else {
+                isDone = false
+            }
+        })
     }
     
     // MARK: - handleSaving
     private func handleSaving() {
-        if !changedValues.changedValues.isEmpty {
-            isDone = determineComplete()
-            saveApplication()
-            presentationMode.wrappedValue.dismiss()
-        }
+        presentationMode.wrappedValue.dismiss()
     }
     
-    // MARK: - saveApplication
+    /*// MARK: - saveApplication
     private func saveApplication() {
-        applicationCreation.application.notificationsCheck = notificationsCheck
+        if sender == .creator {
+            applicationCreation.application.notificationsCheck = notificationsCheck
+        } else if sender == .editor {
+            for (key, value) in changedValues.changedValues {
+                application.setValue(value, forKey: key)
+            }
+        }
         
         do {
             try viewContext.save()
@@ -101,5 +115,5 @@ struct NotificationView: View {
         } catch {
             print(error.localizedDescription)
         }
-    }
+    }*/
 }

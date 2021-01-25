@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import SwiftUI
+import MessageUI
 
 class UserSettings: ObservableObject {
     @Published var loggedIn: Bool = UserDefaults.standard.bool(forKey: "loggedIn")
@@ -30,7 +32,7 @@ class ChangedValues: ObservableObject {
     func updateKeyValue(_ key: String, value: Any) {
         changedValues.updateValue(value, forKey: key)
         hasChanged.toggle()
-        print("print - changedValues: \(changedValues)")
+        //print("print - changedValues: \(changedValues)")
     }
     
     func removeValue(forKey key: String) {
@@ -56,6 +58,7 @@ class ApplicationCreation: ObservableObject {
     @Published var personalDetailsSaved: Bool = false
     @Published var generalDetailsSaved: Bool = false
     @Published var subsidyCreditSaved: Bool = false
+    @Published var documentScansSaved: Bool = false
     @Published var notificationSaved: Bool = false
     @Published var employmentSaved: Bool = false
     @Published var expensesSaved: Bool = false

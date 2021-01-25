@@ -25,6 +25,7 @@
 		BD5D708725AB517C005F7A4B /* SubsidyCreditEditing.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5D708625AB517C005F7A4B /* SubsidyCreditEditing.swift */; };
 		BD7C6921251DFF750001514B /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7C6920251DFF750001514B /* SignUpView.swift */; };
 		BD80D06725A9CF1400E5DBA3 /* EditAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD80D06625A9CF1400E5DBA3 /* EditAccount.swift */; };
+		BD81C20E25B98EDA001CD8AF /* TestingLayouts.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD81C20D25B98EDA001CD8AF /* TestingLayouts.swift */; };
 		BD823A1925AFF000008B54C7 /* EmploymentEditing.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD823A1825AFF000008B54C7 /* EmploymentEditing.swift */; };
 		BD823A1C25AFF00B008B54C7 /* IncomeDeductionsEditing.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD823A1B25AFF00B008B54C7 /* IncomeDeductionsEditing.swift */; };
 		BD823A1F25AFF017008B54C7 /* ExpensesEditing.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD823A1E25AFF017008B54C7 /* ExpensesEditing.swift */; };
@@ -83,6 +84,7 @@
 		BD5D708625AB517C005F7A4B /* SubsidyCreditEditing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubsidyCreditEditing.swift; sourceTree = "<group>"; };
 		BD7C6920251DFF750001514B /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		BD80D06625A9CF1400E5DBA3 /* EditAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAccount.swift; sourceTree = "<group>"; };
+		BD81C20D25B98EDA001CD8AF /* TestingLayouts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingLayouts.swift; sourceTree = "<group>"; };
 		BD823A1825AFF000008B54C7 /* EmploymentEditing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmploymentEditing.swift; sourceTree = "<group>"; };
 		BD823A1B25AFF00B008B54C7 /* IncomeDeductionsEditing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeDeductionsEditing.swift; sourceTree = "<group>"; };
 		BD823A1E25AFF017008B54C7 /* ExpensesEditing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesEditing.swift; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 			children = (
 				BDF68F4F257617470004E6CD /* AssetsLiabilities.swift */,
 				BD1FF77725AEC76400B972D2 /* ChoosePageCreating.swift */,
+				BDEB73FA25B599D80038DB59 /* DocumentScans.swift */,
 				BD01DB6025750A2600F2B41A /* Employment.swift */,
 				BDF68F4B2575F6BA0004E6CD /* Expenses.swift */,
 				BDD53212252E33E900255C4F /* GeneralDetails.swift */,
@@ -159,7 +162,6 @@
 				BD1912D2254EFC8D0095B1E9 /* PersonalDetails.swift */,
 				BDA3E0382572199100789E67 /* ResidencyContact.swift */,
 				BD01DB572575008700F2B41A /* SubsidyCredit.swift */,
-				BDEB73FA25B599D80038DB59 /* DocumentScans.swift */,
 			);
 			path = Creating;
 			sourceTree = "<group>";
@@ -172,6 +174,7 @@
 				BD538DC22519FE570019AA11 /* HomeLoanApp */,
 				114F2CBA69DC3EDA37D8DC02 /* Pods */,
 				BD538DC12519FE570019AA11 /* Products */,
+				BD81C20D25B98EDA001CD8AF /* TestingLayouts.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -236,6 +239,7 @@
 			children = (
 				BD823A2125AFF026008B54C7 /* AssetsLiabilitiesEditing.swift */,
 				BD8769362587903B00B2C2D4 /* ChoosePageEditing.swift */,
+				BDB835E225B711250013D4B7 /* DocumentScansEditing.swift */,
 				BD823A1825AFF000008B54C7 /* EmploymentEditing.swift */,
 				BD823A1E25AFF017008B54C7 /* ExpensesEditing.swift */,
 				BDA1B11C2590E4DD006D2F97 /* GeneralDetailsEditing.swift */,
@@ -243,7 +247,6 @@
 				BDA1B1192590E48B006D2F97 /* PersonalDetailsEditing.swift */,
 				BDBADCB525A5F101008B98DF /* ResidencyContactEditing.swift */,
 				BD5D708625AB517C005F7A4B /* SubsidyCreditEditing.swift */,
-				BDB835E225B711250013D4B7 /* DocumentScansEditing.swift */,
 			);
 			path = Editing;
 			sourceTree = "<group>";
@@ -458,6 +461,7 @@
 				BD538DC42519FE570019AA11 /* HomeLoanApp-Demo.swift in Sources */,
 				BDF68F4C2575F6BA0004E6CD /* Expenses.swift in Sources */,
 				BDECD32E251A2AFB00382FED /* PrivacyPolicyScene.swift in Sources */,
+				BD81C20E25B98EDA001CD8AF /* TestingLayouts.swift in Sources */,
 				BDD53213252E33E900255C4F /* GeneralDetails.swift in Sources */,
 				BDECD31D251A219000382FED /* ProfileView.swift in Sources */,
 				BD823A1C25AFF00B008B54C7 /* IncomeDeductionsEditing.swift in Sources */,

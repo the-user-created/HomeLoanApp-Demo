@@ -30,6 +30,7 @@ struct PersonalDetails: View {
     @State var educationLevel = 0
     @State var ethnicGroup = 0
     @State var singleHouse = ""
+    @State var currentResStatus = 0
     @State var maritalStatus = 0
     @State var countryMarriage = 0
     @State var spouseIncome = ""
@@ -51,12 +52,13 @@ struct PersonalDetails: View {
     let resignPub: NotificationCenter.Publisher = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
     let scanButtonInsets = EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
     
-    let educationLevels = ["--select--", "Matric", "Bachelor degree", "Masters degree", "Doctorate", "Diploma", "--TBA--"]
-    let ethnicGroups = ["--select--", "Asian", "Black", "Caucasian", "Coloured", "Indian", "--TBA--"]
-    let identityType = ["--select--","Passport", "ID Book", "SmartCard ID", "--TBA--"]
-    let maritalStatuses = ["--select--", "Divorced", "Married", "Single", "--TBA--"]
-    let titles = ["--select--","Mr", "Mrs", "Ms", "Dr", "Prof", "--TBA--"]
+    let titles = ["--select--", "Dr", "Me", "Mej", "Mev", "Miss", "Mnr", "Mr", "Mrs", "Ms", "Prof"]
+    let identityTypes = ["--select--", "ID Book", "Passport", "Recognised Refugee in SA (Section 24)", "SA Refugee Identity (Maroon ID)", "Smart ID Card"]
     let genderSelection = ["--select--", "Male", "Female"]
+    let educationLevels = ["--select--", "Cretificate 24 Months", "Degree", "Diploma 1 Years", "Diploma 2 Years", "Diploma 3 Years", "Doctorate", "Honours", "Masters", "Matric", "No Matric", "Post Graduate Diploma"]
+    let ethnicGroups = ["--select--", "Asian", "Black", "Coloured", "White"]
+    let maritalStatuses = ["--select--", "Divorced", "Married Antenuptial Contract", "Married in Community of Property", "Other (Including Common Law)", "Single"]
+    let currentResStatuses = ["--select--", "Other", "Owner", "Tenant"]
     
     // MARK: - body
     var body: some View {
@@ -71,12 +73,14 @@ struct PersonalDetails: View {
                     FormTextField(iD: "surname",
                                   question: formQuestions[1][1] ?? "MISSING",
                                   placeholder: formTextFieldPlaceholders[1][1] ?? "MISSING",
-                                  text: $surname).keyboardType(.alphabet)
+                                  text: $surname, sender: .editor)
+                        .keyboardType(.alphabet)
                     
                     FormTextField(iD: "firstNames",
                                   question: formQuestions[1][2] ?? "MISSING",
                                   placeholder: formTextFieldPlaceholders[1][2] ?? "MISSING",
-                                  text: $firstNames).keyboardType(.alphabet)
+                                  text: $firstNames, sender: .editor)
+                        .keyboardType(.alphabet)
                     
                     FormPicker(iD: "gender",
                                question: formQuestions[1][3] ?? "MISSING",
@@ -90,17 +94,17 @@ struct PersonalDetails: View {
                     
                     FormPicker(iD: "iDType",
                                question: formQuestions[1][5] ?? "MISSING",
-                               selectionOptions: identityType,
+                               selectionOptions: identityTypes,
                                selection: $iDType)
                 }
                 
                 FormTextField(iD: "iDPassNumber",
-                              question: formQuestions[1][switchIDPassport(value: identityType[iDType], loc: 6)] ?? "MISSING",
+                              question: formQuestions[1][switchIDPassport(value: identityTypes[iDType], loc: 6)] ?? "MISSING",
                               placeholder: formTextFieldPlaceholders[1][6] ?? "MISSING",
-                              text: $iDPassNumber)
-                    .keyboardType(identityType[iDType].contains("ID") ? .numberPad : .default)
+                              text: $iDPassNumber, sender: .editor)
+                    .keyboardType(identityTypes[iDType].contains("ID") ? .numberPad : .default)
                 
-                if !identityType[iDType].lowercased().contains("id") {
+                if iDType == 2 {
                     FormDatePicker(iD: "passExpiryDate",
                                    question: formQuestions[1][7] ?? "MISSING",
                                    dateRangeOption: 1,
@@ -113,7 +117,7 @@ struct PersonalDetails: View {
                 FormTextField(iD: "taxNumber",
                               question: formQuestions[1][8] ?? "MISSING",
                               placeholder: formTextFieldPlaceholders[1][8] ?? "MISSING",
-                              text: $taxNumber)
+                              text: $taxNumber, sender: .editor)
                     .keyboardType(.numberPad)
                 
                 FormYesNo(iD: "taxReturn",
@@ -134,8 +138,13 @@ struct PersonalDetails: View {
                           question: formQuestions[1][12] ?? "MISSING",
                           selected: $singleHouse)
                 
-                FormPicker(iD: "maritalStatus",
+                FormPicker(iD: "currentResStatus",
                            question: formQuestions[1][13] ?? "MISSING",
+                           selectionOptions: currentResStatuses,
+                           selection: $currentResStatus)
+                
+                FormPicker(iD: "maritalStatus",
+                           question: formQuestions[1][14] ?? "MISSING",
                            selectionOptions: maritalStatuses,
                            selection: $maritalStatus)
                 
@@ -144,22 +153,22 @@ struct PersonalDetails: View {
             if maritalStatuses[maritalStatus] == "Married" {
                 Section(header: Text("MARRIAGE INFO")) {
                     FormPicker(iD: "countryMarriage",
-                               question: formQuestions[1][13.1] ?? "MISSING",
+                               question: formQuestions[1][14.1] ?? "MISSING",
                                selectionOptions: countries,
                                selection: $countryMarriage)
                     
                     FormYesNo(iD: "spouseIncome",
-                              question: formQuestions[1][13.2] ?? "MISSING",
-                              selected: $spouseIncome)
+                               question: formQuestions[1][14.2] ?? "MISSING",
+                               selected: $spouseIncome)
                     
                     FormYesNo(iD: "aNC",
-                              question: formQuestions[1][13.3] ?? "MISSING",
+                              question: formQuestions[1][14.3] ?? "MISSING",
                               selected: $aNC)
                     
                     FormTextField(iD: "numDependents",
-                                  question: formQuestions[1][13.4] ?? "MISSING",
-                                  placeholder: formTextFieldPlaceholders[1][13.4] ?? "MISSING",
-                                  text: $numDependents)
+                                  question: formQuestions[1][14.4] ?? "MISSING",
+                                  placeholder: formTextFieldPlaceholders[1][14.4] ?? "MISSING",
+                                  text: $numDependents, sender: .editor)
                         .keyboardType(.numberPad)
                     
                 }
@@ -167,23 +176,23 @@ struct PersonalDetails: View {
             
             Section(header: Text("PERSONAL DETAILS")) {
                 FormYesNo(iD: "mainResidence",
-                          question: formQuestions[1][14] ?? "MISSING",
+                          question: formQuestions[1][15] ?? "MISSING",
                           selected: $mainResidence)
                 
                 FormYesNo(iD: "firstTimeHomeBuyer",
-                          question: formQuestions[1][15] ?? "MISSING",
+                          question: formQuestions[1][16] ?? "MISSING",
                           selected: $firstTimeHomeBuyer)
                 
                 FormYesNo(iD: "socialGrant",
-                          question: formQuestions[1][16] ?? "MISSING",
+                          question: formQuestions[1][17] ?? "MISSING",
                           selected: $socialGrant)
                 
                 FormYesNo(iD: "publicOfficial",
-                          question: formQuestions[1][17] ?? "MISSING",
+                          question: formQuestions[1][18] ?? "MISSING",
                           selected: $publicOfficial)
                 
                 FormYesNo(iD: "relatedOfficial",
-                          question: formQuestions[1][18] ?? "MISSING",
+                          question: formQuestions[1][19] ?? "MISSING",
                           selected: $relatedOfficial)
             }
             
@@ -277,6 +286,49 @@ struct PersonalDetails: View {
         }
     }
     
+    private func deleteScans(initIDType: AnyHashable?) {
+        let loanID: String = applicationCreation.application.loanID?.uuidString ?? ""
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        
+        let idType = initIDType?.description
+        
+        if idType == "3" && !loanID.isEmpty { // Deletes the scans for Smart ID Card scans
+            for scanNumber in 0..<2 {
+                let fileName = "passport_id_image_\(loanID)_\(scanNumber).png"
+                let fileURL = documentsDirectory.appendingPathComponent(fileName)
+                
+                // Checks if file exists, removes it if so.
+                if FileManager.default.fileExists(atPath: fileURL.path) {
+                    do {
+                        try FileManager.default.removeItem(atPath: fileURL.path)
+                        print("print - Removed old image")
+                    } catch let removeError {
+                        print("print - Couldn't remove file at path", removeError)
+                    }
+
+                }
+            }
+            
+            applicationCreation.application.idPassScanned = false
+        } else if (idType == "1" || idType == "2") && !loanID.isEmpty { // Deletes the scans for Passport or ID Book scans
+            let fileName = "passport_id_image_\(loanID)_0.png"
+            let fileURL = documentsDirectory.appendingPathComponent(fileName)
+            
+            // Checks if file exists, removes it if so.
+            if FileManager.default.fileExists(atPath: fileURL.path) {
+                do {
+                    try FileManager.default.removeItem(atPath: fileURL.path)
+                    print("print - Removed old image")
+                } catch let removeError {
+                    print("print - Couldn't remove file at path", removeError)
+                }
+
+            }
+            
+            applicationCreation.application.idPassScanned = false
+        }
+    }
+    
     // MARK: - switchIDPassport
     private func switchIDPassport(value: String, loc: Double)  -> Double {
         var location: Double = loc
@@ -284,7 +336,7 @@ struct PersonalDetails: View {
         if value.lowercased().contains("id") {
             location += 0.1
             return location
-        } else if value.lowercased().contains("passport") {
+        } else if value == "Passport" {
             location += 0.2
             return location
         } else {

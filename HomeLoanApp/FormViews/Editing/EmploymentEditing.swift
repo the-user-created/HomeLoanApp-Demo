@@ -54,23 +54,23 @@ struct EmploymentEditing: View {
     // MARK: - Properties
     let resignPub = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
     
-    let occupationalStatusSelection = ["--select--", "Full-time employed (non-Professional)", "--TBA--"]
-    let payingSchemeSelection = ["--select--", "Monthly", "--TBA--"]
-    let sourceIncome = ["--select--", "Salary", "--TBA--"]
-    let occupationLevelSelection = ["--select--", "Skilled Worker", "--TBA--"]
-    let employmentSectorSelection = ["--select--", "Other", "--TBA--"]
+    let occupationalStatuses = ["--select--", "Full-time employed (non-Professional)", "Full-time employed (Professional)", "Housewife", "Part-time employed", "Pensioner", "Scholar", "Self employed (non-Professional)", "Self employed (Professional)", "Student", "Temporary employed", "Unemployed"]
+    let payingSchemes = ["--select--", "Annually", "Monthly", "Quarterly", "Weekly"]
+    let incomeSources = ["--select--", "Salary", "Pension", "Retirement Annuity", "Investments", "Donation/Gift", "Allowance", "Commission", "Inheritance", "Maintenance / Alimony", "Social Grant", "Bonus", "Insurance Claim", "Profit from Own Business", "Prize Winnings", "Asset Disposal"]
+    let occupationLevels = ["--select--", "Junior position", "Management", "Semi-skilled worker", "Senior Management", "Skilled Worker", "Supervisor", "Unskilled worker"]
+    let employmentSectors = ["--select--", "Animal Specialist", "Armed Forces", "Catering and entertainment", "Civil Service", "Construction", "Education", "Finance", "Forestry", "Health / Medical", "Industry", "Information Technology", "Legal Profession", "Media", "Other", "Science", "Security", "Selling", "Transportation", "Welfare"]
     
     // MARK: - init
     init(isDone: Binding<Bool>, application: Application, sender: Sender) {
         self._isDone = isDone
         self._sender = State(wrappedValue: sender)
         self.application = application
-        self._occupationalStatus = State(wrappedValue: occupationalStatusSelection.firstIndex(of: self.application.occupationalStatus ?? "--select--") ?? 0)
-        self._payingScheme = State(wrappedValue: payingSchemeSelection.firstIndex(of: self.application.payingScheme ?? "--select--") ?? 0)
-        self._incomeSource = State(wrappedValue: sourceIncome.firstIndex(of: self.application.incomeSource ?? "--select--") ?? 0)
+        self._occupationalStatus = State(wrappedValue: occupationalStatuses.firstIndex(of: self.application.occupationalStatus ?? "--select--") ?? 0)
+        self._payingScheme = State(wrappedValue: payingSchemes.firstIndex(of: self.application.payingScheme ?? "--select--") ?? 0)
+        self._incomeSource = State(wrappedValue: incomeSources.firstIndex(of: self.application.incomeSource ?? "--select--") ?? 0)
         self._natureOfOccupation = State(wrappedValue: self.application.natureOfOccupation ?? "")
-        self._occupationLevel = State(wrappedValue: occupationLevelSelection.firstIndex(of: self.application.occupationLevel ?? "--select--") ?? 0)
-        self._employmentSector = State(wrappedValue: employmentSectorSelection.firstIndex(of: self.application.employmentSector ?? "--select--") ?? 0)
+        self._occupationLevel = State(wrappedValue: occupationLevels.firstIndex(of: self.application.occupationLevel ?? "--select--") ?? 0)
+        self._employmentSector = State(wrappedValue: employmentSectors.firstIndex(of: self.application.employmentSector ?? "--select--") ?? 0)
         self._natureOfBusiness = State(wrappedValue: self.application.natureOfBusiness ?? "")
         self._employer = State(wrappedValue: self.application.employer ?? "")
         self._companyRegNum = State(wrappedValue: self.application.companyRegNum ?? "")
@@ -118,17 +118,17 @@ struct EmploymentEditing: View {
             Section(header: Text("OCCUPATION")) {
                 FormPicker(iD: "occupationalStatus",
                            question: formQuestions[4][0] ?? "MISSING",
-                           selectionOptions: occupationalStatusSelection,
+                           selectionOptions: occupationalStatuses,
                            selection: $occupationalStatus)
                 
                 FormPicker(iD: "payingScheme",
                            question: formQuestions[4][1] ?? "MISSING",
-                           selectionOptions: payingSchemeSelection,
+                           selectionOptions: payingSchemes,
                            selection: $payingScheme)
                 
                 FormPicker(iD: "incomeSource",
                            question: formQuestions[4][2] ?? "MISSING",
-                           selectionOptions: sourceIncome,
+                           selectionOptions: incomeSources,
                            selection: $incomeSource)
                 
                 FormTextField(iD: "natureOfOccupation",
@@ -138,12 +138,12 @@ struct EmploymentEditing: View {
                 
                 FormPicker(iD: "occupationLevel",
                            question: formQuestions[4][4] ?? "MISSING",
-                           selectionOptions: occupationLevelSelection,
+                           selectionOptions: occupationLevels,
                            selection: $occupationLevel)
                 
                 FormPicker(iD: "employmentSector",
                            question: formQuestions[4][5] ?? "MISSING",
-                           selectionOptions: employmentSectorSelection,
+                           selectionOptions: employmentSectors,
                            selection: $employmentSector)
                 
                 Group() {

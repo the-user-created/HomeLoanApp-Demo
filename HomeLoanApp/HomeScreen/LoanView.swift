@@ -7,11 +7,12 @@
 
 import SwiftUI
 import CoreData
-import Combine
+import MessageUI
 
 struct LoanView: View {
     // MARK: - Wrapped Objects
-    @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.managedObjectContext) var viewContext
+    @Environment(\.openURL) var openURL
     @EnvironmentObject var applicationCreation: ApplicationCreation
     @EnvironmentObject var changedValues: ChangedValues
     
@@ -22,13 +23,15 @@ struct LoanView: View {
     // MARK: - State Variables
     @State private var makingApplication: Bool = false
     @State private var editingApplication: Int?
+    @State private var showingAlert: Bool = false
+    @State private var alertText: String = ""
+    @State private var alertURL: String = ""
     
     // MARK: - body
     var body: some View {
         NavigationView() {
             List() {
-                NavigationLink(destination: ChoosePageCreating(),
-                               isActive: self.$makingApplication) {
+                NavigationLink(destination: ChoosePageCreating(), isActive: self.$makingApplication) {
                     HStack() {
                         Image(systemName: "plus.circle")
                             .imageScale(.large)
@@ -40,9 +43,9 @@ struct LoanView: View {
                 }
                 
                 ForEach(applications) { application in
-                    NavigationLink(destination: ChoosePageEditing(application: application),
-                                   tag: applications.firstIndex(of: application) ?? 0,
-                                   selection: self.$editingApplication) {
+                    NavigationLink(destination: ChoosePageEditing(application: application)) {
+                                   /*tag: applications.firstIndex(of: application) ?? 0,
+                                   selection: self.$editingApplication) {*/
                         HStack() {
                             VStack(alignment: .leading) {
                                 Text("Application created on \(application.loanCreatedDate ?? Date(), formatter: dateFormatter)")
@@ -69,18 +72,31 @@ struct LoanView: View {
                     print("print - cleaned changedValues and removed application from memory")
                     applicationCreation.removeApplicationFromMemory()
                     changedValues.cleanChangedValues()
+                } else if makingApplication {
+                    if !MFMailComposeViewController.canSendMail() {
+                        alertText = "To submit a loan application you must get the Mail app. Please download Mail from the app store."
+                        alertURL = "https://apps.apple.com/za/app/mail/id1108187098"
+                        showingAlert = true
+                    }
                 }
             }
-            .onChange(of: editingApplication) { _ in
+            .onAppear() {
+                print("print - cleaned changedValues")
+                changedValues.cleanChangedValues()
+            }
+            /*.onChange(of: editingApplication) { _ in
                 if editingApplication == nil {
                     print("print - cleaned changedValues")
                     changedValues.cleanChangedValues()
                 }
-            }
+            }*/
             .listStyle(PlainListStyle())
             .navigationBarTitle("Loan Applications")
         }
         .navigationViewStyle(StackNavigationViewStyle())
+        .alert(isPresented: $showingAlert) {
+            Alert(title: Text("WARNING"), message: Text(alertText), primaryButton: .default(Text("Get Mail"), action: { openURL(URL(string: alertURL)!) }), secondaryButton: .cancel())
+        }
     }
     
     // MARK: - deleteApplication

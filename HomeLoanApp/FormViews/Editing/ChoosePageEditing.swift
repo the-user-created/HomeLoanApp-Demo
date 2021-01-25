@@ -7,10 +7,13 @@
 
 import SwiftUI
 import CoreData
+import MessageUI
 
 struct ChoosePageEditing: View {
     // MARK: - Wrapped Objects
     @Environment(\.managedObjectContext) var viewContext
+    @Environment(\.openURL) var openURL
+    @EnvironmentObject var changedValues: ChangedValues
     @ObservedObject var application: Application
     
     // MARK: - State Variables
@@ -20,12 +23,19 @@ struct ChoosePageEditing: View {
     @State var personalDetailsDone: Bool = false
     @State var generalDetailsDone: Bool = false
     @State var subsidyCreditDone: Bool = false
+    @State var documentScansDone: Bool = false
     @State var notificationDone: Bool = false
     @State var employmentDone: Bool = false
     @State var expensesDone: Bool = false
-    @State var scansDone: Bool = false
+    
+    @State var selection: Int?
     
     @State var identityDone: Bool?
+    @State var notificationsCheck: String = ""
+    
+    @State var result: Result<MFMailComposeResult, Error>? = nil
+    @State var isShowingMailView = false
+    @State var canSendMail: Bool = MFMailComposeViewController.canSendMail()
     
     init(application: Application) {
         self.application = application
@@ -37,7 +47,7 @@ struct ChoosePageEditing: View {
         self._incomeDeductionsDone = State(wrappedValue: self.application.incomeDeductionsDone)
         self._expensesDone = State(wrappedValue: self.application.expensesDone)
         self._assetsLiabilitiesDone = State(wrappedValue: self.application.assetsLiabilitiesDone)
-        self._scansDone = State(wrappedValue: self.application.scansDone)
+        self._documentScansDone = State(wrappedValue: self.application.documentScansDone)
         
         self._identityDone = State(wrappedValue: self.application.iDType != "--select--" && self.application.iDType != "" && self.application.iDType != nil)
     }
@@ -45,8 +55,14 @@ struct ChoosePageEditing: View {
     // MARK: - body
     var body: some View {
         Form() {
+            /*Button(action: {
+                makeEmailBody()
+            }) {
+                Text("print stuff")
+            }*/
+            
             Group() {
-                NavigationLink(destination: GeneralDetailsEditing(isDone: $generalDetailsDone, application: application, sender: .editor)) {
+                NavigationLink(destination: GeneralDetailsEditing(isDone: $generalDetailsDone, application: application, sender: .editor), tag: 0, selection: $selection) {
                     HStack() {
                         Text("General Details")
                             .font(.headline)
@@ -58,7 +74,7 @@ struct ChoosePageEditing: View {
                     }
                 }
                 
-                NavigationLink(destination: PersonalDetailsEditing(isDone: $personalDetailsDone, identityDoneBinding: $identityDone, application: application, sender: .editor)) {
+                NavigationLink(destination: PersonalDetailsEditing(isDone: $personalDetailsDone, identityDoneBinding: $identityDone, application: application, sender: .editor), tag: 1, selection: $selection) {
                     HStack() {
                         Text("Personal Details")
                             .font(.headline)
@@ -71,7 +87,7 @@ struct ChoosePageEditing: View {
                 }
                 .disabled(!generalDetailsDone)
                 
-                NavigationLink(destination: ResidencyContactEditing(isDone: $residencyContactDone, application: application, sender: .editor)) {
+                NavigationLink(destination: ResidencyContactEditing(isDone: $residencyContactDone, application: application, sender: .editor), tag: 2, selection: $selection) {
                     HStack() {
                         Text("Residency & Contact")
                             .font(.headline)
@@ -84,7 +100,7 @@ struct ChoosePageEditing: View {
                 }
                 .disabled(!generalDetailsDone)
                 
-                NavigationLink(destination: SubsidyCreditEditing(isDone: $subsidyCreditDone, application: application, sender: .editor)) {
+                NavigationLink(destination: SubsidyCreditEditing(isDone: $subsidyCreditDone, application: application, sender: .editor), tag: 3, selection: $selection) {
                     HStack() {
                         Text("Subsidy & Credit")
                             .font(.headline)
@@ -97,7 +113,7 @@ struct ChoosePageEditing: View {
                 }
                 .disabled(!generalDetailsDone)
                 
-                NavigationLink(destination: EmploymentEditing(isDone: $employmentDone, application: application, sender: .editor)) {
+                NavigationLink(destination: EmploymentEditing(isDone: $employmentDone, application: application, sender: .editor), tag: 4, selection: $selection) {
                     HStack() {
                         Text("Employment")
                             .font(.headline)
@@ -112,7 +128,7 @@ struct ChoosePageEditing: View {
             }
             
             Group() {
-                NavigationLink(destination: IncomeDeductionsEditing(isDone: $incomeDeductionsDone, application: application, sender: .editor)) {
+                NavigationLink(destination: IncomeDeductionsEditing(isDone: $incomeDeductionsDone, application: application, sender: .editor), tag: 5, selection: $selection) {
                     HStack() {
                         Text("Income & Deductions")
                             .font(.headline)
@@ -125,7 +141,7 @@ struct ChoosePageEditing: View {
                 }
                 .disabled(!generalDetailsDone)
                 
-                NavigationLink(destination: ExpensesEditing(isDone: $expensesDone, application: application, sender: .editor)) {
+                NavigationLink(destination: ExpensesEditing(isDone: $expensesDone, application: application, sender: .editor), tag: 6, selection: $selection) {
                     HStack() {
                         Text("Expenses")
                             .font(.headline)
@@ -138,7 +154,7 @@ struct ChoosePageEditing: View {
                 }
                 .disabled(!generalDetailsDone)
                 
-                NavigationLink(destination: AssetsLiabilitiesEditing(isDone: $assetsLiabilitiesDone, application: application, sender: .editor)) {
+                NavigationLink(destination: AssetsLiabilitiesEditing(isDone: $assetsLiabilitiesDone, application: application, sender: .editor), tag: 7, selection: $selection) {
                     HStack() {
                         Text("Assets & Liabilities")
                             .font(.headline)
@@ -151,21 +167,21 @@ struct ChoosePageEditing: View {
                 }
                 .disabled(!generalDetailsDone)
                 
-                NavigationLink(destination: DocumentScansEditing(application: application, isDone: $scansDone)) {
+                NavigationLink(destination: DocumentScansEditing(application: application, isDone: $documentScansDone, sender: .editor), tag: 8, selection: $selection) {
                     HStack() {
                         Text("Supporting Documents")
                             .font(.headline)
                         
                         Spacer()
                         
-                        Image(systemName: scansDone ? "checkmark.circle.fill" : "checkmark.circle")
-                            .foregroundColor(scansDone ? .green : .red)
+                        Image(systemName: documentScansDone ? "checkmark.circle.fill" : "checkmark.circle")
+                            .foregroundColor(documentScansDone ? .green : .red)
                     }
                 }
                 .disabled(generalDetailsDone ? !identityDone! : true)
             }
             
-            NavigationLink(destination: NotificationView(application: application, isDone: $notificationDone)) {
+            NavigationLink(destination: NotificationView(application: application, notificationsCheck: $notificationsCheck, isDone: $notificationDone, sender: .editor), tag: 9, selection: $selection) {
                 HStack() {
                     Text("Notification")
                         .font(.headline)
@@ -176,25 +192,79 @@ struct ChoosePageEditing: View {
                         .foregroundColor(notificationDone ? .green : .red)
                 }
             }
-            .disabled(!canSignOff())
-                
-            NavigationLink(destination: EmptyView()) {
-                Text("Submit Application")
-                    .font(.title3)
-                    .bold()
-                    .foregroundColor(.blue)
+            .disabled(!canSubmit())
+            
+            // Submit Application
+            Section() {
+                if !canSendMail { // Mail app is not installed
+                    HStack() {
+                        Text("Please download the Mail app to submit your application.")
+                        
+                        Spacer()
+                        
+                        Button(action: {
+                            openURL(URL(string: "https://apps.apple.com/za/app/mail/id1108187098")!)
+                        }) {
+                            Text("Get Mail")
+                                .font(.headline)
+                        }
+                    }
+                } else if canSendMail && notificationDone && canSubmit() { // Mail installed, notification accepted, sections completed
+                    Button(action: {
+                        self.isShowingMailView.toggle()
+                    }) {
+                        Text("Submit Application")
+                            .font(.title3)
+                            .bold()
+                    }
+                } else if !notificationDone && canSendMail && canSubmit() { // Mail installed, notification not accepted, sections completed
+                    Text("Please accept the notification above to submit your application.")
+                } else if !canSubmit() && canSendMail { // Mail installed, sections incomplete
+                    Text("Please complete the form sections above to submit your application")
+                }
             }
-            .disabled(!canSignOff() && !notificationDone)
+            .buttonStyle(BorderlessButtonStyle())
         }
         .navigationBarTitle("Editing", displayMode: .large)
+        .onChange(of: selection) { value in
+            changedValues.cleanChangedValues()
+        }
+        .sheet(isPresented: $isShowingMailView) {
+            let clientName: String = "\(String(describing: self.application.surname)), \(String(describing: self.application.firstNames))"
+            MailView(clientName: clientName, emailBody: makeEmailBody(), isShowing: self.$isShowingMailView, result: self.$result)
+        }
     }
     
-    // MARK: - canSignOff
-    private func canSignOff() -> Bool {
+    // MARK: - canSubmit
+    private func canSubmit() -> Bool {
         if generalDetailsDone && personalDetailsDone && residencyContactDone && subsidyCreditDone && employmentDone && incomeDeductionsDone && expensesDone && assetsLiabilitiesDone {
             return true
         }
         
         return false
+    }
+    
+    private func makeEmailBody() -> String {
+        let sections: [String] = ["General Details", "Personal Details", "Residency & Contact", "Subsidy & Credit", "Employment", "Income & Deductions", "Expenses", "Assets & Liabilities"]
+        
+        var i: Int = 0
+        var emailBody: String = ""
+        for section in formQuestionIDs {
+            emailBody += "\(sections[i])\n"
+
+            for (id, question) in section
+            {
+                let value = self.application.value(forKey: id)
+                if (value != nil) && !((value as? String)?.isEmpty ?? true) {
+                    emailBody += "\(question ?? "")  =  \((value as? String) ?? "")\n"
+                }
+            }
+            
+            emailBody += "\n"
+            
+            i += 1
+        }
+        
+        return emailBody
     }
 }
