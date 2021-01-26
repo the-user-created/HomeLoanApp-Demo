@@ -22,8 +22,8 @@ struct PersonalDetails: View {
     @State var firstNames = ""
     @State var gender = 0
     @State var dateOfBirth = Date()
-    @State var iDType = 0
-    @State var iDPassNumber = ""
+    @State var identityType = 0
+    @State var identityNumber = ""
     @State var passExpiryDate = Date()
     @State var taxNumber = ""
     @State var taxReturn = ""
@@ -50,7 +50,6 @@ struct PersonalDetails: View {
     
     // MARK: - Properties
     let resignPub: NotificationCenter.Publisher = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
-    let scanButtonInsets = EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
     
     let titles = ["--select--", "Dr", "Me", "Mej", "Mev", "Miss", "Mnr", "Mr", "Mrs", "Ms", "Prof"]
     let identityTypes = ["--select--", "ID Book", "Passport", "Recognised Refugee in SA (Section 24)", "SA Refugee Identity (Maroon ID)", "Smart ID Card"]
@@ -92,25 +91,24 @@ struct PersonalDetails: View {
                                    dateRangeOption: 0,
                                    dateSelection: $dateOfBirth)
                     
-                    FormPicker(iD: "iDType",
+                    FormPicker(iD: "identityType",
                                question: formQuestions[1][5] ?? "MISSING",
                                selectionOptions: identityTypes,
-                               selection: $iDType)
+                               selection: $identityType)
                 }
                 
-                FormTextField(iD: "iDPassNumber",
-                              question: formQuestions[1][switchIDPassport(value: identityTypes[iDType], loc: 6)] ?? "MISSING",
-                              placeholder: formTextFieldPlaceholders[1][6] ?? "MISSING",
-                              text: $iDPassNumber, sender: .editor)
-                    .keyboardType(identityTypes[iDType].contains("ID") ? .numberPad : .default)
+                FormTextField(iD: "identityNumber",
+                              question: formQuestions[1][identityText(location: 6)] ?? "MISSING",
+                              placeholder: formTextFieldPlaceholders[1][identityText(location: 6)] ?? "MISSING",
+                              text: $identityNumber, sender: .editor)
+                    .keyboardType(identityType == 1 || identityType == 5 ? .numberPad : .default)
                 
-                if iDType == 2 {
+                if identityType == 2 {
                     FormDatePicker(iD: "passExpiryDate",
                                    question: formQuestions[1][7] ?? "MISSING",
                                    dateRangeOption: 1,
                                    dateSelection: $passExpiryDate)
                 }
-                
             }
             
             Section() {
@@ -150,7 +148,7 @@ struct PersonalDetails: View {
                 
             }
             
-            if maritalStatuses[maritalStatus] == "Married" {
+            if maritalStatus == 2 || maritalStatus == 3 || maritalStatus == 4 {
                 Section(header: Text("MARRIAGE INFO")) {
                     FormPicker(iD: "countryMarriage",
                                question: formQuestions[1][14.1] ?? "MISSING",
@@ -237,7 +235,7 @@ struct PersonalDetails: View {
     private func determineComplete() -> Bool {
         var isComplete: Bool = false
         // Base checks
-        if title != 0 && !surname.isEmpty && !firstNames.isEmpty && gender != 0 && iDType != 0 && !iDPassNumber.isEmpty && !taxNumber.isEmpty && !taxReturn.isEmpty && educationLevel != 0 && ethnicGroup != 0 && !singleHouse.isEmpty && maritalStatus != 0 && !mainResidence.isEmpty && !firstTimeHomeBuyer.isEmpty && !socialGrant.isEmpty && !publicOfficial.isEmpty && !relatedOfficial.isEmpty {
+        if title != 0 && !surname.isEmpty && !firstNames.isEmpty && gender != 0 && identityType != 0 && !identityNumber.isEmpty && !taxNumber.isEmpty && !taxReturn.isEmpty && educationLevel != 0 && ethnicGroup != 0 && !singleHouse.isEmpty && maritalStatus != 0 && !mainResidence.isEmpty && !firstTimeHomeBuyer.isEmpty && !socialGrant.isEmpty && !publicOfficial.isEmpty && !relatedOfficial.isEmpty {
             
             // Marriage info check
             if maritalStatus == 2 {
@@ -270,7 +268,7 @@ struct PersonalDetails: View {
         UIApplication.shared.endEditing()
         for (key, value) in changedValues.changedValues {
             applicationCreation.application.setValue(value, forKey: key)
-            if key == "iDType" {
+            if key == "identityType" {
                 let value = value as? String
                 identityDoneBinding = value != "--select--" && value != ""
             }
@@ -286,58 +284,18 @@ struct PersonalDetails: View {
         }
     }
     
-    private func deleteScans(initIDType: AnyHashable?) {
-        let loanID: String = applicationCreation.application.loanID?.uuidString ?? ""
-        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    // MARK: - identityText
+    private func identityText(location: Double) -> Double {
+        var location = location
         
-        let idType = initIDType?.description
-        
-        if idType == "3" && !loanID.isEmpty { // Deletes the scans for Smart ID Card scans
-            for scanNumber in 0..<2 {
-                let fileName = "passport_id_image_\(loanID)_\(scanNumber).png"
-                let fileURL = documentsDirectory.appendingPathComponent(fileName)
-                
-                // Checks if file exists, removes it if so.
-                if FileManager.default.fileExists(atPath: fileURL.path) {
-                    do {
-                        try FileManager.default.removeItem(atPath: fileURL.path)
-                        print("print - Removed old image")
-                    } catch let removeError {
-                        print("print - Couldn't remove file at path", removeError)
-                    }
-
-                }
-            }
-            
-            applicationCreation.application.idPassScanned = false
-        } else if (idType == "1" || idType == "2") && !loanID.isEmpty { // Deletes the scans for Passport or ID Book scans
-            let fileName = "passport_id_image_\(loanID)_0.png"
-            let fileURL = documentsDirectory.appendingPathComponent(fileName)
-            
-            // Checks if file exists, removes it if so.
-            if FileManager.default.fileExists(atPath: fileURL.path) {
-                do {
-                    try FileManager.default.removeItem(atPath: fileURL.path)
-                    print("print - Removed old image")
-                } catch let removeError {
-                    print("print - Couldn't remove file at path", removeError)
-                }
-
-            }
-            
-            applicationCreation.application.idPassScanned = false
-        }
-    }
-    
-    // MARK: - switchIDPassport
-    private func switchIDPassport(value: String, loc: Double)  -> Double {
-        var location: Double = loc
-        
-        if value.lowercased().contains("id") {
+        if identityType == 1 || identityType == 5 {
             location += 0.1
             return location
-        } else if value == "Passport" {
+        } else if identityType == 2 {
             location += 0.2
+            return location
+        } else if identityType == 3 || identityType == 4 {
+            location += 0.3
             return location
         } else {
             return location

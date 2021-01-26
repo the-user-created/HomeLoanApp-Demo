@@ -49,6 +49,14 @@ struct IncomeDeductions: View {
     // MARK: - Properties
     let resignPub = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
     
+    // MARK: - init
+    init(isDone: Binding<Bool>) {
+        self._isDone = isDone
+        self._calculatedIncome = State(wrappedValue: calculateIncome())
+        self._calculatedDeductions = State(wrappedValue: calculateDeductions())
+        self._netSalary = State(wrappedValue: netSalary.isEmpty ? "0.00" : netSalary)
+    }
+    
     // MARK: - body
     var body: some View {
         Form() {
@@ -153,7 +161,7 @@ struct IncomeDeductions: View {
             }
             
             Section(header: Text("Net Salary").font(.headline)) {
-                Text("R\((Float(calculatedIncome) ?? 0 - (Float(calculatedDeductions) ?? 0)).removeZerosFromEnd())")
+                Text("R\(netSalary)")
                     .font(.headline)
             }
             
@@ -235,19 +243,29 @@ struct IncomeDeductions: View {
             totalIncome = totalIncome.advanced(by: Float(income.replacingOccurrences(of: ",", with: ".")) ?? 0.0)
         }
         
-        return String(format: "%.2f", totalIncome)
+        let totalIncomeString = String(format: "%.2f", totalIncome)
+        
+        calculatedIncome = totalIncomeString
+        netSalary = (Float(calculatedIncome) ?? 0 - (Float(calculatedDeductions) ?? 0)).removeZerosFromEnd()
+        
+        return totalIncomeString
     }
     
     // MARK: - calculateDeductions
     private func calculateDeductions() -> String {
-        var totalIncome: Float = 0.0
-        let incomeList: [String] = [String(tax.dropFirst()), String(pension.dropFirst()), String(uIF.dropFirst()), String(medicalAid.dropFirst()), String(otherDeduction.dropFirst())]
+        var totalDeduction: Float = 0.0
+        let deductionList: [String] = [String(tax.dropFirst()), String(pension.dropFirst()), String(uIF.dropFirst()), String(medicalAid.dropFirst()), String(otherDeduction.dropFirst())]
         
-        for income in incomeList {
-            totalIncome = totalIncome.advanced(by: Float(income.replacingOccurrences(of: ",", with: ".")) ?? 0.0)
+        for deduction in deductionList {
+            totalDeduction = totalDeduction.advanced(by: Float(deduction.replacingOccurrences(of: ",", with: ".")) ?? 0.0)
         }
         
-        return String(format: "%.2f", totalIncome)
+        let totalDeductionString = String(format: "%.2f", totalDeduction)
+        
+        calculatedDeductions = totalDeductionString
+        netSalary = (Float(calculatedIncome) ?? 0 - (Float(calculatedDeductions) ?? 0)).removeZerosFromEnd()
+        
+        return totalDeductionString
     }
     
     // MARK: - saveApplication

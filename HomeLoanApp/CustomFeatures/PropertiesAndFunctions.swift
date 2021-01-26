@@ -16,7 +16,7 @@ let formQuestions: [[Double: String]] = [
     // PERSONAL DETAILS
     [0: "What is your title?", 1: "What is your surname?", 2: "What is your first name?", 3: "What is your gender?",
      4: "What is your date of birth?", 5: "What is your identity type?",
-     6: "What is your ID / Passport number?", 6.1: "What is your ID number?", 6.2: "What is your passport number?",
+     6: "What is your ID / Passport number?", 6.1: "What is your ID number?", 6.2: "What is your passport number?", 6.3: "What is your identity number?",
      7: "What is your passport expiry date?", 8: "What is your South African income tax number?", 9: "Do you file any tax return outside of South Africa?",
      10: "What is your highest level of education?", 11: "What is your ethnic group?", 12: "Do you live in a single household?", 13: "What is your current residential status?", 14: "What is your marital status?", 14.1: "Country of marriage?", 14.2: "Including spouses income?", 14.3: "If ANC, register both names?", 14.4: "Number of dependents:", 15: "Will this property be your main residence?", 16: "Are you a first time home buyer?", 17: "Do you receive a social grant?", 18: "Are you a public official in a position of authority?", 19: "Are you related to or associated to a public official in a position of authority?"],
     // RESIDENCY & CONTACT
@@ -68,8 +68,8 @@ let formQuestionIDs: [[String: String?]] = [
      "firstNames": formQuestions[1][2],
      "gender": formQuestions[1][3],
      "dateOfBirth": formQuestions[1][4],
-     "iDType": formQuestions[1][5],
-     "iDPassNumber": formQuestions[1][6],
+     "identityType": formQuestions[1][5],
+     "identityNumber": formQuestions[1][6],
      "passExpiryDate": formQuestions[1][7],
      "taxNumber": formQuestions[1][8],
      "taxReturn": formQuestions[1][9],
@@ -226,7 +226,7 @@ let formQuestionIDs: [[String: String?]] = [
 
 let formTextFieldPlaceholders = [
     [5: "1"],
-    [1: "Appleseed", 2: "Johnny", 6: "1234567891011", 8: "1110502222", 14.4: "2"],
+    [1: "Appleseed", 2: "Johnny", 6: "1234567891012", 6.1: "1234567891012", 6.2: "123456789", 6.3: "", 8: "1110502222", 14.4: "2"],
     [2: "Cape Town", 10: "VX7VVWI", 13: "021 481 7300", 14: "homeloans@ooba.co.za", 15.1: "33 Bree Street", 15.2: "8th Floor, ooba House", 15.3: "City Centre", 15.4: "Cape Town", 15.5: "Western Province", 15.6: "8000"],
     [:],
     [3: "Technician", 6: "Other Service Activities", 7: "Jobs", 8: "", 9: "", 12: "", 13: "", 14: "", 15: "", 16: "", 17: "", 18: "", 21.1: "", 21.2: ""]
@@ -234,6 +234,8 @@ let formTextFieldPlaceholders = [
 
 let countries = ["--select--", "Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Antarctica", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegowina", "Botswana", "Bouvet Island", "Brazil", "British Indian Ocean Territory", "Brunei Darussalam", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Cayman Islands", "Central African Republic", "Chad", "Chile", "China", "Christmas Island", "Cocos (Keeling) Islands", "Colombia", "Comoros", "Congo", "Congo, the Democratic Republic of the", "Cook Islands", "Costa Rica", "Cote d\'Ivoire", "Croatia (Hrvatska)", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Falkland Islands (Malvinas)", "Faroe Islands", "Fiji", "Finland", "France", "France Metropolitan", "French Guiana", "French Polynesia", "French Southern Territories", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Gibraltar", "Greece", "Greenland", "Grenada", "Guadeloupe", "Guam", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Heard and Mc Donald Islands", "Holy See (Vatican City State)", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran (Islamic Republic of)", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea, Democratic People\'s Republic of", "Korea, Republic of", "Kuwait", "Kyrgyzstan", "Lao, People\'s Democratic Republic", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libyan Arab Jamahiriya", "Liechtenstein", "Lithuania", "Luxembourg", "Macau", "Macedonia, The Former Yugoslav Republic of", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Martinique", "Mauritania", "Mauritius", "Mayotte", "Mexico", "Micronesia, Federated States of", "Moldova, Republic of", "Monaco", "Mongolia", "Montserrat", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "Netherlands Antilles", "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Niue", "Norfolk Island", "Northern Mariana Islands", "Norway", "Oman", "Pakistan", "Palau", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Pitcairn", "Poland", "Portugal", "Puerto Rico", "Qatar", "Reunion", "Romania", "Russian Federation", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Seychelles", "Sierra Leone", "Singapore", "Slovakia (Slovak Republic)", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Georgia and the South Sandwich Islands", "Spain", "Sri Lanka", "St. Helena", "St. Pierre and Miquelon", "Sudan", "Suriname", "Svalbard and Jan Mayen Islands", "Swaziland", "Sweden", "Switzerland", "Syrian Arab Republic", "Taiwan, Province of China", "Tajikistan", "Tanzania, United Republic of", "Thailand", "Togo", "Tokelau", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Turks and Caicos Islands", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "United States Minor Outlying Islands", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Virgin Islands (British)", "Virgin Islands (U.S.)", "Wallis and Futuna Islands", "Western Sahara", "Yemen", "Yugoslavia", "Zambia",
                    "Zimbabwe"]
+
+let salesConsultantEmails: [String: String] = ["Gavin Young": "gavinyoung@mweb.co.za"]
 
 var reverseDateFormatter: DateFormatter {
     let formatter = DateFormatter()

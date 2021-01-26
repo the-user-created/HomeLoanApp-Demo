@@ -38,8 +38,8 @@ extension Application {
     @NSManaged public var firstNames: String?
     @NSManaged public var gender: String?
     @NSManaged public var dateOfBirth: Date?
-    @NSManaged public var iDType: String?
-    @NSManaged public var iDPassNumber: String?
+    @NSManaged public var identityType: String?
+    @NSManaged public var identityNumber: String?
     @NSManaged public var passExpiryDate: Date?
     @NSManaged public var taxNumber: String?
     @NSManaged public var taxReturn: String?
@@ -209,7 +209,7 @@ extension Application {
     
     // MARK: - Document Scans
     @NSManaged public var documentScansDone: Bool
-    @NSManaged public var idPassScanned: Bool
+    @NSManaged public var identityScanned: Bool
     @NSManaged public var incomeStructure: String?
     @NSManaged public var salaryPaySlipsScanned: Bool
     @NSManaged public var bankStatementsScanned: Bool

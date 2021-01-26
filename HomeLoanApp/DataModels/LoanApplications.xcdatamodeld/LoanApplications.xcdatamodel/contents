@@ -72,9 +72,9 @@
         <attribute name="homeMain" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="housingScheme" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="housingSub" optional="YES" attributeType="String" defaultValueString=""/>
-        <attribute name="iDPassNumber" optional="YES" attributeType="String" defaultValueString=""/>
-        <attribute name="idPassScanned" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
-        <attribute name="iDType" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="identityNumber" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="identityScanned" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="identityType" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="incomeDeductionsDone" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="incomeFromSureties" optional="YES" attributeType="String"/>
         <attribute name="incomeSource" optional="YES" attributeType="String" defaultValueString=""/>

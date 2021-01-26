@@ -22,8 +22,8 @@ struct PersonalDetailsEditing: View {
     @State var firstNames = ""
     @State var gender = 0
     @State var dateOfBirth = Date()
-    @State var iDType = 0
-    @State var iDPassNumber = ""
+    @State var identityType = 0
+    @State var identityNumber = ""
     @State var passExpiryDate = Date()
     @State var taxNumber = ""
     @State var taxReturn = ""
@@ -56,7 +56,7 @@ struct PersonalDetailsEditing: View {
     let scanButtonInsets = EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
     
     let titles = ["--select--", "Dr", "Me", "Mej", "Mev", "Miss", "Mnr", "Mr", "Mrs", "Ms", "Prof"]
-    let identityType = ["--select--", "ID Book", "Passport", "Recognised Refugee in SA (Section 24)", "SA Refugee Identity (Maroon ID)", "Smart ID Card"]
+    let identityTypes = ["--select--", "ID Book", "Passport", "Recognised Refugee in SA (Section 24)", "SA Refugee Identity (Maroon ID)", "Smart ID Card"]
     let genderSelection = ["--select--", "Male", "Female"]
     let educationLevels = ["--select--", "Cretificate 24 Months", "Degree", "Diploma 1 Years", "Diploma 2 Years", "Diploma 3 Years", "Doctorate", "Honours", "Masters", "Matric", "No Matric", "Post Graduate Diploma"]
     let ethnicGroups = ["--select--", "Asian", "Black", "Coloured", "White"]
@@ -74,8 +74,8 @@ struct PersonalDetailsEditing: View {
         self._firstNames = State(wrappedValue: self.application.firstNames ?? "")
         self._gender = State(wrappedValue: genderSelection.firstIndex(of: self.application.gender ?? "--select--") ?? 0)
         self._dateOfBirth = State(wrappedValue: self.application.dateOfBirth ?? Date())
-        self._iDType = State(wrappedValue: identityType.firstIndex(of: self.application.iDType ?? "--select--") ?? 0)
-        self._iDPassNumber = State(wrappedValue: self.application.iDPassNumber ?? "")
+        self._identityType = State(wrappedValue: identityTypes.firstIndex(of: self.application.identityType ?? "--select--") ?? 0)
+        self._identityNumber = State(wrappedValue: self.application.identityNumber ?? "")
         self._passExpiryDate = State(wrappedValue: self.application.passExpiryDate ?? Date())
         self._taxNumber = State(wrappedValue: self.application.taxNumber ?? "")
         self._taxReturn = State(wrappedValue: self.application.taxReturn ?? "")
@@ -94,7 +94,7 @@ struct PersonalDetailsEditing: View {
         self._publicOfficial = State(wrappedValue: self.application.publicOfficial ?? "")
         self._relatedOfficial = State(wrappedValue: self.application.relatedOfficial ?? "")
         
-        self._initValues = State(wrappedValue: ["title": self.title, "surname": self.surname, "firstNames": self.firstNames, "gender": self.gender, "dateOfBirth": self.dateOfBirth, "iDType": self.iDType, "iDPassNumber": self.iDPassNumber, "passExpiryDate": self.passExpiryDate, "taxNumber": self.taxNumber, "taxReturn": self.taxReturn, "educationLevel": self.educationLevel, "ethnicGroup": self.ethnicGroup, "singleHouse": self.singleHouse, "maritalStatus": self.maritalStatus, "countryMarriage": self.countryMarriage, "spouseIncome": self.spouseIncome, "aNC": self.aNC, "numDependents": self.numDependents, "mainResidence": self.mainResidence, "firstTimeHomeBuyer": self.firstTimeHomeBuyer, "socialGrant": self.socialGrant, "publicOfficial": self.publicOfficial, "relatedOfficial": self.relatedOfficial])
+        self._initValues = State(wrappedValue: ["title": self.title, "surname": self.surname, "firstNames": self.firstNames, "gender": self.gender, "dateOfBirth": self.dateOfBirth, "identityType": self.identityType, "identityNumber": self.identityNumber, "passExpiryDate": self.passExpiryDate, "taxNumber": self.taxNumber, "taxReturn": self.taxReturn, "educationLevel": self.educationLevel, "ethnicGroup": self.ethnicGroup, "singleHouse": self.singleHouse, "maritalStatus": self.maritalStatus, "countryMarriage": self.countryMarriage, "spouseIncome": self.spouseIncome, "aNC": self.aNC, "numDependents": self.numDependents, "mainResidence": self.mainResidence, "firstTimeHomeBuyer": self.firstTimeHomeBuyer, "socialGrant": self.socialGrant, "publicOfficial": self.publicOfficial, "relatedOfficial": self.relatedOfficial])
     }
     
     // MARK: - body
@@ -129,19 +129,19 @@ struct PersonalDetailsEditing: View {
                                    dateRangeOption: 0,
                                    dateSelection: $dateOfBirth)
                     
-                    FormPicker(iD: "iDType",
+                    FormPicker(iD: "identityType",
                                question: formQuestions[1][5] ?? "MISSING",
-                               selectionOptions: identityType,
-                               selection: $iDType)
+                               selectionOptions: identityTypes,
+                               selection: $identityType)
                 }
                 
-                FormTextField(iD: "iDPassNumber",
-                              question: formQuestions[1][switchIDPassport(value: identityType[iDType], loc: 6)] ?? "MISSING",
-                              placeholder: formTextFieldPlaceholders[1][6] ?? "MISSING",
-                              text: $iDPassNumber, sender: .editor)
-                    .keyboardType(identityType[iDType].contains("ID") ? .numberPad : .default)
+                FormTextField(iD: "identityNumber",
+                              question: formQuestions[1][identityText(location: 6)] ?? "MISSING",
+                              placeholder: formTextFieldPlaceholders[1][identityText(location: 6)] ?? "MISSING",
+                              text: $identityNumber, sender: .editor)
+                    .keyboardType(identityType == 1 || identityType == 5 ? .numberPad : .default)
                 
-                if iDType == 2 {
+                if identityType == 2 {
                     FormDatePicker(iD: "passExpiryDate",
                                    question: formQuestions[1][7] ?? "MISSING",
                                    dateRangeOption: 1,
@@ -187,7 +187,7 @@ struct PersonalDetailsEditing: View {
                 
             }
             
-            if maritalStatuses[maritalStatus] == "Married" {
+            if maritalStatus == 2 || maritalStatus == 3 || maritalStatus == 4 {
                 Section(header: Text("MARRIAGE INFO")) {
                     FormPicker(iD: "countryMarriage",
                                question: formQuestions[1][14.1] ?? "MISSING",
@@ -259,8 +259,8 @@ struct PersonalDetailsEditing: View {
                 changedValues.changedValues.merge(dict: ["countryMarriage": countries[0], "spouseIncome": "", "aNC": "", "numDependents": ""])
             }
         }
-        .onChange(of: iDType) { value in
-            if iDType != 2 {
+        .onChange(of: identityType) { value in
+            if identityType != 2 {
                 self.passExpiryDate = Date()
                 changedValues.updateKeyValue("passExpiryDate", value: Date())
             }
@@ -274,7 +274,7 @@ struct PersonalDetailsEditing: View {
     private func determineComplete() -> Bool {
         var isComplete: Bool = false
         // Base checks
-        if title != 0 && !surname.isEmpty && !firstNames.isEmpty && gender != 0 && iDType != 0 && !iDPassNumber.isEmpty && !taxNumber.isEmpty && !taxReturn.isEmpty && educationLevel != 0 && ethnicGroup != 0 && !singleHouse.isEmpty && maritalStatus != 0 && !mainResidence.isEmpty && !firstTimeHomeBuyer.isEmpty && !socialGrant.isEmpty && !publicOfficial.isEmpty && !relatedOfficial.isEmpty {
+        if title != 0 && !surname.isEmpty && !firstNames.isEmpty && gender != 0 && identityType != 0 && !identityNumber.isEmpty && !taxNumber.isEmpty && !taxReturn.isEmpty && educationLevel != 0 && ethnicGroup != 0 && !singleHouse.isEmpty && maritalStatus != 0 && !mainResidence.isEmpty && !firstTimeHomeBuyer.isEmpty && !socialGrant.isEmpty && !publicOfficial.isEmpty && !relatedOfficial.isEmpty {
             
             // Marriage info check
             if maritalStatus == 2 {
@@ -301,12 +301,12 @@ struct PersonalDetailsEditing: View {
     
     // MARK: - hasChanged
     private func hasChanged() -> Bool {
-        self.savingValues = ["title": self.title, "surname": self.surname, "firstNames": self.firstNames, "gender": self.gender, "dateOfBirth": self.dateOfBirth, "iDType": self.iDType, "iDPassNumber": self.iDPassNumber, "passExpiryDate": self.passExpiryDate, "taxNumber": self.taxNumber, "taxReturn": self.taxReturn, "educationLevel": self.educationLevel, "ethnicGroup": self.ethnicGroup, "singleHouse": self.singleHouse, "maritalStatus": self.maritalStatus, "countryMarriage": self.countryMarriage, "spouseIncome": self.spouseIncome, "aNC": self.aNC, "numDependents": self.numDependents, "mainResidence": self.mainResidence, "firstTimeHomeBuyer": self.firstTimeHomeBuyer, "socialGrant": self.socialGrant, "publicOfficial": self.publicOfficial, "relatedOfficial": self.relatedOfficial]
+        self.savingValues = ["title": self.title, "surname": self.surname, "firstNames": self.firstNames, "gender": self.gender, "dateOfBirth": self.dateOfBirth, "identityType": self.identityType, "identityNumber": self.identityNumber, "passExpiryDate": self.passExpiryDate, "taxNumber": self.taxNumber, "taxReturn": self.taxReturn, "educationLevel": self.educationLevel, "ethnicGroup": self.ethnicGroup, "singleHouse": self.singleHouse, "maritalStatus": self.maritalStatus, "countryMarriage": self.countryMarriage, "spouseIncome": self.spouseIncome, "aNC": self.aNC, "numDependents": self.numDependents, "mainResidence": self.mainResidence, "firstTimeHomeBuyer": self.firstTimeHomeBuyer, "socialGrant": self.socialGrant, "publicOfficial": self.publicOfficial, "relatedOfficial": self.relatedOfficial]
         
         if savingValues != initValues {
-            let initIDType = initValues["iDType"]
-            if initIDType != savingValues["iDType"] {
-                deleteScans(initIDType: initIDType)
+            let initidentityType = initValues["identityType"]
+            if initidentityType != savingValues["identityType"] {
+                deleteScans(initIdentityType: initidentityType)
             }
             
             return true
@@ -328,7 +328,7 @@ struct PersonalDetailsEditing: View {
                 application.setValue(value, forKey: key)
             }
             
-            if key == "iDType" {
+            if key == "identityType" {
                 let value = value as? String
                 identityDoneBinding = value != "--select--" && value != ""
             }
@@ -343,15 +343,16 @@ struct PersonalDetailsEditing: View {
         }
     }
     
-    private func deleteScans(initIDType: AnyHashable?) {
+    // MARK: - deleteScans
+    private func deleteScans(initIdentityType: AnyHashable?) {
         let loanID: String = self.application.loanID?.uuidString ?? ""
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         
-        let idType = initIDType?.description
-        
-        if idType == "3" && !loanID.isEmpty { // Deletes the scans for Smart ID Card scans
+        let identityType: String? = initIdentityType?.description
+        print("print - identityType: \(String(describing: identityType))")
+        if identityType == "5" && !loanID.isEmpty { // Deletes the scans for Smart ID Card scans
             for scanNumber in 0..<2 {
-                let fileName = "passport_id_image_\(loanID)_\(scanNumber).png"
+                let fileName = "identity_scan_\(loanID)_\(scanNumber).png"
                 let fileURL = documentsDirectory.appendingPathComponent(fileName)
                 
                 // Checks if file exists, removes it if so.
@@ -366,9 +367,9 @@ struct PersonalDetailsEditing: View {
                 }
             }
             
-            self.application.idPassScanned = false
-        } else if (idType == "1" || idType == "2") && !loanID.isEmpty { // Deletes the scans for Passport or ID Book scans
-            let fileName = "passport_id_image_\(loanID)_0.png"
+            self.application.identityScanned = false
+        } else if (identityType == "1" || identityType == "2" || identityType == "3" || identityType == "4") && !loanID.isEmpty { // Deletes the scans for Passport or ID Book scans
+            let fileName = "identity_scan_\(loanID)_0.png"
             let fileURL = documentsDirectory.appendingPathComponent(fileName)
             
             // Checks if file exists, removes it if so.
@@ -382,19 +383,22 @@ struct PersonalDetailsEditing: View {
 
             }
             
-            self.application.idPassScanned = false
+            self.application.identityScanned = false
         }
     }
     
-    // MARK: - switchIDPassport
-    private func switchIDPassport(value: String, loc: Double)  -> Double {
-        var location: Double = loc
+    // MARK: - identityText
+    private func identityText(location: Double) -> Double {
+        var location = location
         
-        if value.lowercased().contains("id") {
+        if identityType == 1 || identityType == 5 {
             location += 0.1
             return location
-        } else if value == "Passport" {
+        } else if identityType == 2 {
             location += 0.2
+            return location
+        } else if identityType == 3 || identityType == 4 {
+            location += 0.3
             return location
         } else {
             return location

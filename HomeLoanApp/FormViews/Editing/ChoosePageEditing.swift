@@ -49,18 +49,12 @@ struct ChoosePageEditing: View {
         self._assetsLiabilitiesDone = State(wrappedValue: self.application.assetsLiabilitiesDone)
         self._documentScansDone = State(wrappedValue: self.application.documentScansDone)
         
-        self._identityDone = State(wrappedValue: self.application.iDType != "--select--" && self.application.iDType != "" && self.application.iDType != nil)
+        self._identityDone = State(wrappedValue: self.application.identityType != "--select--" && self.application.identityType != "" && self.application.identityType != nil)
     }
     
     // MARK: - body
     var body: some View {
         Form() {
-            /*Button(action: {
-                makeEmailBody()
-            }) {
-                Text("print stuff")
-            }*/
-            
             Group() {
                 NavigationLink(destination: GeneralDetailsEditing(isDone: $generalDetailsDone, application: application, sender: .editor), tag: 0, selection: $selection) {
                     HStack() {

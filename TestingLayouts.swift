@@ -11,7 +11,7 @@ struct TestingLayouts: View {
     
     @State var identityType: String = ""
     @State var incomeStructure: String = ""
-    @State var idPassScanned: Bool = false
+    @State var identityScanned: Bool = false
     @State var salaryPaySlipsScanned: Bool = false
     @State var bankStatementsScanned: Bool = false
     
@@ -30,7 +30,7 @@ struct TestingLayouts: View {
                 HStack() {
                     // Open Scanner
                     Button(action: {
-                        sheetID = .scannerIDPass
+                        sheetID = .identityScanView
                         isShowingSheet = true
                     }) {
                         BackgroundForButton(btnText: "Scan your \(identityType)")
@@ -38,14 +38,14 @@ struct TestingLayouts: View {
                     
                     Spacer()
                     
-                    Image(systemName: idPassScanned ? "checkmark.circle.fill" : "checkmark.circle")
-                        .foregroundColor(idPassScanned ? .green : .red)
+                    Image(systemName: identityScanned ? "checkmark.circle.fill" : "checkmark.circle")
+                        .foregroundColor(identityScanned ? .green : .red)
                     
                     Spacer()
                     
                     // Open how to scan sheet
                     Button(action: {
-                        sheetID = .scannerTips
+                        sheetID = .scanTips
                         isShowingSheet = true
                     }) {
                         Image(systemName: "info.circle")
@@ -60,10 +60,10 @@ struct TestingLayouts: View {
                 .padding(.top, 10)
                 
                 // View Scan
-                if idPassScanned {
+                if identityScanned {
                     HStack() {
                         Button(action: {
-                            sheetID = .idPassScan
+                            sheetID = .identityScan
                             isShowingSheet = true
                         }) {
                             Text("View scan\(identityType == "Smart ID Card" ? "s" : "")")
@@ -102,7 +102,7 @@ struct TestingLayouts: View {
                         HStack() {
                             // Open scanner
                             Button(action: {
-                                //sheetID = .scannerIDPass
+                                //sheetID = .identityScanView
                                 //isShowingSheet = true
                             }) {
                                 BackgroundForButton(btnText: "Scan your \(incomeStructure == "Salaried" ? "payslips" : "salary")")
@@ -117,7 +117,7 @@ struct TestingLayouts: View {
                             
                             // Open how to scan sheet
                             Button(action: {
-                                sheetID = .scannerTips
+                                sheetID = .scanTips
                                 isShowingSheet = true
                             }) {
                                 Image(systemName: "info.circle")
@@ -135,7 +135,7 @@ struct TestingLayouts: View {
                     if true {
                         HStack() {
                             Button(action: {
-                                //sheetID = .idPassScanView
+                                //sheetID = .identityScanView
                                 isShowingSheet = true
                             }) {
                                 Text("View scans")
@@ -168,7 +168,7 @@ struct TestingLayouts: View {
                         HStack() {
                             // Open scanner
                             Button(action: {
-                                //sheetID = .scannerIDPass
+                                //sheetID = .identityScanView
                                 //isShowingSheet = true
                             }) {
                                 BackgroundForButton(btnText: "Scan your bank statements")
@@ -183,7 +183,7 @@ struct TestingLayouts: View {
                             
                             // Open how to scan sheet
                             Button(action: {
-                                sheetID = .scannerTips
+                                sheetID = .scanTips
                                 isShowingSheet = true
                             }) {
                                 Image(systemName: "info.circle")
@@ -201,7 +201,7 @@ struct TestingLayouts: View {
                     if true {
                         HStack() {
                             Button(action: {
-                                //sheetID = .idPassScanView
+                                //sheetID = .identityScanView
                                 isShowingSheet = true
                             }) {
                                 Text("View scans")

@@ -20,24 +20,9 @@ struct NotificationView: View {
     @Binding var isDone: Bool
     @State var sender: Sender
     
-    // MARK: - Properties
-    
-    // MARK: - init
-    /*init(application: Application, isDone: Binding<Bool>, sender: Sender) {
-        self.application = application
-        self._isDone = isDone
-        self._sender = State(wrappedValue: sender)
-        
-        if sender == .creator {
-            self._notificationsCheck = State(wrappedValue: applicationCreation.application.notificationsCheck ?? "")
-        } else if sender == .editor {
-            self._notificationsCheck = State(wrappedValue: self.application.notificationsCheck ?? "")
-        }
-    }*/
-    
     // MARK: - body
     var body: some View {
-        List() {
+        Form() {
             Section(header: Text("Notification")) {
                 Text("Applicant/s are aware that:")
                     .font(.subheadline)
@@ -68,8 +53,6 @@ struct NotificationView: View {
                     .frame(height: 300)
                     .buttonStyle(BorderlessButtonStyle())
             }
-            
-            Divider()
             
             Section() {
                 Button(action: {

@@ -13,11 +13,11 @@ enum Sender {
 }
 
 enum ScannerSheets {
-    case scannerIDPass
-    case scannerTips
-    case scannerBankStatements
-    case scannerSalaryPay
-    case idPassScan
+    case identityScanView
+    case scanTips
+    case bankStatementsScanView
+    case salaryPayScanView
+    case identityScan
     case bankStatementsScan
     case salaryPayScan
     case none

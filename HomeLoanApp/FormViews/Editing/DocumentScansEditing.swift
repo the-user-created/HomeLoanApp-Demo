@@ -16,9 +16,10 @@ struct DocumentScansEditing: View {
     @ObservedObject var application: Application
     
     // MARK: - State Variables
+    @State var salesConsultant: String = ""
     @State var identityType: String = ""
     @State var incomeStructure: String = ""
-    @State var idPassScanned: Bool = false
+    @State var identityScanned: Bool = false
     @State var salaryPaySlipsScanned: Bool = false
     @State var bankStatementsScanned: Bool = false
     
@@ -37,33 +38,43 @@ struct DocumentScansEditing: View {
         self.application = application
         self._isDone = isDone
         self._sender = State(wrappedValue: sender)
-        self._identityType = State(wrappedValue: self.application.iDType ?? "")
-        self._idPassScanned = State(wrappedValue: self.application.idPassScanned)
+        self._salesConsultant = State(wrappedValue: self.application.salesConsultant ?? "")
+        self._identityType = State(wrappedValue: self.application.identityType ?? "")
+        self._identityScanned = State(wrappedValue: self.application.identityScanned)
+        self._salaryPaySlipsScanned = State(wrappedValue: self.application.salaryPaySlipsScanned)
+        self._bankStatementsScanned = State(wrappedValue: self.application.bankStatementsScanned)
+        self._incomeStructure = State(wrappedValue: self.application.incomeStructure ?? "")
     }
     
     // MARK: - body
     var body: some View {
         Form() {
-            Section(header: Text("\(identityType) Scan")) {
+            Section(header: Text("INFO")) {
+                RichText("Here you have the option to scan your identity document/card and/or scan your payslips and/or bank statements.")
+                
+                RichText("If you would prefer not to scan these documents in-app you can take a photo of the corresponding documents and email them to *\(salesConsultantEmails[salesConsultant] ?? "your sales consultant")*")
+            }
+            
+            Section(header: Text("IDENTITY DOCUMENT")) {
                 HStack() {
                     // Open Scanner
                     Button(action: {
-                        sheetID = .scannerIDPass
+                        sheetID = .identityScan
                         isShowingSheet = true
                     }) {
-                        BackgroundForButton(btnText: "Scan your \(identityType)")
+                        BackgroundForButton(btnText: "Scan your \(identityText())")
                     }
                     
                     Spacer()
                     
-                    Image(systemName: idPassScanned ? "checkmark.circle.fill" : "checkmark.circle")
-                        .foregroundColor(idPassScanned ? .green : .red)
+                    Image(systemName: identityScanned ? "checkmark.circle.fill" : "checkmark.circle")
+                        .foregroundColor(identityScanned ? .green : .red)
                     
                     Spacer()
                     
                     // Open how to scan sheet
                     Button(action: {
-                        sheetID = .scannerTips
+                        sheetID = .scanTips
                         isShowingSheet = true
                     }) {
                         Image(systemName: "info.circle")
@@ -78,10 +89,10 @@ struct DocumentScansEditing: View {
                 .padding(.top, 10)
                 
                 // View Scan
-                if idPassScanned {
+                if identityScanned {
                     HStack() {
                         Button(action: {
-                            sheetID = .idPassScan
+                            sheetID = .identityScanView
                             isShowingSheet = true
                         }) {
                             Text("View scan\(identityType == "Smart ID Card" ? "s" : "")")
@@ -94,10 +105,11 @@ struct DocumentScansEditing: View {
                 }
             }
             
-            Section(header: Text("Income Documents")) {
+            Section(header: Text("INCOME DOCUMENTS")) {
                 FormYesNo(iD: "incomeStructure", question: "What is your income structure?", selected: $incomeStructure, buttonOneText: "Salaried", buttonTwoText: "Variable Pay")
                 
                 if !incomeStructure.isEmpty {
+                    // Salary/Pay
                     Group() {
                         // Section header
                         HStack() {
@@ -122,7 +134,7 @@ struct DocumentScansEditing: View {
                             HStack() {
                                 // Open scanner
                                 Button(action: {
-                                    sheetID = .scannerSalaryPay
+                                    sheetID = .salaryPayScan
                                     isShowingSheet = true
                                 }) {
                                     BackgroundForButton(btnText: "Scan your \(incomeStructure == "Salaried" ? "payslips" : "salary")")
@@ -137,7 +149,7 @@ struct DocumentScansEditing: View {
                                 
                                 // Open how to scan sheet
                                 Button(action: {
-                                    sheetID = .scannerTips
+                                    sheetID = .scanTips
                                     isShowingSheet = true
                                 }) {
                                     Image(systemName: "info.circle")
@@ -152,10 +164,10 @@ struct DocumentScansEditing: View {
                         }
                         
                         // View Scan
-                        if bankStatementsScanned {
+                        if salaryPaySlipsScanned {
                             HStack() {
                                 Button(action: {
-                                    sheetID = .salaryPayScan
+                                    sheetID = .salaryPayScanView
                                     isShowingSheet = true
                                 }) {
                                     Text("View scans")
@@ -168,6 +180,7 @@ struct DocumentScansEditing: View {
                         }
                     }
                     
+                    // Bank Statements
                     Group() {
                         // Section header
                         HStack() {
@@ -192,7 +205,7 @@ struct DocumentScansEditing: View {
                             HStack() {
                                 // Open scanner
                                 Button(action: {
-                                    sheetID = .scannerBankStatements
+                                    sheetID = .bankStatementsScan
                                     isShowingSheet = true
                                 }) {
                                     BackgroundForButton(btnText: "Scan your bank statements")
@@ -207,7 +220,7 @@ struct DocumentScansEditing: View {
                                 
                                 // Open how to scan sheet
                                 Button(action: {
-                                    sheetID = .scannerTips
+                                    sheetID = .scanTips
                                     isShowingSheet = true
                                 }) {
                                     Image(systemName: "info.circle")
@@ -225,7 +238,7 @@ struct DocumentScansEditing: View {
                         if bankStatementsScanned {
                             HStack() {
                                 Button(action: {
-                                    sheetID = .bankStatementsScan
+                                    sheetID = .bankStatementsScanView
                                     isShowingSheet = true
                                 }) {
                                     Text("View scans")
@@ -252,25 +265,44 @@ struct DocumentScansEditing: View {
         }
         .navigationBarTitle("Documents")
         .sheet(isPresented: $isShowingSheet) {
-            if sheetID == .scannerTips {
+            let loanID = application.loanID
+            if sheetID == .scanTips {
                 Text("Steps on taking a good scan")
-            } else if sheetID == .scannerIDPass {
-                ScannerView(scanName: "passport_id", applicationID: application.loanID!) { _ in
+            } else if sheetID == .identityScan {
+                ScannerView(scanName: "identity", applicationID: loanID!) { _ in
                     // May have problems later if needing to do more things than just dismiss on completion
                     sheetID = .none
-                    idPassScanned = hasScanned()
-                    changedValues.updateKeyValue("idPassScanned", value: idPassScanned)
+                    identityScanned = hasScanned()
+                    changedValues.updateKeyValue("identityScanned", value: identityScanned)
                     isShowingSheet = false
                 }
-            } else if sheetID == .idPassScan {
-                let loanID = application.loanID?.uuidString
-                if identityType == "Passport" || identityType == "ID Book" {
-                    ImageWithURL(url: "passport_id_image_\(loanID ?? "nil")_0.png", identityType: identityType)
-                } else if identityType == "Smart ID Card" {
-                    ImageWithURL(url: "passport_id_image_\(loanID ?? "nil")_", identityType: identityType)
+            } else if sheetID == .identityScanView {
+                let identityType = application.identityType
+                if let identityType = identityType {
+                    if identityType == "Passport" || identityType == "ID Book" || identityType.contains("Refugee") {
+                        ScannedView(url: "identity_scan_\(loanID?.uuidString ?? "nil")_0.png", scanType: identityType)
+                    } else if identityType == "Smart ID Card" {
+                        ScannedView(url: "identity_scan_\(loanID?.uuidString ?? "nil")_", scanType: identityType)
+                    }
                 }
-            } else if sheetID == .scannerSalaryPay {
-                
+            } else if sheetID == .salaryPayScan {
+                ScannerView(scanName: "salary_pay", applicationID: loanID!) { _ in
+                    sheetID = .none
+                    salaryPaySlipsScanned = hasScanned(scanType: "salaryPay")
+                    changedValues.updateKeyValue("salaryPaySlipsScanned", value: salaryPaySlipsScanned)
+                    isShowingSheet = false
+                }
+            } else if sheetID == .salaryPayScanView {
+                ScannedIncomeView(url: "salary_pay_scan_\(loanID?.uuidString ?? "nil")_", scanType: "salaryPay")
+            } else if sheetID == .bankStatementsScan {
+                ScannerView(scanName: "bank_statement", applicationID: loanID!) { _ in
+                    sheetID = .none
+                    bankStatementsScanned = hasScanned(scanType: "bankStatement")
+                    changedValues.updateKeyValue("bankStatementsScanned", value: bankStatementsScanned)
+                    isShowingSheet = false
+                }
+            } else if sheetID == .bankStatementsScanView {
+                ScannedIncomeView(url: "bank_statement_scan_\(loanID?.uuidString ?? "nil")_", scanType: "bankStatement")
             }
         }
         .onReceive(resignPub) { _ in
@@ -285,7 +317,7 @@ struct DocumentScansEditing: View {
     private func determineComplete() -> Bool {
         var isComplete: Bool = false
         
-        if idPassScanned {
+        if identityScanned {
             isComplete = true
         }
         
@@ -301,51 +333,53 @@ struct DocumentScansEditing: View {
     }
     
     // MARK: - hasScanned
-    private func hasScanned() -> Bool {
+    private func hasScanned(scanType: String = "identity") -> Bool {
         var result: Bool = false
-        if identityType == "Passport" || identityType == "ID Book" { // When the clients ID type is a Passport (or ID Book) they must scan just one side
+        if scanType == "identity" {
+            if identityType == "Passport" || identityType == "ID Book" || identityType.contains("Refugee") { // When the clients ID type is a Passport (or ID Book) they must scan just one side
+                if let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+                    let fileName = "identity_scan_\(application.loanID?.uuidString ?? "nil")_0.png"
+                    let fileURL = documentsDirectory.appendingPathComponent(fileName)
+                    result = FileManager.default.fileExists(atPath: fileURL.path)
+                }
+                // Failed to get directory, therefore result is false
+            } else if identityType == "Smart ID Card" { // When the clients ID type is a Smart ID Card they must scan both sides of the card
+                if let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+                    var sideOneScanned: Bool = false
+                    var sideTwoScanned: Bool = false
+                    
+                    for scanNumber in 0..<2 {
+                        let fileName = "identity_scan_\(application.loanID?.uuidString ?? "nil")_\(scanNumber).png"
+                        let fileURL = documentsDirectory.appendingPathComponent(fileName)
+                        if scanNumber == 0 {
+                            sideOneScanned = FileManager.default.fileExists(atPath: fileURL.path)
+                        } else {
+                            sideTwoScanned = FileManager.default.fileExists(atPath: fileURL.path)
+                        }
+                    }
+                    
+                    if sideOneScanned && sideTwoScanned {
+                        result = true
+                    }
+                    // Missing one of the scans, therefore result is false
+                }
+                // Failed to get directory, therefore result is false
+            }
+        } else if scanType == "salaryPay" {
             if let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-                let fileName = "passport_id_image_\(application.loanID?.uuidString ?? "nil")_0.png"
+                let fileName = "salary_pay_scan_\(application.loanID?.uuidString ?? "nil")_0.png"
                 let fileURL = documentsDirectory.appendingPathComponent(fileName)
                 result = FileManager.default.fileExists(atPath: fileURL.path)
             }
-            // Failed to get directory, therefore result is false
-        } else if identityType == "Smart ID Card" { // When the clients ID type is a Smart ID Card they must scan both sides of the card
+        } else if scanType == "bankStatement" {
             if let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-                var sideOneScanned: Bool = false
-                var sideTwoScanned: Bool = false
-                
-                for scanNumber in 0..<2 {
-                    let fileName = "passport_id_image_\(application.loanID?.uuidString ?? "nil")_\(scanNumber).png"
-                    let fileURL = documentsDirectory.appendingPathComponent(fileName)
-                    if scanNumber == 0 {
-                        sideOneScanned = FileManager.default.fileExists(atPath: fileURL.path)
-                    } else {
-                        sideTwoScanned = FileManager.default.fileExists(atPath: fileURL.path)
-                    }
-                }
-                
-                if sideOneScanned && sideTwoScanned {
-                    result = true
-                }
-                // Missing one of the scans, therefore result is false
+                let fileName = "bank_statement_scan_\(application.loanID?.uuidString ?? "nil")_0.png"
+                let fileURL = documentsDirectory.appendingPathComponent(fileName)
+                result = FileManager.default.fileExists(atPath: fileURL.path)
             }
-            // Failed to get directory, therefore result is false
         }
         
         return result
-    }
-    
-    // MARK: - scanString
-    private func scanString() -> String {
-        var outString: String = "Scan your "
-        if !identityType.isEmpty {
-            outString += identityType != "--select--" ? (identityType.contains("ID") ? "ID" : "Passport") : "passport/ID"
-        } else {
-            outString += "passport/ID"
-        }
-        
-        return outString
     }
     
     // MARK: - addToApplication()
@@ -367,6 +401,19 @@ struct DocumentScansEditing: View {
         } catch {
             print(error.localizedDescription)
         }
+    }
+    
+    // MARK: - identityText
+    private func identityText() -> String {
+        var outString: String = "Identity"
+        
+        if identityType == "Passport" {
+            outString = "Passport"
+        } else if identityType != "Passport" {
+            outString = (identityType == "ID Book") ? "ID Book" : ((identityType.contains("Refugee")) ? "Refugee ID" : "Smart ID Card")
+        }
+        
+        return outString
     }
 }
 

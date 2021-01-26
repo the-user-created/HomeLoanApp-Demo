@@ -44,8 +44,6 @@ struct LoanView: View {
                 
                 ForEach(applications) { application in
                     NavigationLink(destination: ChoosePageEditing(application: application)) {
-                                   /*tag: applications.firstIndex(of: application) ?? 0,
-                                   selection: self.$editingApplication) {*/
                         HStack() {
                             VStack(alignment: .leading) {
                                 Text("Application created on \(application.loanCreatedDate ?? Date(), formatter: dateFormatter)")
@@ -80,16 +78,6 @@ struct LoanView: View {
                     }
                 }
             }
-            .onAppear() {
-                print("print - cleaned changedValues")
-                changedValues.cleanChangedValues()
-            }
-            /*.onChange(of: editingApplication) { _ in
-                if editingApplication == nil {
-                    print("print - cleaned changedValues")
-                    changedValues.cleanChangedValues()
-                }
-            }*/
             .listStyle(PlainListStyle())
             .navigationBarTitle("Loan Applications")
         }

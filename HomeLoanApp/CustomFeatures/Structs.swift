@@ -17,16 +17,15 @@ struct FormLabel: View {
     var question: String
     var textColor: Color = .primary
     var infoButton: Bool = false
-    var formSender: String = ""
     @State var alertShowing: Bool = false
     
     var body: some View {
         HStack() {
             Text(question)
                 .foregroundColor(textColor)
-                .multilineTextAlignment(formSender == "YesNo" ? .center : .leading)
+                .multilineTextAlignment(.leading)
             
-            if infoButton && formSender != "YesNo" {
+            if infoButton {
                 Button(action: {
                     self.alertShowing = true
                 }) {
@@ -304,7 +303,7 @@ struct FormYesNo: View {
     @EnvironmentObject var changedValues: ChangedValues
     
     var iD: String
-    var infoButton: Bool = false
+    @State var infoButton: Bool = false
     var question: String
     var buttonOneImage: String = "checkmark.circle"
     var buttonTwoImage: String = "checkmark.circle"
@@ -318,14 +317,14 @@ struct FormYesNo: View {
     
     init(iD: String, infoButton: Bool = false, question: String, selected: Binding<String>, buttonOneText: String = "Yes", buttonTwoText: String = "No") {
         self.iD = iD
-        self.infoButton = infoButton
+        self._infoButton = State(wrappedValue: infoButton)
         self.question = question
         self._buttonOneText = State(wrappedValue: buttonOneText)
         self._buttonTwoText = State(wrappedValue: buttonTwoText)
         self._selected = selected
-        if self.selected == self.buttonOneText {//"Yes" {
+        if self.selected == self.buttonOneText {
             self._buttonOneChecked = State(wrappedValue: true)
-        } else if self.selected == self.buttonTwoText {//"No" {
+        } else if self.selected == self.buttonTwoText {
             self._buttonTwoChecked = State(wrappedValue: true)
         }
         
@@ -336,7 +335,8 @@ struct FormYesNo: View {
     
     var body: some View {
         VStack(alignment: .center) {
-            FormLabel(question: question, infoButton: infoButton, formSender: "YesNo")
+            Text(question)
+                .multilineTextAlignment(.center)
             
             HStack() {
                 Spacer()
@@ -344,7 +344,7 @@ struct FormYesNo: View {
                 Button(action: {
                     handleButtons(buttonOneText)
                 }, label: {
-                    if buttonOneChecked || selected == buttonOneText {//"Yes" {
+                    if buttonOneChecked || selected == buttonOneText {
                         Image(systemName: buttonOneImage + ".fill")
                             .foregroundColor(.blue)
                     } else {
@@ -355,14 +355,13 @@ struct FormYesNo: View {
                         .foregroundColor(.primary)
                 })
                 .padding([.top, .bottom], padding)
-                .buttonStyle(BorderlessButtonStyle())
                 
                 Spacer()
                 
                 Button(action: {
                     handleButtons(buttonTwoText)
                 }, label: {
-                    if buttonTwoChecked || selected == buttonTwoText {//"No" {
+                    if buttonTwoChecked || selected == buttonTwoText {
                         Image(systemName: buttonTwoImage + ".fill")
                             .foregroundColor(.blue)
                     } else {
@@ -373,20 +372,22 @@ struct FormYesNo: View {
                         .foregroundColor(.primary)
                 })
                 .padding([.top, .bottom], padding)
-                .buttonStyle(BorderlessButtonStyle())
                 
                 Spacer()
             }
             
-            Button(action: {
-                self.alertShowing = true
-            }) {
-                Image(systemName: "info.circle")
-                    .resizable()
-                    .scaledToFit()
+            if infoButton {
+                Button(action: {
+                    self.alertShowing = true
+                }) {
+                    Image(systemName: "info.circle")
+                        .resizable()
+                        .scaledToFit()
+                }
+                .frame(width: 22.0, height: 22.0)
             }
-            .frame(width: 22.0, height: 22.0)
         }
+        .buttonStyle(BorderlessButtonStyle())
         .onChange(of: selected == "") { _ in
             buttonOneChecked = false
             buttonTwoChecked = false
@@ -470,11 +471,60 @@ struct ScannerView: UIViewControllerRepresentable {
         }
          
         func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFinishWith scan: VNDocumentCameraScan) {
+            guard let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+            
             print("print - Document camera view controller did finish with ", scan)
             for scanIndex in 0..<scan.pageCount {
                 let image = scan.imageOfPage(at: scanIndex)
                 if let cgImage = image.cgImage {
-                    saveImage("\(self.scanName)_image_\(self.applicationID)_\(scanIndex).png", image: UIImage(cgImage: cgImage))
+                    saveImage("\(self.scanName)_scan_\(self.applicationID)_\(scanIndex).png", image: UIImage(cgImage: cgImage))
+                }
+            }
+            
+            // Checks if the user is scanning bank/pay documents
+            if scanName == "salary_pay" {
+                let url = "\(self.scanName)_scan_\(self.applicationID)_"
+                var i: Int = scan.pageCount
+                while true {
+                    let newURL = url + "\(i).png"
+                    let fileURL = documentsDirectory.appendingPathComponent(newURL)
+                    
+                    if FileManager.default.fileExists(atPath: fileURL.path) {
+                        // Image exists, attempt to delete
+                        do {
+                            try FileManager.default.removeItem(atPath: fileURL.path)
+                            print("print - Removed old image")
+                            i += 1
+                        } catch let removeError {
+                            print("print - Couldn't remove file at path", removeError)
+                            break
+                        }
+                    } else {
+                        // Image doesn't exist, therefore all images belonging to the same scanType must be deleted
+                        break
+                    }
+                }
+            } else if scanName == "bank_statement" {
+                let url = "\(self.scanName)_scan_\(self.applicationID)_"
+                var i: Int = scan.pageCount
+                while true {
+                    let newURL = url + "\(i).png"
+                    let fileURL = documentsDirectory.appendingPathComponent(newURL)
+                    
+                    if FileManager.default.fileExists(atPath: fileURL.path) {
+                        // Image exists, attempt to delete
+                        do {
+                            try FileManager.default.removeItem(atPath: fileURL.path)
+                            print("print - Removed old image")
+                            i += 1
+                        } catch let removeError {
+                            print("print - Couldn't remove file at path", removeError)
+                            break
+                        }
+                    } else {
+                        // Image doesn't exist, therefore all images belonging to the same scanType must be deleted
+                        break
+                    }
                 }
             }
             
@@ -523,24 +573,24 @@ struct ScannerView: UIViewControllerRepresentable {
 }
 
 
-// MARK: - ScannedImageView
-struct ImageWithURL: View {
+// MARK: - ScannedView
+struct ScannedView: View {
     @Environment(\.presentationMode) var presentationMode
     
     @State var image: UIImage?
     @State var image2: UIImage?
-    @State var identityType: String
+    @State var scanType: String
     
     var documentsURL: URL {
         return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
     }
     
-    init(url: String, identityType: String) {
-        self._identityType = State(wrappedValue: identityType)
+    init(url: String, scanType: String) {
+        self._scanType = State(wrappedValue: scanType)
         
-        if self.identityType == "Passport" || self.identityType == "ID Book" {
+        if self.scanType == "Passport" || self.scanType == "ID Book" || self.scanType.contains("Refugee") {
             self._image = State(wrappedValue: load(fileName: url))
-        } else if self.identityType == "Smart ID Card" {
+        } else if self.scanType == "Smart ID Card" {
             self._image = State(wrappedValue: load(fileName: url + "0.png"))
             self._image2 = State(wrappedValue: load(fileName: url + "1.png"))
         }
@@ -564,7 +614,7 @@ struct ImageWithURL: View {
                 
                 Divider()
                 
-                Text(identityType == "Smart ID Card" ? "\(identityType) Scan #1" : "\(identityType) Scan")
+                Text(scanType == "Smart ID Card" ? "\(scanType) Scan #1" : "\(scanType) Scan")
                     .font(.title2)
                 
                 Divider()
@@ -575,10 +625,10 @@ struct ImageWithURL: View {
                     .clipped()
                     .padding()
                 
-                if identityType == "Smart ID Card" {
+                if scanType == "Smart ID Card" {
                     Divider()
                     
-                    Text("\(identityType) Scan #2")
+                    Text("\(scanType) Scan #2")
                         .font(.title2)
                     
                     Divider()
@@ -606,6 +656,88 @@ struct ImageWithURL: View {
         }
         
         return nil
+    }
+}
+
+
+// MARK: - ScannedIncomeView
+struct ScannedIncomeView: View {
+    @Environment(\.presentationMode) var presentationMode
+    
+    @State var images: [UIImage?] = []
+    @State var url: String = ""
+    @State var scanType: String = ""
+    
+    init(url: String, scanType: String) {
+        self._scanType = State(wrappedValue: scanType)
+        self._url = State(wrappedValue: url)
+        self._images = State(wrappedValue: loadImages())
+    }
+
+    var body: some View {
+        ScrollView() {
+            Group() {
+                HStack() {
+                    Spacer()
+                    
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        Text("Done")
+                            .foregroundColor(.blue)
+                            .font(.headline)
+                    }
+                    .padding(.trailing, 10)
+                }
+                
+                Divider()
+                
+                ForEach(0..<images.count) { imageNum in
+                    Text("Scan #\(imageNum + 1)")
+                        .font(.title2)
+                    
+                    Divider()
+                    
+                    Image(uiImage: images[imageNum] ?? UIImage())
+                        .resizable()
+                        .scaledToFit()
+                        .clipped()
+                        .padding()
+                }
+            }
+            .padding()
+        }
+    }
+    
+    private func loadImages() -> [UIImage?] {
+        var result: Bool = false
+        var images: [UIImage?] = []
+        
+        if let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+            var i: Int = 0
+            while true {
+                let newURL = url + "\(i).png"
+                let fileURL = documentsDirectory.appendingPathComponent(newURL)
+                result = FileManager.default.fileExists(atPath: fileURL.path)
+                
+                if !result {
+                    // File doesn't exist
+                    break
+                } else {
+                    // File exists
+                    do {
+                        let imageData = try Data(contentsOf: fileURL)
+                        print("print - Loaded image")
+                        images.append(UIImage(data: imageData))
+                    } catch {
+                        print("print - Error loading image : \(error)")
+                    }
+                    i += 1
+                }
+            }
+        }
+        
+        return images
     }
 }
 
@@ -876,7 +1008,6 @@ struct BackgroundForButton: View {
 
 
 // MARK: - RichText
-// Used to allow easy in-string formatting
 struct RichText: View {
 
     struct Element: Identifiable {
