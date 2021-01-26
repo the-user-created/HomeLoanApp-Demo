@@ -14,8 +14,9 @@ struct SignatureView: View {
     @State private var drawings: [Drawing] = [Drawing]()
     @State private var color: Color = Color.black
     @State private var lineWidth: CGFloat = 3.0
-    @State private var uiimage: UIImage? = nil
+    //@State private var uiimage: UIImage? = nil
     @State private var rect: CGRect = .zero
+    @State var loanID: String? = ""
     
     var body: some View {
             VStack(alignment: .center) {
@@ -25,21 +26,15 @@ struct SignatureView: View {
                 DrawingControls(color: $color,
                                 drawings: $drawings,
                                 lineWidth: $lineWidth,
-                                uiimage: $uiimage,
-                                rect: $rect)
+                                //uiimage: $uiimage,
+                                rect: $rect,
+                                loanID: loanID ?? "")
                 
                 DrawingPad(currentDrawing: $currentDrawing,
                            drawings: $drawings,
                            color: $color,
                            lineWidth: $lineWidth)
                     .background(RectGetter(rect: $rect))
-                
-                /*if self.uiimage != nil {
-                    VStack() {
-                        Text("Signature")
-                        Image(uiImage: self.uiimage!)
-                    }
-                }*/
             }
     }
 }
@@ -48,8 +43,9 @@ struct DrawingControls: View {
     @Binding var color: Color
     @Binding var drawings: [Drawing]
     @Binding var lineWidth: CGFloat
-    @Binding var uiimage: UIImage?
+    //@Binding var uiimage: UIImage?
     @Binding var rect: CGRect
+    @State var loanID: String
     
     var body: some View {
         VStack() {
@@ -70,23 +66,41 @@ struct DrawingControls: View {
                 Spacer()
                 
                 Button("Save") {
-                    self.saveImage()
+                    self.saveImage("signature_\(loanID)_image.png")
                 }
                 .padding([.top, .bottom], 10)
                 .padding([.leading, .trailing], 20)
             }
-            
-            /*HStack {
-                Text("Line width")
-                    .padding()
-                Slider(value: $lineWidth, in: 1.0...10.0, step: 1.0)
-                    .padding()
-            }*/
         }
+        .buttonStyle(BorderlessButtonStyle())
     }
     
-    private func saveImage() {
-        self.uiimage = UIApplication.shared.windows[0].rootViewController?.view.asImage(rect: self.rect)
+    func saveImage(_ signatureName: String) {
+        if let signature = UIApplication.shared.windows[0].rootViewController?.view.asImage(rect: self.rect) {
+            guard let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+
+            let fileURL = documentsDirectory.appendingPathComponent(signatureName)
+            guard let data = signature.pngData() else { return }
+            
+            // Checks if file exists, removes it if so.
+            if FileManager.default.fileExists(atPath: fileURL.path) {
+                do {
+                    try FileManager.default.removeItem(atPath: fileURL.path)
+                    print("print - Removed old signature")
+                } catch let removeError {
+                    print("print - Couldn't remove signature at path", removeError)
+                }
+
+            }
+            
+            // Writes the image to the directory
+            do {
+                try data.write(to: fileURL)
+                print("print - Added signature to directory: \(fileURL)")
+            } catch let error {
+                print("print - Error saving signature with error", error)
+            }
+        }
     }
 }
 
@@ -156,20 +170,5 @@ struct RectGetter: View {
         }
 
         return Rectangle().fill(Color.clear)
-    }
-}
-
-extension UIView {
-    func asImage(rect: CGRect) -> UIImage {
-        let renderer = UIGraphicsImageRenderer(bounds: rect)
-        return renderer.image { rendererContext in
-            layer.render(in: rendererContext.cgContext)
-        }
-    }
-}
-
-struct SignatureView_Previews: PreviewProvider {
-    static var previews: some View {
-        SignatureView()
     }
 }

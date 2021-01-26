@@ -49,9 +49,8 @@ struct NotificationView: View {
             }
             
             Section(header: Text("Signature")) {
-                SignatureView()
+                SignatureView(loanID: sender == .creator ? applicationCreation.application.loanID?.uuidString : application.loanID?.uuidString)
                     .frame(height: 300)
-                    .buttonStyle(BorderlessButtonStyle())
             }
             
             Section() {

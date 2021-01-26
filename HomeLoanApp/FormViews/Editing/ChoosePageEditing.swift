@@ -31,6 +31,7 @@ struct ChoosePageEditing: View {
     @State var selection: Int?
     
     @State var identityDone: Bool?
+    @State var salesConsultant: String = ""
     @State var notificationsCheck: String = ""
     
     @State var result: Result<MFMailComposeResult, Error>? = nil
@@ -50,6 +51,8 @@ struct ChoosePageEditing: View {
         self._documentScansDone = State(wrappedValue: self.application.documentScansDone)
         
         self._identityDone = State(wrappedValue: self.application.identityType != "--select--" && self.application.identityType != "" && self.application.identityType != nil)
+        
+        self._salesConsultant = State(wrappedValue: self.application.salesConsultant ?? "")
     }
     
     // MARK: - body
@@ -225,7 +228,7 @@ struct ChoosePageEditing: View {
         }
         .sheet(isPresented: $isShowingMailView) {
             let clientName: String = "\(String(describing: self.application.surname)), \(String(describing: self.application.firstNames))"
-            MailView(clientName: clientName, emailBody: makeEmailBody(), isShowing: self.$isShowingMailView, result: self.$result)
+            MailView(clientName: clientName, emailBody: makeEmailBody(), recipients: [salesConsultantEmails[salesConsultant] ?? ""], isShowing: self.$isShowingMailView, result: self.$result)
         }
     }
     
@@ -239,26 +242,15 @@ struct ChoosePageEditing: View {
     }
     
     private func makeEmailBody() -> String {
-        let sections: [String] = ["General Details", "Personal Details", "Residency & Contact", "Subsidy & Credit", "Employment", "Income & Deductions", "Expenses", "Assets & Liabilities"]
+        //let sections: [String] = ["General Details", "Personal Details", "Residency & Contact", "Subsidy & Credit", "Employment", "Income & Deductions", "Expenses", "Assets & Liabilities"]
         
-        var i: Int = 0
-        var emailBody: String = ""
-        for section in formQuestionIDs {
-            emailBody += "\(sections[i])\n"
-
-            for (id, question) in section
-            {
-                let value = self.application.value(forKey: id)
-                if (value != nil) && !((value as? String)?.isEmpty ?? true) {
-                    emailBody += "\(question ?? "")  =  \((value as? String) ?? "")\n"
-                }
-            }
-            
-            emailBody += "\n"
-            
-            i += 1
+        var generalDetails = ""
+        
+        for i in 0..<6 {
+            let i = Double(i)
+            generalDetails += "\(formQuestions[0][i] ?? "")  =  \(application.salesConsultant ?? "")\n"
         }
         
-        return emailBody
+        return generalDetails
     }
 }

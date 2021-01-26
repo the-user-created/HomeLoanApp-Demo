@@ -772,6 +772,7 @@ struct MailView: UIViewControllerRepresentable {
     
     @State var clientName: String
     @State var emailBody: String
+    @State var recipients: [String] = [""]
     @Binding var isShowing: Bool
     @Binding var result: Result<MFMailComposeResult, Error>?
 
@@ -781,8 +782,7 @@ struct MailView: UIViewControllerRepresentable {
         @Binding var isShowing: Bool
         @Binding var result: Result<MFMailComposeResult, Error>?
 
-        init(isShowing: Binding<Bool>, result: Binding<Result<MFMailComposeResult, Error>?>) {//clientName: String, isShowing: Binding<Bool>, result: Binding<Result<MFMailComposeResult, Error>?>) {
-            //_clientName = State(wrappedValue: clientName)
+        init(isShowing: Binding<Bool>, result: Binding<Result<MFMailComposeResult, Error>?>) {
             _isShowing = isShowing
             _result = result
         }
@@ -800,7 +800,7 @@ struct MailView: UIViewControllerRepresentable {
     }
 
     func makeCoordinator() -> Coordinator {
-        return Coordinator(isShowing: $isShowing, result: $result)//clientName: clientName, isShowing: $isShowing, result: $result)
+        return Coordinator(isShowing: $isShowing, result: $result)
     }
 
     func makeUIViewController(context: UIViewControllerRepresentableContext<MailView>) -> MFMailComposeViewController {
@@ -808,6 +808,7 @@ struct MailView: UIViewControllerRepresentable {
         vc.mailComposeDelegate = context.coordinator
         vc.setSubject("Loan Application for \(clientName)")
         vc.setMessageBody(emailBody, isHTML: false)
+        vc.setToRecipients(recipients)
         return vc
     }
 
