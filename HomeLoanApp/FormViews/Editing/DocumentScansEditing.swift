@@ -29,14 +29,16 @@ struct DocumentScansEditing: View {
     @State var showingAlert: Bool = false
     @State var alertMessage: String = ""
     @Binding var isDone: Bool
+    @Binding var scanGroup: [String]
     
     // MARK: - Properties
     let resignPub = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
     
     // MARK: - init
-    init(application: Application, isDone: Binding<Bool>, sender: Sender) {
+    init(application: Application, isDone: Binding<Bool>, scanGroup: Binding<[String]>, sender: Sender) {
         self.application = application
         self._isDone = isDone
+        self._scanGroup = scanGroup
         self._sender = State(wrappedValue: sender)
         self._salesConsultant = State(wrappedValue: self.application.salesConsultant ?? "")
         self._identityType = State(wrappedValue: self.application.identityType ?? "")
@@ -317,11 +319,25 @@ struct DocumentScansEditing: View {
     private func determineComplete() -> Bool {
         var isComplete: Bool = false
         
+        scanGroup = []
+        
         if identityScanned {
             isComplete = true
+            scanGroup.append("identity")
+        }
+        
+        if salaryPaySlipsScanned {
+            isComplete = true
+            scanGroup.append("salaryPay")
+        }
+        
+        if bankStatementsScanned {
+            isComplete = true
+            scanGroup.append("bankStatements")
         }
         
         changedValues.changedValues.updateValue(isComplete, forKey: "documentScansDone")
+        changedValues.changedValues.updateValue(scanGroup, forKey: "scanGroup")
         return isComplete
     }
     

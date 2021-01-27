@@ -773,12 +773,12 @@ struct MailView: UIViewControllerRepresentable {
     @State var clientName: String
     @State var emailBody: String
     @State var recipients: [String] = [""]
+    @State var attachments: [String: Data]
     @Binding var isShowing: Bool
     @Binding var result: Result<MFMailComposeResult, Error>?
 
     class Coordinator: NSObject, MFMailComposeViewControllerDelegate {
         
-        //@State var clientName: String
         @Binding var isShowing: Bool
         @Binding var result: Result<MFMailComposeResult, Error>?
 
@@ -809,6 +809,11 @@ struct MailView: UIViewControllerRepresentable {
         vc.setSubject("Loan Application for \(clientName)")
         vc.setMessageBody(emailBody, isHTML: false)
         vc.setToRecipients(recipients)
+        
+        for (k, v) in attachments {
+            vc.addAttachmentData(v, mimeType: "image/png", fileName: k)
+        }
+        
         return vc
     }
 

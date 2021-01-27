@@ -155,6 +155,7 @@
         <attribute name="sACitizen" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="salaryPaySlipsScanned" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="salesConsultant" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="scanGroup" optional="YES" attributeType="Transformable"/>
         <attribute name="security" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="singleHouse" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="socialGrant" optional="YES" attributeType="String" defaultValueString=""/>
@@ -178,6 +179,6 @@
         <attribute name="workPhoneNum" optional="YES" attributeType="String" defaultValueString=""/>
     </entity>
     <elements>
-        <element name="Application" positionX="-63" positionY="-18" width="128" height="2668"/>
+        <element name="Application" positionX="-63" positionY="-18" width="128" height="2683"/>
     </elements>
 </model>

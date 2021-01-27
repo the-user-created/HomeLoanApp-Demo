@@ -16,7 +16,10 @@ struct NotificationView: View {
     @ObservedObject var application: Application
     
     // MARK: - State Variables
-    @Binding var notificationsCheck: String
+    @State var showingAlert: Bool = false
+    @State var alertMessage: String = ""
+    @Binding var signatureDone: Bool
+    @Binding var notificationCheck: String
     @Binding var isDone: Bool
     @State var sender: Sender
     
@@ -44,12 +47,12 @@ struct NotificationView: View {
                 
                 FormYesNo(iD: "notificationsCheck",
                           question: "Do you agree to all notifications",
-                          selected: $notificationsCheck)
+                          selected: $notificationCheck)
                     .padding([.top], 10)
             }
             
             Section(header: Text("Signature")) {
-                SignatureView(loanID: sender == .creator ? applicationCreation.application.loanID?.uuidString : application.loanID?.uuidString)
+                SignatureView(loanID: sender == .creator ? applicationCreation.application.loanID?.uuidString : application.loanID?.uuidString, signatureDone: $signatureDone)
                     .frame(height: 300)
             }
             
@@ -57,26 +60,45 @@ struct NotificationView: View {
                 Button(action: {
                     handleSaving()
                 }) {
-                    Text("Save")
-                        .foregroundColor(notificationsCheck == "Yes" ? .blue : .gray)
+                    Text("Continue")
+                        .foregroundColor(.blue)
                         .font(.headline)
                 }
-                .disabled(notificationsCheck == "Yes" ? false : true)
             }
         }
         .navigationBarTitle("Notification")
-        .onChange(of: notificationsCheck, perform: { value in
-            if value == "Yes" {
-                isDone = true
-            } else {
-                isDone = false
-            }
-        })
+        .alert(isPresented: $showingAlert) {
+            Alert(title: Text(""), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+        }
+    }
+    
+    // MARK: - determineComplete
+    private func determineComplete() -> Bool {
+        var isComplete: Bool = false
+        
+        if notificationCheck == "Yes" && signatureDone {
+            isComplete = true
+        }
+        
+        return isComplete
     }
     
     // MARK: - handleSaving
     private func handleSaving() {
-        presentationMode.wrappedValue.dismiss()
+        isDone = determineComplete()
+        
+        if isDone {
+            presentationMode.wrappedValue.dismiss()
+        } else if notificationCheck != "Yes" && !signatureDone {
+            alertMessage = "Please add your signature and accept the notification to continue"
+            showingAlert = true
+        } else if notificationCheck != "Yes" {
+            alertMessage = "Please accept the notification to continue"
+            showingAlert = true
+        } else if !signatureDone {
+            alertMessage = "Please add your signature to continue"
+            showingAlert = true
+        }
     }
     
     /*// MARK: - saveApplication

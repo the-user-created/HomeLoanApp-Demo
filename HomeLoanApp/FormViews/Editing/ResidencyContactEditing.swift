@@ -24,13 +24,6 @@ struct ResidencyContactEditing: View {
     @State var cityOfBirth = ""
     @State var permanentResident = ""
     @State var countryOfPermanentResidence = 0
-    /*@State var permitType = 0
-    @State var countryOfPermit = 0
-    @State var permitIssueDate = Date()
-    @State var permitExpiryDate = Date()
-    @State var contractIssueDate = Date()
-    @State var contractExpiryDate = Date()
-    @State var workPermitNumber = ""*/
     @State var homeLanguage = 0
     @State var corresLanguage = 0
     @State var cellNumber = ""
@@ -63,7 +56,6 @@ struct ResidencyContactEditing: View {
     // MARK: - Properties
     let resignPub = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
     
-    //let permitTypes = ["--select--", "Work permit", "--TBA--"]
     let languages = ["--select--", "English", "Afrikaans", "IsiNdebele", "IsiXhosa", "IsiZulu", "Other", "Sepedi", "Sesotho", "Setswana", "SiSwati", "Tshivenda", "Xitsonga"]
     let correslanguages = ["--select--", "English", "Afrikaans", "IsiZulu", "Sesotho", "Xitsonga"]
     
@@ -79,13 +71,6 @@ struct ResidencyContactEditing: View {
         self._cityOfBirth = State(wrappedValue: self.application.cityOfBirth ?? "")
         self._permanentResident = State(wrappedValue: self.application.permanentResident ?? "")
         self._countryOfPermanentResidence = State(wrappedValue: countries.firstIndex(of: self.application.countryOfPermanentResidence ?? "--select--") ?? 0)
-        /*self._permitType = State(wrappedValue: permitTypes.firstIndex(of: self.application.permitType ?? "--select--") ?? 0)
-        self._countryOfPermit = State(wrappedValue: countries.firstIndex(of: self.application.countryOfPermit ?? "--select--") ?? 0)
-        self._permitIssueDate = State(wrappedValue: self.application.permitIssueDate ?? Date())
-        self._permitExpiryDate = State(wrappedValue: self.application.permitExpiryDate ?? Date())
-        self._contractIssueDate = State(wrappedValue: self.application.contractIssueDate ?? Date())
-        self._contractExpiryDate = State(wrappedValue: self.application.contractExpiryDate ?? Date())
-        self._workPermitNumber = State(wrappedValue: self.application.workPermitNumber ?? "")*/
         self._homeLanguage = State(wrappedValue: languages.firstIndex(of: self.application.homeLanguage ?? "--select--") ?? 0)
         self._corresLanguage = State(wrappedValue: correslanguages.firstIndex(of: self.application.corresLanguage ?? "--select--") ?? 0)
         self._cellNumber = State(wrappedValue: self.application.cellNumber ?? "")
@@ -116,8 +101,6 @@ struct ResidencyContactEditing: View {
             }
         }
         
-        /*["sACitizen": self.sACitizen, "nationality": self.nationality, "countryPassport": self.countryPassport, "countryBirth": self.countryBirth, "cityOfBirth": self.cityOfBirth, "permanentResident": self.permanentResident, "countryOfPermanentResidence": self.countryOfPermanentResidence, "permitType": self.permitType, "countryOfPermit": self.countryOfPermit, "permitIssueDate": self.permitIssueDate, "permitExpiryDate": self.permitExpiryDate, "contractIssueDate": self.contractIssueDate, "contractExpiryDate": self.contractExpiryDate, "workPermitNumber": self.workPermitNumber, "homeLanguage": self.homeLanguage, "corresLanguage": self.corresLanguage, "cellNumber": self.cellNumber, "emailAddress": self.emailAddress, "resCountry": self.resCountry, "resLine1": self.resLine1, "resLine2": self.resLine2, "resSuburb": self.resSuburb, "resCity": self.resCity, "resProvince": self.resProvince, "resStreetCode": self.resStreetCode, "lengthAtAddress": "[\(lengthAtAddressYears)][\(lengthAtAddressMonths)]", "resIsPostal": self.resIsPostal, "postalCountry": self.postalCountry, "postalLine1": self.postalLine1, "postalLine2": self.postalLine2, "postalSuburb": self.postalSuburb, "postalCity": self.postalCity, "postalProvince": self.postalProvince, "postalStreetCode": self.postalStreetCode]*/
-        
         self._initValues = State(wrappedValue: ["sACitizen": self.sACitizen, "nationality": self.nationality, "countryPassport": self.countryPassport, "countryBirth": self.countryBirth, "cityOfBirth": self.cityOfBirth, "permanentResident": self.permanentResident, "countryOfPermanentResidence": self.countryOfPermanentResidence, "homeLanguage": self.homeLanguage, "corresLanguage": self.corresLanguage, "cellNumber": self.cellNumber, "emailAddress": self.emailAddress, "resCountry": self.resCountry, "resLine1": self.resLine1, "resLine2": self.resLine2, "resSuburb": self.resSuburb, "resCity": self.resCity, "resProvince": self.resProvince, "resStreetCode": self.resStreetCode, "lengthAtAddress": "[\(lengthAtAddressYears)][\(lengthAtAddressMonths)]", "resIsPostal": self.resIsPostal, "postalCountry": self.postalCountry, "postalLine1": self.postalLine1, "postalLine2": self.postalLine2, "postalSuburb": self.postalSuburb, "postalCity": self.postalCity, "postalProvince": self.postalProvince, "postalStreetCode": self.postalStreetCode])
     }
     
@@ -131,99 +114,61 @@ struct ResidencyContactEditing: View {
                 
                 if sACitizen == "No" {
                     FormPicker(iD: "nationality",
-                               question: formQuestions[2][0.1] ?? "MISSING",
+                               question: formQuestions[2][1] ?? "MISSING",
                                selectionOptions: countries,
                                selection: $nationality)
                     
                     FormPicker(iD: "countryPassport",
-                               question: formQuestions[2][0.2] ?? "MISSING",
+                               question: formQuestions[2][2] ?? "MISSING",
                                selectionOptions: countries,
                                selection: $countryPassport)
                 }
                 
                 FormPicker(iD: "countryBirth",
-                           question: formQuestions[2][1] ?? "MISSING",
+                           question: formQuestions[2][3] ?? "MISSING",
                            selectionOptions: countries,
                            selection: $countryBirth)
                 
                 FormTextField(iD: "cityOfBirth",
-                              question: formQuestions[2][2] ?? "MISSING",
-                              placeholder: formTextFieldPlaceholders[2][2] ?? "MISSING",
+                              question: formQuestions[2][4] ?? "MISSING",
+                              placeholder: formTextFieldPlaceholders[2][4] ?? "MISSING",
                               text: $cityOfBirth, sender: .editor)
                 
                 if sACitizen == "No" {
                 FormYesNo(iD: "permanentResident",
-                          question: formQuestions[2][3] ?? "MISSING",
+                          question: formQuestions[2][5] ?? "MISSING",
                           selected: $permanentResident)
                 
                     if permanentResident == "No" {
                         FormPicker(iD: "countryOfPermanentResidence",
-                                   question: formQuestions[2][3.1] ?? "MISSING",
+                                   question: formQuestions[2][6] ?? "MISSING",
                                    selectionOptions: countries,
                                    selection: $countryOfPermanentResidence)
                     }
-                    
-                    /*Group() {
-                        FormPicker(iD: "permitType",
-                                   question: formQuestions[2][4] ?? "MISSING",
-                                   selectionOptions: permitTypes,
-                                   selection: $permitType)
-                        
-                        FormPicker(iD: "countryOfPermit",
-                                   question: formQuestions[2][5] ?? "MISSING",
-                                   selectionOptions: countries,
-                                   selection: $countryOfPermit)
-                        
-                        FormDatePicker(iD: "permitIssueDate",
-                                       question: formQuestions[2][6] ?? "MISSING",
-                                       dateRangeOption: 0,
-                                       dateSelection: $permitIssueDate)
-                        
-                        FormDatePicker(iD: "permitExpiryDate",
-                                       question: formQuestions[2][7] ?? "MISSING",
-                                       dateRangeOption: 1,
-                                       dateSelection: $permitExpiryDate)
-                        
-                        FormDatePicker(iD: "contractIssueDate",
-                                       question: formQuestions[2][8] ?? "MISSING",
-                                       dateRangeOption: 0,
-                                       dateSelection: $contractIssueDate)
-                        
-                        FormDatePicker(iD: "contractExpiryDate",
-                                       question: formQuestions[2][9] ?? "MISSING",
-                                       dateRangeOption: 1,
-                                       dateSelection: $contractExpiryDate)
-                        
-                        FormTextField(iD: "workPermitNumber",
-                                      question: formQuestions[2][10] ?? "MISSING",
-                                      placeholder: formTextFieldPlaceholders[2][10] ?? "MISSING",
-                                      text: $workPermitNumber, sender: .editor)
-                        
-                    }*/
                 }
                 
             }
             
             Section(header: Text("CONTACT")) {
                 FormPicker(iD: "homeLanguage",
-                           question: formQuestions[2][11] ?? "MISSING",
+                           question: formQuestions[2][7] ?? "MISSING",
                            selectionOptions: languages,
                            selection: $homeLanguage)
                 
                 FormPicker(iD: "corresLanguage",
-                           question: formQuestions[2][12] ?? "MISSING",
+                           question: formQuestions[2][8] ?? "MISSING",
                            selectionOptions: correslanguages,
                            selection: $corresLanguage)
                 
                 FormTextField(iD: "cellNumber",
-                              question: formQuestions[2][13] ?? "MISSING",
-                              placeholder: formTextFieldPlaceholders[2][13] ?? "MISSING",
+                              question: formQuestions[2][9] ?? "MISSING",
+                              placeholder: formTextFieldPlaceholders[2][9] ?? "MISSING",
                               text: $cellNumber, sender: .editor)
                     .keyboardType(.phonePad)
                 
                 FormTextField(iD: "emailAddress",
-                              question: formQuestions[2][14] ?? "MISSING",
-                              placeholder: formTextFieldPlaceholders[2][14] ?? "MISSING",
+                              question: formQuestions[2][10] ?? "MISSING",
+                              placeholder: formTextFieldPlaceholders[2][10] ?? "MISSING",
                               text: $emailAddress, sender: .editor)
                     .keyboardType(.emailAddress)
                 
@@ -231,43 +176,43 @@ struct ResidencyContactEditing: View {
             
             Section(header: Text("RESIDENTIAL ADDRESS")) {
                 FormPicker(iD: "resCountry",
-                           question: formQuestions[2][15] ?? "MISSING",
+                           question: formQuestions[2][11] ?? "MISSING",
                            selectionOptions: countries,
                            selection: $resCountry)
                 
                 FormTextField(iD: "resLine1",
-                              question: formQuestions[2][15.1] ?? "MISSING",
-                              placeholder: formTextFieldPlaceholders[2][15.1] ?? "MISSING",
+                              question: formQuestions[2][12] ?? "MISSING",
+                              placeholder: formTextFieldPlaceholders[2][12] ?? "MISSING",
                               text: $resLine1, sender: .editor)
                 
                 FormTextField(iD: "resLine2",
-                              question: formQuestions[2][15.2] ?? "MISSING",
-                              placeholder: formTextFieldPlaceholders[2][15.2] ?? "MISSING",
+                              question: formQuestions[2][13] ?? "MISSING",
+                              placeholder: formTextFieldPlaceholders[2][13] ?? "MISSING",
                               text: $resLine2, sender: .editor)
                 
                 FormTextField(iD: "resSuburb",
-                              question: formQuestions[2][15.3] ?? "MISSING",
-                              placeholder: formTextFieldPlaceholders[2][15.3] ?? "MISSING",
+                              question: formQuestions[2][14] ?? "MISSING",
+                              placeholder: formTextFieldPlaceholders[2][14] ?? "MISSING",
                               text: $resSuburb, sender: .editor)
                 
                 FormTextField(iD: "resCity",
-                              question: formQuestions[2][15.4] ?? "MISSING",
-                              placeholder: formTextFieldPlaceholders[2][15.4] ?? "MISSING",
+                              question: formQuestions[2][15] ?? "MISSING",
+                              placeholder: formTextFieldPlaceholders[2][15] ?? "MISSING",
                               text: $resCity, sender: .editor)
                 
                 FormTextField(iD: "resProvince",
-                              question: formQuestions[2][15.5] ?? "MISSING",
-                              placeholder: formTextFieldPlaceholders[2][15.5] ?? "MISSING",
+                              question: formQuestions[2][16] ?? "MISSING",
+                              placeholder: formTextFieldPlaceholders[2][16] ?? "MISSING",
                               text: $resProvince, sender: .editor)
                 
                 FormTextField(iD: "resStreetCode",
-                              question: formQuestions[2][15.6] ?? "MISSING",
-                              placeholder: formTextFieldPlaceholders[2][15.6] ?? "MISSING",
+                              question: formQuestions[2][17] ?? "MISSING",
+                              placeholder: formTextFieldPlaceholders[2][17] ?? "MISSING",
                               text: $resStreetCode, sender: .editor)
                     .keyboardType(.numberPad)
                 
                 FormLenAt(iD: "lengthAtAddress",
-                          question: formQuestions[2][15.7] ?? "MISSING",
+                          question: formQuestions[2][18] ?? "MISSING",
                           yearsText: $lengthAtAddressYears,
                           monthsText: $lengthAtAddressMonths)
                 
@@ -275,43 +220,43 @@ struct ResidencyContactEditing: View {
             
             Section(header: Text("POSTAL ADDRESS")) {
                 FormYesNo(iD: "resIsPostal",
-                          question: formQuestions[2][16] ?? "MISSING",
+                          question: formQuestions[2][19] ?? "MISSING",
                           selected: $resIsPostal)
                 
                 if resIsPostal == "No" {
                     FormPicker(iD: "postalCountry",
-                               question: formQuestions[2][15] ?? "MISSING",
+                               question: formQuestions[2][11] ?? "MISSING",
                                selectionOptions: countries,
                                selection: $postalCountry)
                     
                     FormTextField(iD: "postalLine1",
-                                  question: formQuestions[2][15.1] ?? "MISSING",
-                                  placeholder: formTextFieldPlaceholders[2][15.1] ?? "MISSING",
+                                  question: formQuestions[2][12] ?? "MISSING",
+                                  placeholder: formTextFieldPlaceholders[2][12] ?? "MISSING",
                                   text: $postalLine1, sender: .editor)
                     
                     FormTextField(iD: "postalLine2",
-                                  question: formQuestions[2][15.2] ?? "MISSING",
-                                  placeholder: formTextFieldPlaceholders[2][15.2] ?? "MISSING",
+                                  question: formQuestions[2][13] ?? "MISSING",
+                                  placeholder: formTextFieldPlaceholders[2][13] ?? "MISSING",
                                   text: $postalLine2, sender: .editor)
                     
                     FormTextField(iD: "postalSuburb",
-                                  question: formQuestions[2][15.3] ?? "MISSING",
-                                  placeholder: formTextFieldPlaceholders[2][15.3] ?? "MISSING",
+                                  question: formQuestions[2][14] ?? "MISSING",
+                                  placeholder: formTextFieldPlaceholders[2][14] ?? "MISSING",
                                   text: $postalSuburb, sender: .editor)
                     
                     FormTextField(iD: "postalCity",
-                                  question: formQuestions[2][15.4] ?? "MISSING",
-                                  placeholder: formTextFieldPlaceholders[2][15.4] ?? "MISSING",
+                                  question: formQuestions[2][15] ?? "MISSING",
+                                  placeholder: formTextFieldPlaceholders[2][15] ?? "MISSING",
                                   text: $postalCity, sender: .editor)
                     
                     FormTextField(iD: "postalProvince",
-                                  question: formQuestions[2][15.5] ?? "MISSING",
-                                  placeholder: formTextFieldPlaceholders[2][15.5] ?? "MISSING",
+                                  question: formQuestions[2][16] ?? "MISSING",
+                                  placeholder: formTextFieldPlaceholders[2][16] ?? "MISSING",
                                   text: $postalProvince, sender: .editor)
                     
                     FormTextField(iD: "postalStreetCode",
-                                  question: formQuestions[2][15.6] ?? "MISSING",
-                                  placeholder: formTextFieldPlaceholders[2][15.6] ?? "MISSING",
+                                  question: formQuestions[2][17] ?? "MISSING",
+                                  placeholder: formTextFieldPlaceholders[2][17] ?? "MISSING",
                                   text: $postalStreetCode, sender: .editor)
                         .keyboardType(.numberPad)
                 }
@@ -340,14 +285,6 @@ struct ResidencyContactEditing: View {
                 self.countryPassport = 0
                 self.permanentResident = ""
                 self.countryOfPermanentResidence = 0
-                /*self.permitType = 0
-                self.countryOfPermit = 0
-                self.permitIssueDate = Date()
-                self.permitExpiryDate = Date()
-                self.contractIssueDate = Date()
-                self.contractExpiryDate = Date()
-                self.workPermitNumber = ""
-                changedValues.changedValues.merge(dict: ["nationality": countries[0], "countryPassport": countries[0], "permanentResident": "", "countryOfPermanentResidence": countries[0], "permitType": permitTypes[0], "countryOfPermit": countries[0], "permitIssueDate": Date(), "permitExpiryDate": Date(), "contractIssueDate": Date(), "contractExpiryDate": Date(), "workPermitNumber": ""])*/
                 changedValues.changedValues.merge(dict: ["nationality": countries[0], "countryPassport": countries[0], "permanentResident": "", "countryOfPermanentResidence": countries[0]])
             }
         }
@@ -382,17 +319,11 @@ struct ResidencyContactEditing: View {
         if !sACitizen.isEmpty && countryBirth != 0 && !cityOfBirth.isEmpty && homeLanguage != 0 && corresLanguage != 0 && !cellNumber.isEmpty && !emailAddress.isEmpty && resCountry != 0 && !resLine1.isEmpty && !resSuburb.isEmpty && !resCity.isEmpty && !resProvince.isEmpty && !resStreetCode.isEmpty && (!lengthAtAddressYears.isEmpty || !lengthAtAddressMonths.isEmpty) && !resIsPostal.isEmpty {
             
             if sACitizen == "No" && resIsPostal == "No" {
-                /*if nationality != 0 && countryPassport != 0 && permitType != 0 && countryOfPermit != 0 && !workPermitNumber.isEmpty && postalCountry != 0 && !postalLine1.isEmpty && !postalSuburb.isEmpty && !postalCity.isEmpty && !postalProvince.isEmpty && !postalStreetCode.isEmpty && ((permanentResident == "No" && countryOfPermanentResidence != 0) || permanentResident == "Yes") {
-                    isComplete = true
-                }*/
                 if nationality != 0 && countryPassport != 0 && postalCountry != 0 && !postalLine1.isEmpty && !postalSuburb.isEmpty && !postalCity.isEmpty && !postalProvince.isEmpty && !postalStreetCode.isEmpty && ((permanentResident == "No" && countryOfPermanentResidence != 0) || permanentResident == "Yes") {
                     isComplete = true
                 }
                 // else isComplete = false
             } else if sACitizen == "No" && resIsPostal == "Yes" {
-                /*if nationality != 0 && countryPassport != 0 && permitType != 0 && countryOfPermit != 0 && !workPermitNumber.isEmpty && ((permanentResident == "No" && countryOfPermanentResidence != 0) || permanentResident == "Yes") {
-                    isComplete = true
-                }*/
                 if nationality != 0 && countryPassport != 0 && ((permanentResident == "No" && countryOfPermanentResidence != 0) || permanentResident == "Yes") {
                     isComplete = true
                 }
@@ -415,7 +346,6 @@ struct ResidencyContactEditing: View {
     
     // MARK: - hasChanged
     private func hasChanged() -> Bool {
-        /*["sACitizen": self.sACitizen, "nationality": self.nationality, "countryPassport": self.countryPassport, "countryBirth": self.countryBirth, "cityOfBirth": self.cityOfBirth, "permanentResident": self.permanentResident, "countryOfPermanentResidence": self.countryOfPermanentResidence, "permitType": self.permitType, "countryOfPermit": self.countryOfPermit, "permitIssueDate": self.permitIssueDate, "permitExpiryDate": self.permitExpiryDate, "contractIssueDate": self.contractIssueDate, "contractExpiryDate": self.contractExpiryDate, "workPermitNumber": self.workPermitNumber, "homeLanguage": self.homeLanguage, "corresLanguage": self.corresLanguage, "cellNumber": self.cellNumber, "emailAddress": self.emailAddress, "resCountry": self.resCountry, "resLine1": self.resLine1, "resLine2": self.resLine2, "resSuburb": self.resSuburb, "resCity": self.resCity, "resProvince": self.resProvince, "resStreetCode": self.resStreetCode, "lengthAtAddress": "[\(lengthAtAddressYears)][\(lengthAtAddressMonths)]", "resIsPostal": self.resIsPostal, "postalCountry": self.postalCountry, "postalLine1": self.postalLine1, "postalLine2": self.postalLine2, "postalSuburb": self.postalSuburb, "postalCity": self.postalCity, "postalProvince": self.postalProvince, "postalStreetCode": self.postalStreetCode]*/
         self.savingValues = ["sACitizen": self.sACitizen, "nationality": self.nationality, "countryPassport": self.countryPassport, "countryBirth": self.countryBirth, "cityOfBirth": self.cityOfBirth, "permanentResident": self.permanentResident, "countryOfPermanentResidence": self.countryOfPermanentResidence, "homeLanguage": self.homeLanguage, "corresLanguage": self.corresLanguage, "cellNumber": self.cellNumber, "emailAddress": self.emailAddress, "resCountry": self.resCountry, "resLine1": self.resLine1, "resLine2": self.resLine2, "resSuburb": self.resSuburb, "resCity": self.resCity, "resProvince": self.resProvince, "resStreetCode": self.resStreetCode, "lengthAtAddress": "[\(lengthAtAddressYears)][\(lengthAtAddressMonths)]", "resIsPostal": self.resIsPostal, "postalCountry": self.postalCountry, "postalLine1": self.postalLine1, "postalLine2": self.postalLine2, "postalSuburb": self.postalSuburb, "postalCity": self.postalCity, "postalProvince": self.postalProvince, "postalStreetCode": self.postalStreetCode]
         
         if self.savingValues != self.initValues {

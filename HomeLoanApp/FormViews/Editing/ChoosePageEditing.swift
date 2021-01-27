@@ -30,9 +30,11 @@ struct ChoosePageEditing: View {
     
     @State var selection: Int?
     
+    @State var notificationCheck: String = ""
+    @State var signatureDone: Bool = false
     @State var identityDone: Bool?
     @State var salesConsultant: String = ""
-    @State var notificationsCheck: String = ""
+    @State var scanGroup: [String] = []
     
     @State var result: Result<MFMailComposeResult, Error>? = nil
     @State var isShowingMailView = false
@@ -53,6 +55,7 @@ struct ChoosePageEditing: View {
         self._identityDone = State(wrappedValue: self.application.identityType != "--select--" && self.application.identityType != "" && self.application.identityType != nil)
         
         self._salesConsultant = State(wrappedValue: self.application.salesConsultant ?? "")
+        self._scanGroup = State(wrappedValue: self.application.scanGroup ?? [])
     }
     
     // MARK: - body
@@ -164,7 +167,7 @@ struct ChoosePageEditing: View {
                 }
                 .disabled(!generalDetailsDone)
                 
-                NavigationLink(destination: DocumentScansEditing(application: application, isDone: $documentScansDone, sender: .editor), tag: 8, selection: $selection) {
+                NavigationLink(destination: DocumentScansEditing(application: application, isDone: $documentScansDone, scanGroup: $scanGroup, sender: .editor), tag: 8, selection: $selection) {
                     HStack() {
                         Text("Supporting Documents")
                             .font(.headline)
@@ -178,7 +181,7 @@ struct ChoosePageEditing: View {
                 .disabled(generalDetailsDone ? !identityDone! : true)
             }
             
-            NavigationLink(destination: NotificationView(application: application, notificationsCheck: $notificationsCheck, isDone: $notificationDone, sender: .editor), tag: 9, selection: $selection) {
+            NavigationLink(destination: NotificationView(application: application, signatureDone: $signatureDone, notificationCheck: $notificationCheck, isDone: $notificationDone, sender: .editor), tag: 9, selection: $selection) {
                 HStack() {
                     Text("Notification")
                         .font(.headline)
@@ -206,7 +209,7 @@ struct ChoosePageEditing: View {
                                 .font(.headline)
                         }
                     }
-                } else if canSendMail && notificationDone && canSubmit() { // Mail installed, notification accepted, sections completed
+                } else if notificationDone && canSubmit() { // Mail installed, notification accepted, sections completed
                     Button(action: {
                         self.isShowingMailView.toggle()
                     }) {
@@ -214,9 +217,9 @@ struct ChoosePageEditing: View {
                             .font(.title3)
                             .bold()
                     }
-                } else if !notificationDone && canSendMail && canSubmit() { // Mail installed, notification not accepted, sections completed
+                } else if !notificationDone && canSubmit() { // Mail installed, notification not accepted, sections completed
                     Text("Please accept the notification above to submit your application.")
-                } else if !canSubmit() && canSendMail { // Mail installed, sections incomplete
+                } else if !canSubmit() { // Mail installed, sections incomplete
                     Text("Please complete the form sections above to submit your application")
                 }
             }
@@ -227,8 +230,9 @@ struct ChoosePageEditing: View {
             changedValues.cleanChangedValues()
         }
         .sheet(isPresented: $isShowingMailView) {
-            let clientName: String = "\(String(describing: self.application.surname)), \(String(describing: self.application.firstNames))"
-            MailView(clientName: clientName, emailBody: makeEmailBody(), recipients: [salesConsultantEmails[salesConsultant] ?? ""], isShowing: self.$isShowingMailView, result: self.$result)
+            let clientName: String = "\(self.application.surname ?? "NIL"), \(self.application.firstNames ?? "NIL")"
+            let recipients = [salesConsultantEmails[salesConsultant] ?? ""]
+            MailView(clientName: clientName, emailBody: makeEmailBody(), recipients: recipients, attachments: getAttachments(), isShowing: self.$isShowingMailView, result: self.$result)
         }
     }
     
@@ -241,16 +245,207 @@ struct ChoosePageEditing: View {
         return false
     }
     
+    // MARK: - makeEmailBody
     private func makeEmailBody() -> String {
-        //let sections: [String] = ["General Details", "Personal Details", "Residency & Contact", "Subsidy & Credit", "Employment", "Income & Deductions", "Expenses", "Assets & Liabilities"]
-        
-        var generalDetails = ""
+        // GENERAL
+        var generalDetails = "General Details:\n"
         
         for i in 0..<6 {
             let i = Double(i)
-            generalDetails += "\(formQuestions[0][i] ?? "")  =  \(application.salesConsultant ?? "")\n"
+            generalDetails += "\(formQuestions[0][i] ?? "")  =  \(application.value(forKey: formIDs[0][i] ?? "") ?? "")\n"
         }
         
-        return generalDetails
+        let numberOfApplicants: Int = Int(application.numberOfApplicants ?? "1") ?? 1
+        if numberOfApplicants > 1 {
+            generalDetails += "Co-Applicant #1  =  \(application.coApplicantOneName ?? "")\n"
+            generalDetails += numberOfApplicants >= 2 ? "Co-Applicant #2  =  \(application.coApplicantTwoName ?? "")\n" : ""
+            generalDetails += numberOfApplicants == 3 ? "Co-Applicant #3  =  \(application.coApplicantThreeName ?? "")\n" : ""
+        }
+        
+        // PERSONAL DETAILS
+        var personalDetails = "\nPersonal Details:\n"
+        
+        for i in 0..<26 {
+            let i = Double(i)
+            if i != 7 && i != 8 && i != 9 {
+                personalDetails += "\(formQuestions[1][i] ?? "")  =  \(application.value(forKey: formIDs[1][i] ?? "") ?? "")\n"
+            }
+        }
+        
+        // RESIDENCY & CONTACT
+        var residencyContact = "\nResidency & Contact:\n"
+        
+        for i in 0..<19 {
+            let i = Double(i)
+            residencyContact += "\(formQuestions[2][i] ?? "")  =  \(application.value(forKey: formIDs[2][i] ?? "") ?? "")\n"
+        }
+        
+        if application.resIsPostal == "No" {
+            residencyContact += "\(formQuestions[2][11] ?? "")  =  \(application.postalCountry ?? "")\n"
+            residencyContact += "\(formQuestions[2][12] ?? "")  =  \(application.postalLine1 ?? "")\n"
+            residencyContact += "\(formQuestions[2][13] ?? "")  =  \(application.postalLine2 ?? "")\n"
+            residencyContact += "\(formQuestions[2][14] ?? "")  =  \(application.postalSuburb ?? "")\n"
+            residencyContact += "\(formQuestions[2][15] ?? "")  =  \(application.postalCity ?? "")\n"
+            residencyContact += "\(formQuestions[2][16] ?? "")  =  \(application.postalProvince ?? "")\n"
+            residencyContact += "\(formQuestions[2][17] ?? "")  =  \(application.postalStreetCode ?? "")\n"
+        }
+        
+        // SUBSIDY & CREDIT HISTORY
+        var subsidyCredit = "\nSubsidy & Credit History:\n"
+        
+        for i in 0..<11 {
+            let i = Double(i)
+            subsidyCredit += "\(formQuestions[3][i] ?? "")  =  \(application.value(forKey: formIDs[3][i] ?? "") ?? "")\n"
+        }
+        
+        // EMPLOYMENT
+        var employment = "\nEmployment:\n"
+        
+        for i in 0..<24 {
+            let i = Double(i)
+            employment += "\(formQuestions[4][i] ?? "")  =  \(application.value(forKey: formIDs[4][i] ?? "") ?? "")\n"
+        }
+        
+        // INCOME & DEDUCTIONS
+        var incomeDeductions = "\nIncome & Deductions:\n"
+        
+        for i in 0..<19 {
+            let i = Double(i)
+            let value: String = (application.value(forKey: formIDs[5][i] ?? "") as? String) ?? ""
+            if !value.isEmpty {
+                incomeDeductions += "\(formQuestions[5][i] ?? "")  =  \(value)\n"
+            }
+        }
+        
+        // EXPENSES
+        var expenses = "\nExpenses:\n"
+        
+        for i in 0..<23 {
+            let i = Double(i)
+            let value: String = (application.value(forKey: formIDs[6][i] ?? "") as? String) ?? ""
+            if !value.isEmpty {
+                expenses += "\(formQuestions[6][i] ?? "")  =  \(value)\n"
+            }
+        }
+        
+        // ASSETS & LIABILITIES
+        var assetsLiabilities = "\nAssets & Liabilities:\n"
+        
+        for i in 0..<14 {
+            let i = Double(i)
+            let value: String = (application.value(forKey: formIDs[7][i] ?? "") as? String) ?? ""
+            if !value.isEmpty {
+                assetsLiabilities += "\(formQuestions[7][i] ?? "")  =  \(value)\n"
+            }
+        }
+        
+        let emailBody = generalDetails + personalDetails + residencyContact + subsidyCredit + employment + incomeDeductions + expenses + assetsLiabilities
+        
+        return emailBody
+    }
+    
+    // MARK: - getAttachments
+    private func getAttachments() -> [String: Data] {
+        var attachments: [String: Data] = [:]
+        let loanID: String = application.loanID?.uuidString ?? ""
+        
+        if let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+            // Signature Image
+            let signatureURL = documentsDirectory.appendingPathComponent("signature_\(loanID)_image.png")
+            
+            if FileManager.default.fileExists(atPath: signatureURL.path) {
+                do {
+                    let signatureData = try Data(contentsOf: signatureURL)
+                    attachments.updateValue(signatureData, forKey: "Client_Signature.png")
+                    print("print - Loaded signature")
+                } catch {
+                    print("print - Error loading signature: \(error)")
+                }
+            }
+            
+            // Identity Scan(s)
+            if scanGroup.contains("identity") { // Checking if client did scan a identity document
+                let identityType: String = application.identityType ?? ""
+                let identityURL = documentsDirectory.appendingPathComponent("identity_scan_\(loanID)_0.png")
+                
+                if FileManager.default.fileExists(atPath: identityURL.path) {
+                    do {
+                        let identityData = try Data(contentsOf: identityURL)
+                        attachments.updateValue(identityData, forKey: "Identity_Scan\(identityType != "Smart ID Card" ? "" : "_1").png")
+                        print("print - Loaded identity image #1")
+                    } catch {
+                        print("print - Error loading identity image #1: \(error)")
+                    }
+                }
+                
+                if identityType == "Smart ID Card" {
+                    let identityURL = documentsDirectory.appendingPathComponent("identity_scan_\(loanID)_1.png")
+                    
+                    if FileManager.default.fileExists(atPath: identityURL.path) {
+                        do {
+                            let identityData = try Data(contentsOf: identityURL)
+                            attachments.updateValue(identityData, forKey: "Identity_Scan_2.png")
+                            print("print - Loaded identity image #2")
+                        } catch {
+                            print("print - Error loading identity image #2: \(error)")
+                        }
+                    }
+                }
+            }
+            
+            // Salary / Pay Scan(s)
+            if scanGroup.contains("salaryPay") {
+                let url = "salary_pay_scan_\(loanID)_"
+                var i: Int = 0
+                while true {
+                    let newURL = url + "\(i).png"
+                    let fileURL = documentsDirectory.appendingPathComponent(newURL)
+                    
+                    if FileManager.default.fileExists(atPath: fileURL.path) {
+                        // File exists
+                        do {
+                            let imageData = try Data(contentsOf: fileURL)
+                            print("print - Loaded image")
+                            attachments.updateValue(imageData, forKey: "Salary_Pay_Scan_#\(i + 1).png")
+                        } catch {
+                            print("print - Error loading image: \(error)")
+                        }
+                        
+                        i += 1
+                    } else {
+                        // File doesn't exist
+                        break
+                    }
+                }
+            }
+            
+            // Bank Statement Scan(s)
+            if scanGroup.contains("bankStatements") {
+                let url = "bank_statement_scan_\(loanID)_"
+                var i: Int = 0
+                while true {
+                    let newURL = url + "\(i).png"
+                    let fileURL = documentsDirectory.appendingPathComponent(newURL)
+                    
+                    if FileManager.default.fileExists(atPath: fileURL.path) {
+                        // File exists
+                        do {
+                            let imageData = try Data(contentsOf: fileURL)
+                            print("print - Loaded image")
+                            attachments.updateValue(imageData, forKey: "Bank_Statement_Scan_#\(i + 1).png")
+                        } catch {
+                            print("print - Error loading image: \(error)")
+                        }
+                        
+                        i += 1
+                    } else {
+                        // File doesn't exist
+                        break
+                    }
+                }
+            }
+        }
+        
+        return attachments
     }
 }

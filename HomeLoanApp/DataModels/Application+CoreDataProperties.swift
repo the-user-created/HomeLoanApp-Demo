@@ -67,13 +67,6 @@ extension Application {
     @NSManaged public var cityOfBirth: String?
     @NSManaged public var permanentResident: String?
     @NSManaged public var countryOfPermanentResidence: String?
-    /*@NSManaged public var permitType: String?
-    @NSManaged public var countryOfPermit: String?
-    @NSManaged public var permitIssueDate: Date?
-    @NSManaged public var permitExpiryDate: Date?
-    @NSManaged public var contractIssueDate: Date?
-    @NSManaged public var contractExpiryDate: Date?
-    @NSManaged public var workPermitNumber: String?*/
     @NSManaged public var homeLanguage: String?
     @NSManaged public var corresLanguage: String?
     @NSManaged public var cellNumber: String?
@@ -209,6 +202,7 @@ extension Application {
     
     // MARK: - Document Scans
     @NSManaged public var documentScansDone: Bool
+    @NSManaged public var scanGroup: [String]?
     @NSManaged public var identityScanned: Bool
     @NSManaged public var incomeStructure: String?
     @NSManaged public var salaryPaySlipsScanned: Bool

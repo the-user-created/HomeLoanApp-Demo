@@ -234,18 +234,18 @@ struct EmploymentEditing: View {
             if previouslyEmployed == "Yes" {
                 Section(header: Text("PREVIOUS EMPLOYER")) {
                     FormTextField(iD: "previousEmployer",
-                                  question: formQuestions[4][21.1] ?? "MISSING",
-                                  placeholder: formTextFieldPlaceholders[4][21.1] ?? "MISSING",
+                                  question: formQuestions[4][22] ?? "MISSING",
+                                  placeholder: formTextFieldPlaceholders[4][22] ?? "MISSING",
                                   text: $previousEmployer, sender: .editor)
                     
                     FormTextField(iD: "pEContact",
-                                  question: formQuestions[4][21.2] ?? "MISSING",
-                                  placeholder: formTextFieldPlaceholders[4][21.2] ?? "MISSING",
+                                  question: formQuestions[4][23] ?? "MISSING",
+                                  placeholder: formTextFieldPlaceholders[4][23] ?? "MISSING",
                                   text: $pEContact, sender: .editor)
                         .keyboardType(.phonePad)
                     
                     FormLenAt(iD: "pEDuration",
-                              question: formQuestions[4][21.3] ?? "MISSING",
+                              question: formQuestions[4][24] ?? "MISSING",
                               yearsText: $pEDurationYears,
                               monthsText: $pEDurationMonths)
                 }

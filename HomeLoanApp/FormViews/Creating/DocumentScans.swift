@@ -27,6 +27,7 @@ struct DocumentScans: View {
     @State var isShowingSheet: Bool = false
     @State var sheetID: ScannerSheets = .none
     @Binding var isDone: Bool
+    @Binding var scanGroup: [String]
     
     // MARK: - Properties
     let resignPub = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
@@ -295,11 +296,25 @@ struct DocumentScans: View {
     private func determineComplete() -> Bool {
         var isComplete: Bool = false
         
+        scanGroup = []
+        
         if identityScanned {
             isComplete = true
+            scanGroup.append("identity")
+        }
+        
+        if salaryPaySlipsScanned {
+            isComplete = true
+            scanGroup.append("salaryPay")
+        }
+        
+        if bankStatementsScanned {
+            isComplete = true
+            scanGroup.append("bankStatements")
         }
         
         changedValues.changedValues.updateValue(isComplete, forKey: "documentScansDone")
+        changedValues.changedValues.updateValue(scanGroup, forKey: "scanGroup")
         return isComplete
     }
     
@@ -384,24 +399,14 @@ struct DocumentScans: View {
     
     // MARK: - identityText
     private func identityText() -> String {
-        let identityType = applicationCreation.application.identityType
         var outString: String = "Identity"
+        let identityType: String = applicationCreation.application.identityType ?? ""
         
         if identityType == "Passport" {
-            //outString = identityType == "ID Book" ? "ID Book" : "Smart ID Card"
             outString = "Passport"
         } else if identityType != "Passport" {
-            outString = (identityType == "ID Book") ? "ID Book" : (((identityType?.contains("Refugee")) != nil) ? "Refugee Document" : "Smart ID Card")
+            outString = (identityType == "ID Book") ? "ID Book" : ((identityType.contains("Refugee")) ? "Refugee ID" : "Smart ID Card")
         }
-        
-        /*if identityType == "ID Book" || identityType == "Smart ID Card" {
-            //outString = identityType == "ID Book" ? "ID Book" : "Smart ID Card"
-            outString = (identityType == "ID Book") ? "ID Book" : (((identityType?.contains("Refugee")) != nil) ? "Refugee Document" : "Smart ID Card")
-        } else if identityType == "Passport" {
-            outString = "Passport"
-        } else if (identityType?.contains("Refugee")) != nil {
-            outString = "Refugee Document"
-        }*/
         
         return outString
     }

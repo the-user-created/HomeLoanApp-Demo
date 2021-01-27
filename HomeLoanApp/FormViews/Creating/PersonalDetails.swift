@@ -105,44 +105,45 @@ struct PersonalDetails: View {
                 
                 if identityType == 2 {
                     FormDatePicker(iD: "passExpiryDate",
-                                   question: formQuestions[1][7] ?? "MISSING",
+                                   question: formQuestions[1][10] ?? "MISSING",
                                    dateRangeOption: 1,
                                    dateSelection: $passExpiryDate)
                 }
+                
             }
             
             Section() {
                 FormTextField(iD: "taxNumber",
-                              question: formQuestions[1][8] ?? "MISSING",
-                              placeholder: formTextFieldPlaceholders[1][8] ?? "MISSING",
+                              question: formQuestions[1][11] ?? "MISSING",
+                              placeholder: formTextFieldPlaceholders[1][11] ?? "MISSING",
                               text: $taxNumber, sender: .editor)
                     .keyboardType(.numberPad)
                 
                 FormYesNo(iD: "taxReturn",
-                          question: formQuestions[1][9] ?? "MISSING",
+                          question: formQuestions[1][12] ?? "MISSING",
                           selected: $taxReturn)
                 
                 FormPicker(iD: "educationLevel",
-                           question: formQuestions[1][10] ?? "MISSING",
+                           question: formQuestions[1][13] ?? "MISSING",
                            selectionOptions: educationLevels,
                            selection: $educationLevel)
                 
                 FormPicker(iD: "ethnicGroup",
-                           question: formQuestions[1][11] ?? "MISSING",
+                           question: formQuestions[1][14] ?? "MISSING",
                            selectionOptions: ethnicGroups,
                            selection: $ethnicGroup)
                 
                 FormYesNo(iD: "singleHouse",
-                          question: formQuestions[1][12] ?? "MISSING",
+                          question: formQuestions[1][15] ?? "MISSING",
                           selected: $singleHouse)
                 
                 FormPicker(iD: "currentResStatus",
-                           question: formQuestions[1][13] ?? "MISSING",
+                           question: formQuestions[1][16] ?? "MISSING",
                            selectionOptions: currentResStatuses,
                            selection: $currentResStatus)
                 
                 FormPicker(iD: "maritalStatus",
-                           question: formQuestions[1][14] ?? "MISSING",
+                           question: formQuestions[1][17] ?? "MISSING",
                            selectionOptions: maritalStatuses,
                            selection: $maritalStatus)
                 
@@ -151,21 +152,21 @@ struct PersonalDetails: View {
             if maritalStatus == 2 || maritalStatus == 3 || maritalStatus == 4 {
                 Section(header: Text("MARRIAGE INFO")) {
                     FormPicker(iD: "countryMarriage",
-                               question: formQuestions[1][14.1] ?? "MISSING",
+                               question: formQuestions[1][18] ?? "MISSING",
                                selectionOptions: countries,
                                selection: $countryMarriage)
                     
                     FormYesNo(iD: "spouseIncome",
-                               question: formQuestions[1][14.2] ?? "MISSING",
+                               question: formQuestions[1][19] ?? "MISSING",
                                selected: $spouseIncome)
                     
                     FormYesNo(iD: "aNC",
-                              question: formQuestions[1][14.3] ?? "MISSING",
+                              question: formQuestions[1][20] ?? "MISSING",
                               selected: $aNC)
                     
                     FormTextField(iD: "numDependents",
-                                  question: formQuestions[1][14.4] ?? "MISSING",
-                                  placeholder: formTextFieldPlaceholders[1][14.4] ?? "MISSING",
+                                  question: formQuestions[1][21] ?? "MISSING",
+                                  placeholder: formTextFieldPlaceholders[1][21] ?? "MISSING",
                                   text: $numDependents, sender: .editor)
                         .keyboardType(.numberPad)
                     
@@ -174,23 +175,23 @@ struct PersonalDetails: View {
             
             Section(header: Text("PERSONAL DETAILS")) {
                 FormYesNo(iD: "mainResidence",
-                          question: formQuestions[1][15] ?? "MISSING",
+                          question: formQuestions[1][22] ?? "MISSING",
                           selected: $mainResidence)
                 
                 FormYesNo(iD: "firstTimeHomeBuyer",
-                          question: formQuestions[1][16] ?? "MISSING",
+                          question: formQuestions[1][23] ?? "MISSING",
                           selected: $firstTimeHomeBuyer)
                 
                 FormYesNo(iD: "socialGrant",
-                          question: formQuestions[1][17] ?? "MISSING",
+                          question: formQuestions[1][24] ?? "MISSING",
                           selected: $socialGrant)
                 
                 FormYesNo(iD: "publicOfficial",
-                          question: formQuestions[1][18] ?? "MISSING",
+                          question: formQuestions[1][25] ?? "MISSING",
                           selected: $publicOfficial)
                 
                 FormYesNo(iD: "relatedOfficial",
-                          question: formQuestions[1][19] ?? "MISSING",
+                          question: formQuestions[1][26] ?? "MISSING",
                           selected: $relatedOfficial)
             }
             
@@ -289,13 +290,13 @@ struct PersonalDetails: View {
         var location = location
         
         if identityType == 1 || identityType == 5 {
-            location += 0.1
+            location += 1
             return location
         } else if identityType == 2 {
-            location += 0.2
+            location += 2
             return location
         } else if identityType == 3 || identityType == 4 {
-            location += 0.3
+            location += 3
             return location
         } else {
             return location

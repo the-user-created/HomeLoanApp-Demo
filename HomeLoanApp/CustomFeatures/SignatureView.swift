@@ -14,28 +14,42 @@ struct SignatureView: View {
     @State private var drawings: [Drawing] = [Drawing]()
     @State private var color: Color = Color.black
     @State private var lineWidth: CGFloat = 3.0
-    //@State private var uiimage: UIImage? = nil
     @State private var rect: CGRect = .zero
+    @State var signatureSaved: Bool = false
     @State var loanID: String? = ""
+    @Binding var signatureDone: Bool
     
     var body: some View {
-            VStack(alignment: .center) {
+        VStack(alignment: .center) {
+            HStack() {
                 Text("Sign below")
                     .font(.title)
                 
-                DrawingControls(color: $color,
-                                drawings: $drawings,
-                                lineWidth: $lineWidth,
-                                //uiimage: $uiimage,
-                                rect: $rect,
-                                loanID: loanID ?? "")
-                
-                DrawingPad(currentDrawing: $currentDrawing,
-                           drawings: $drawings,
-                           color: $color,
-                           lineWidth: $lineWidth)
-                    .background(RectGetter(rect: $rect))
+                Image(systemName: signatureDone ? "checkmark.circle.fill" : "checkmark.circle")
+                    .foregroundColor(signatureDone ? .green : .red)
+                    .padding(.leading, 10)
             }
+            
+            DrawingControls(color: $color,
+                            drawings: $drawings,
+                            lineWidth: $lineWidth,
+                            rect: $rect,
+                            signatureSaved: $signatureSaved,
+                            loanID: loanID ?? "")
+            
+            DrawingPad(currentDrawing: $currentDrawing,
+                       drawings: $drawings,
+                       color: $color,
+                       lineWidth: $lineWidth)
+                .background(RectGetter(rect: $rect))
+        }
+        .onChange(of: drawings.isEmpty) { value in
+            if signatureSaved {
+                signatureDone = true
+            } else {
+                signatureDone = false
+            }
+        }
     }
 }
 
@@ -43,8 +57,8 @@ struct DrawingControls: View {
     @Binding var color: Color
     @Binding var drawings: [Drawing]
     @Binding var lineWidth: CGFloat
-    //@Binding var uiimage: UIImage?
     @Binding var rect: CGRect
+    @Binding var signatureSaved: Bool
     @State var loanID: String
     
     var body: some View {
@@ -65,9 +79,15 @@ struct DrawingControls: View {
                 
                 Spacer()
                 
-                Button("Save") {
-                    self.saveImage("signature_\(loanID)_image.png")
+                Button(action: {
+                    signatureSaved = true
+                    self.saveImage("signature_\(loanID)_image.png") // Saves the signature png
+                    self.drawings = [Drawing]() // Clears the drawing pad
+                }) {
+                    Text("Save")
                 }
+                .disabled(drawings.isEmpty)
+                .foregroundColor(drawings.isEmpty ? .gray : .blue)
                 .padding([.top, .bottom], 10)
                 .padding([.leading, .trailing], 20)
             }
