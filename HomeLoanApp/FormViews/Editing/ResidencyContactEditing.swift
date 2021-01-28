@@ -209,7 +209,7 @@ struct ResidencyContactEditing: View {
                               question: formQuestions[2][17] ?? "MISSING",
                               placeholder: formTextFieldPlaceholders[2][17] ?? "MISSING",
                               text: $resStreetCode, sender: .editor)
-                    .keyboardType(.numberPad)
+                    //.keyboardType(.numberPad)
                 
                 FormLenAt(iD: "lengthAtAddress",
                           question: formQuestions[2][18] ?? "MISSING",
@@ -258,7 +258,7 @@ struct ResidencyContactEditing: View {
                                   question: formQuestions[2][17] ?? "MISSING",
                                   placeholder: formTextFieldPlaceholders[2][17] ?? "MISSING",
                                   text: $postalStreetCode, sender: .editor)
-                        .keyboardType(.numberPad)
+                        //.keyboardType(.numberPad)
                 }
             }
             

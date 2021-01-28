@@ -274,15 +274,19 @@ struct PersonalDetailsEditing: View {
     private func determineComplete() -> Bool {
         var isComplete: Bool = false
         // Base checks
-        if title != 0 && !surname.isEmpty && !firstNames.isEmpty && gender != 0 && identityType != 0 && !identityNumber.isEmpty && !taxNumber.isEmpty && !taxReturn.isEmpty && educationLevel != 0 && ethnicGroup != 0 && !singleHouse.isEmpty && maritalStatus != 0 && !mainResidence.isEmpty && !firstTimeHomeBuyer.isEmpty && !socialGrant.isEmpty && !publicOfficial.isEmpty && !relatedOfficial.isEmpty {
+        if title != 0 && !surname.isEmpty && !firstNames.isEmpty && gender != 0 && identityType != 0 && !identityNumber.isEmpty && !taxNumber.isEmpty && !taxReturn.isEmpty && educationLevel != 0 && ethnicGroup != 0 && !singleHouse.isEmpty && maritalStatus != 0 && !mainResidence.isEmpty && !firstTimeHomeBuyer.isEmpty && !socialGrant.isEmpty && !publicOfficial.isEmpty && !relatedOfficial.isEmpty && dateOfBirth != Date() {
             
             // Marriage info check
-            if maritalStatus == 2 {
+            if [2, 3, 4].contains(maritalStatus) {
                 if countryMarriage != 0 && !spouseIncome.isEmpty && !aNC.isEmpty && !numDependents.isEmpty {
                     isComplete = true
                 }
             } else {
                 isComplete = true
+            }
+            
+            if identityType == 2 && passExpiryDate == Date() {
+                isComplete = false
             }
         }
         
@@ -350,7 +354,7 @@ struct PersonalDetailsEditing: View {
         
         let identityType: String? = initIdentityType?.description
         print("print - identityType: \(String(describing: identityType))")
-        if identityType == "5" && !loanID.isEmpty { // Deletes the scans for Smart ID Card scans
+        if identityType == "5" && !loanID.isEmpty { // Deletes the scans for SMART ID CARD scans
             for scanNumber in 0..<2 {
                 let fileName = "identity_scan_\(loanID)_\(scanNumber).png"
                 let fileURL = documentsDirectory.appendingPathComponent(fileName)

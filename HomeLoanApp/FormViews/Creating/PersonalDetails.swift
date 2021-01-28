@@ -213,12 +213,18 @@ struct PersonalDetails: View {
             }
         }
         .onChange(of: maritalStatus) { value in
-            if maritalStatus != 2 {
+            if value != 2 {
                 self.countryMarriage = 0
                 self.spouseIncome = ""
                 self.aNC = ""
                 self.numDependents = ""
                 changedValues.changedValues.merge(dict: ["countryMarriage": countries[0], "spouseIncome": "", "aNC": "", "numDependents": ""])
+            }
+        }
+        .onChange(of: identityType) { value in
+            if identityType != 2 {
+                self.passExpiryDate = Date()
+                changedValues.updateKeyValue("passExpiryDate", value: Date())
             }
         }
         .onDisappear() {
@@ -236,15 +242,19 @@ struct PersonalDetails: View {
     private func determineComplete() -> Bool {
         var isComplete: Bool = false
         // Base checks
-        if title != 0 && !surname.isEmpty && !firstNames.isEmpty && gender != 0 && identityType != 0 && !identityNumber.isEmpty && !taxNumber.isEmpty && !taxReturn.isEmpty && educationLevel != 0 && ethnicGroup != 0 && !singleHouse.isEmpty && maritalStatus != 0 && !mainResidence.isEmpty && !firstTimeHomeBuyer.isEmpty && !socialGrant.isEmpty && !publicOfficial.isEmpty && !relatedOfficial.isEmpty {
+        if title != 0 && !surname.isEmpty && !firstNames.isEmpty && gender != 0 && identityType != 0 && !identityNumber.isEmpty && !taxNumber.isEmpty && !taxReturn.isEmpty && educationLevel != 0 && ethnicGroup != 0 && !singleHouse.isEmpty && maritalStatus != 0 && !mainResidence.isEmpty && !firstTimeHomeBuyer.isEmpty && !socialGrant.isEmpty && !publicOfficial.isEmpty && !relatedOfficial.isEmpty && dateOfBirth != Date() {
             
             // Marriage info check
-            if maritalStatus == 2 {
+            if [2, 3, 4].contains(maritalStatus) {
                 if countryMarriage != 0 && !spouseIncome.isEmpty && !aNC.isEmpty && !numDependents.isEmpty {
                     isComplete = true
                 }
             } else {
                 isComplete = true
+            }
+            
+            if identityType == 2 && passExpiryDate == Date() {
+                isComplete = false
             }
         }
         

@@ -34,7 +34,6 @@ class ChangedValues: ObservableObject {
     
     func updateKeyValue(_ key: String, value: Any) {
         changedValues.updateValue(value, forKey: key)
-        //print("print - changedValues: \(changedValues)")
     }
     
     func cleanChangedValues() {

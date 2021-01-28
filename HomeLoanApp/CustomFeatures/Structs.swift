@@ -98,12 +98,12 @@ struct FormPicker: View {
             Picker(selection: $selection,
                    label: FormLabel(question: question, infoButton: infoButton)) {
                 ForEach(0 ..< selectionOptions.count) {
-                    Text(self.selectionOptions[$0])
+                    Text($0 == 0 ? self.selectionOptions[$0] : self.selectionOptions[$0])//.uppercased())
                         .foregroundColor(self.selectionOptions[$0] == "--select--" ? .secondary: .blue)
                 }
             }
             .onChange(of: selection) { value in
-                changedValues.updateKeyValue(iD, value: selectionOptions[value])
+                changedValues.updateKeyValue(iD, value: selectionOptions[value])//.uppercased())
             }
         }
         .buttonStyle(BorderlessButtonStyle())
@@ -168,6 +168,9 @@ struct FormRandTextField: View {
             self.text
         }, set: {
             self.text = $0.contains("R") ? $0 : "R" + $0
+            if self.text.contains(",") {
+                self.text = self.text.replacingOccurrences(of: ",", with: "")
+            }
         })
         
         HStack() {
@@ -212,6 +215,9 @@ struct FormOtherRand: View {
             self.other
         }, set: {
             self.other = $0.contains("R") ? $0 : "R" + $0
+            if self.other.contains(",") {
+                self.other = self.other.replacingOccurrences(of: ",", with: "")
+            }
         })
         
         VStack() {
@@ -588,7 +594,7 @@ struct ScannedView: View {
     init(url: String, scanType: String) {
         self._scanType = State(wrappedValue: scanType)
         
-        if self.scanType == "Passport" || self.scanType == "ID Book" || self.scanType.contains("Refugee") {
+        if self.scanType == "Passport" || self.scanType == "ID Book" || self.scanType.contains("REFUGEE") {
             self._image = State(wrappedValue: load(fileName: url))
         } else if self.scanType == "Smart ID Card" {
             self._image = State(wrappedValue: load(fileName: url + "0.png"))

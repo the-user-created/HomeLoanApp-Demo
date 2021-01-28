@@ -88,6 +88,7 @@ struct NotificationView: View {
         isDone = determineComplete()
         
         if isDone {
+            saveApplication()
             presentationMode.wrappedValue.dismiss()
         } else if notificationCheck != "Yes" && !signatureDone {
             alertMessage = "Please add your signature and accept the notification to continue"
@@ -101,14 +102,12 @@ struct NotificationView: View {
         }
     }
     
-    /*// MARK: - saveApplication
+    // MARK: - saveApplication
     private func saveApplication() {
         if sender == .creator {
-            applicationCreation.application.notificationsCheck = notificationsCheck
+            applicationCreation.application.notificationsCheck = notificationCheck
         } else if sender == .editor {
-            for (key, value) in changedValues.changedValues {
-                application.setValue(value, forKey: key)
-            }
+            application.notificationsCheck = notificationCheck
         }
         
         do {
@@ -119,5 +118,5 @@ struct NotificationView: View {
         } catch {
             print(error.localizedDescription)
         }
-    }*/
+    }
 }

@@ -59,8 +59,7 @@ let formIDs: [[Double: String]] = [
      13: "educationLevel", 14: "ethnicGroup", 15: "singleHouse", 16: "currentResStatus", 17: "maritalStatus", 18: "countryMarriage", 19: "spouseIncome", 20: "aNC", 21: "numDependents", 22: "mainResidence", 23: "firstTimeHomeBuyer", 24: "socialGrant", 25: "publicOfficial", 26: "relatedOfficial"],
     // RESIDENCY & CONTACT
     [0: "sACitizen", 1: "nationality", 2: "countryPassport",
-     3: "countryBirth", 4: "cityOfBirth",
-     5: "permanentResident", 6: "countryOfPermanentResidence", 7: "homeLanguage", 8: "corresLanguage", 9: "cellNumber",
+     3: "countryBirth", 4: "cityOfBirth", 5: "permanentResident", 6: "countryOfPermanentResidence", 7: "homeLanguage", 8: "corresLanguage", 9: "cellNumber",
      10: "emailAddress", 11: "resCountry", 12: "resLine1", 13: "resLine2", 14: "resSuburb", 15: "resCity", 16: "resProvince", 17: "resStreetCode", 18: "lengthAtAddress", 19: "resIsPostal"],
     // SUBSIDY & CREDIT HISTORY
     [0: "subsidyForHome", 1: "applyingSubsidy", 2: "housingScheme", 3: "currentAdmin", 4: "previousAdmin", 5: "judgement", 6: "debtReview", 7: "debtReArrange", 8: "insolvent",
@@ -86,6 +85,9 @@ let formIDs: [[Double: String]] = [
      7: "installmentSales", 8: "creditCards", 9: "currentAcc", 10: "personalLoans", 11: "retailAcc", 12: "otherDebt", 13: "otherAcc", 14: "otherLiabilities"]
 ]
 
+let uppercasingIDs: [String] = ["salesConsultant", "applicationType", "applicantType", "loanPurpose", "propertyType", "title", "gender", "identityType", "taxReturn", "educationLevel", "ethnicGroup", "singleHouse", "currentResStatus", "maritalStatus", "countryMarriage", "spouseIncome", "aNC", "mainResidence", "firstTimeHomeBuyer", "socialGrant", "publicOfficial", "relatedOfficial", "sACitizen", "nationality", "countryPassport", "countryBirth", "permanentResident", "countryOfPermanentResidence", "homeLanguage", "corresLanguage", "resCountry", "resIsPostal", "postalCountry", "subsidyForHome", "applyingSubsidy", "housingScheme", "currentAdmin", "previousAdmin", "judgement", "debtReview", "debtReArrange", "insolvent", "creditBureau", "creditListings", "suretyAgreements", "occupationalStatus", "payingScheme", "incomeSource", "occupationLevel", "employmentSector", "employerCountry", "purchaseJobChange", "workInZA",
+                                "previouslyEmployed"]
+
 let formTextFieldPlaceholders = [
     [5: "1"],
     [1: "Appleseed", 2: "Johnny", 6: "1234567891012", 6.1: "1234567891012", 6.2: "123456789", 6.3: "", 8: "1110502222", 14.4: "2"],
@@ -108,7 +110,7 @@ var reverseDateFormatter: DateFormatter {
 
 var dateFormatter: DateFormatter {
     let formatter = DateFormatter()
-    formatter.dateStyle = .medium
+    formatter.dateFormat = "dd MMMM yyyy"
     return formatter
 }
 

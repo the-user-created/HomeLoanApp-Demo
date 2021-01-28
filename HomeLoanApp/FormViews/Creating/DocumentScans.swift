@@ -261,7 +261,7 @@ struct DocumentScans: View {
             } else if sheetID == .identityScanView {
                 let identityType = applicationCreation.application.identityType
                 if let identityType = identityType {
-                    if identityType == "Passport" || identityType == "ID Book" || identityType.contains("Refugee") {
+                    if identityType == "Passport" || identityType == "ID Book" || identityType.contains("REFUGEE") {
                         ScannedView(url: "identity_scan_\(loanID?.uuidString ?? "nil")_0.png", scanType: identityType)
                     } else if identityType == "Smart ID Card" {
                         ScannedView(url: "identity_scan_\(loanID?.uuidString ?? "nil")_", scanType: identityType)
@@ -335,14 +335,14 @@ struct DocumentScans: View {
         var result: Bool = false
         let loanID = applicationCreation.application.loanID
         if scanType == "identity", let identityType = applicationCreation.application.identityType {
-            if identityType == "Passport" || identityType == "ID Book" || identityType.contains("Refugee") { // When the clients ID type is a Passport (or ID Book) they must scan just one side
+            if identityType == "Passport" || identityType == "ID Book" || identityType.contains("REFUGEE") { // When the clients ID type is a Passport (or ID Book) they must scan just one side
                 if let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
                     let fileName = "identity_scan_\(loanID?.uuidString ?? "nil")_0.png"
                     let fileURL = documentsDirectory.appendingPathComponent(fileName)
                     result = FileManager.default.fileExists(atPath: fileURL.path)
                 }
                 // Failed to get directory, therefore result is false
-            } else if identityType == "Smart ID Card" { // When the clients ID type is a Smart ID Card they must scan both sides of the card
+            } else if identityType == "Smart ID Card" { // When the clients ID type is a SMART ID CARD they must scan both sides of the card
                 if let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
                     var sideOneScanned: Bool = false
                     var sideTwoScanned: Bool = false
@@ -405,7 +405,7 @@ struct DocumentScans: View {
         if identityType == "Passport" {
             outString = "Passport"
         } else if identityType != "Passport" {
-            outString = (identityType == "ID Book") ? "ID Book" : ((identityType.contains("Refugee")) ? "Refugee ID" : "Smart ID Card")
+            outString = (identityType == "ID Book") ? "ID Book" : ((identityType.contains("REFUGEE")) ? "Refugee ID" : "Smart ID Card")
         }
         
         return outString
