@@ -296,7 +296,7 @@ struct PersonalDetails: View {
     }
     
     // MARK: - identityText
-    private func identityText(location: Double) -> Double {
+    private func identityText(location: Int) -> Int {
         var location = location
         
         if identityType == 1 || identityType == 5 {

@@ -8,7 +8,7 @@
 import Foundation
 
 // Questions for the form listed by view
-let formQuestions: [[Double: String]] = [
+let formQuestions: [[Int: String]] = [
     // GENERAL
     [0: "Who is your Sales Consultant?", 1: "What is your application type?",
      2: "What is the applicant type?", 3: "What is the purpose of this loan?",
@@ -48,7 +48,7 @@ let formQuestions: [[Double: String]] = [
      7: "Installment sales/lease agreements", 8: "Credit Cards", 9: "Current / Cheque Account", 10: "Personal Loans", 11: "Retail Accounts", 12: "Other Revolving debt", 13: "Other Accounts (specify)", 14: "Other Liabilities (specify)"]
 ]
 
-let formIDs: [[Double: String]] = [
+let formIDs: [[Int: String]] = [
     // GENERAL
     [0: "salesConsultant", 1: "applicationType",
      2: "applicantType", 3: "loanPurpose",
@@ -88,12 +88,12 @@ let formIDs: [[Double: String]] = [
 let uppercasingIDs: [String] = ["salesConsultant", "applicationType", "applicantType", "loanPurpose", "propertyType", "title", "gender", "identityType", "taxReturn", "educationLevel", "ethnicGroup", "singleHouse", "currentResStatus", "maritalStatus", "countryMarriage", "spouseIncome", "aNC", "mainResidence", "firstTimeHomeBuyer", "socialGrant", "publicOfficial", "relatedOfficial", "sACitizen", "nationality", "countryPassport", "countryBirth", "permanentResident", "countryOfPermanentResidence", "homeLanguage", "corresLanguage", "resCountry", "resIsPostal", "postalCountry", "subsidyForHome", "applyingSubsidy", "housingScheme", "currentAdmin", "previousAdmin", "judgement", "debtReview", "debtReArrange", "insolvent", "creditBureau", "creditListings", "suretyAgreements", "occupationalStatus", "payingScheme", "incomeSource", "occupationLevel", "employmentSector", "employerCountry", "purchaseJobChange", "workInZA",
                                 "previouslyEmployed"]
 
-let formTextFieldPlaceholders = [
+let formTextFieldPlaceholders: [[Int: String]] = [
     [5: "1"],
-    [1: "Appleseed", 2: "Johnny", 6: "1234567891012", 6.1: "1234567891012", 6.2: "123456789", 6.3: "", 8: "1110502222", 14.4: "2"],
-    [2: "Cape Town", 10: "VX7VVWI", 13: "021 481 7300", 14: "homeloans@ooba.co.za", 15.1: "33 Bree Street", 15.2: "8th Floor, ooba House", 15.3: "City Centre", 15.4: "Cape Town", 15.5: "Western Province", 15.6: "8000"],
+    [1: "Appleseed", 2: "Johnny", 6: "1234567891012", 7: "1234567891012", 8: "123456789", 9: "", 11: "1110502222", 21: "2"],
+    [4: "Cape Town", 9: "021 481 7300", 10: "homeloans@ooba.co.za", 12: "33 Bree Street", 13: "8th Floor, ooba House", 14: "City Centre", 15: "Cape Town", 16: "Western Province", 17: "8000"],
     [:],
-    [3: "Technician", 6: "Other Service Activities", 7: "Jobs", 8: "", 9: "", 12: "", 13: "", 14: "", 15: "", 16: "", 17: "", 18: "", 21.1: "", 21.2: ""]
+    [3: "Technician", 6: "Other Service Activities", 7: "Jobs", 8: "", 9: "", 12: "", 13: "", 14: "", 15: "", 16: "", 17: "", 18: "", 22: "", 23: ""]
 ]
 
 let countries = ["--select--", "Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Antarctica", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegowina", "Botswana", "Bouvet Island", "Brazil", "British Indian Ocean Territory", "Brunei Darussalam", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Cayman Islands", "Central African Republic", "Chad", "Chile", "China", "Christmas Island", "Cocos (Keeling) Islands", "Colombia", "Comoros", "Congo", "Congo, the Democratic Republic of the", "Cook Islands", "Costa Rica", "Cote d\'Ivoire", "Croatia (Hrvatska)", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Falkland Islands (Malvinas)", "Faroe Islands", "Fiji", "Finland", "France", "France Metropolitan", "French Guiana", "French Polynesia", "French Southern Territories", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Gibraltar", "Greece", "Greenland", "Grenada", "Guadeloupe", "Guam", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Heard and Mc Donald Islands", "Holy See (Vatican City State)", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran (Islamic Republic of)", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea, Democratic People\'s Republic of", "Korea, Republic of", "Kuwait", "Kyrgyzstan", "Lao, People\'s Democratic Republic", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libyan Arab Jamahiriya", "Liechtenstein", "Lithuania", "Luxembourg", "Macau", "Macedonia, The Former Yugoslav Republic of", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Martinique", "Mauritania", "Mauritius", "Mayotte", "Mexico", "Micronesia, Federated States of", "Moldova, Republic of", "Monaco", "Mongolia", "Montserrat", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "Netherlands Antilles", "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Niue", "Norfolk Island", "Northern Mariana Islands", "Norway", "Oman", "Pakistan", "Palau", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Pitcairn", "Poland", "Portugal", "Puerto Rico", "Qatar", "Reunion", "Romania", "Russian Federation", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Seychelles", "Sierra Leone", "Singapore", "Slovakia (Slovak Republic)", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Georgia and the South Sandwich Islands", "Spain", "Sri Lanka", "St. Helena", "St. Pierre and Miquelon", "Sudan", "Suriname", "Svalbard and Jan Mayen Islands", "Swaziland", "Sweden", "Switzerland", "Syrian Arab Republic", "Taiwan, Province of China", "Tajikistan", "Tanzania, United Republic of", "Thailand", "Togo", "Tokelau", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Turks and Caicos Islands", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "United States Minor Outlying Islands", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Virgin Islands (British)", "Virgin Islands (U.S.)", "Wallis and Futuna Islands", "Western Sahara", "Yemen", "Yugoslavia", "Zambia",
@@ -135,6 +135,284 @@ func otherQuestionCheck(other: String, otherText: String) -> OtherQuestionCheck 
         result = .one
     }
     // If both textfields are empty the result is nil
+    
+    return result
+}
+
+// MARK: - makeEmailBody
+func makeEmailBody(application: Application) -> String {
+    // GENERAL
+    var generalDetails = "General Details:\n\n"
+
+    for i in 0..<6 {
+        let formID: String = formIDs[0][i] ?? ""
+        let value = application.value(forKey: formID) ?? ""
+        generalDetails += "\(formQuestions[0][i] ?? "")  =  \(uppercasingIDs.contains(formID) ? (value as! String).uppercased() : value)\n"
+    }
+
+    let numberOfApplicants: Int = Int(application.numberOfApplicants ?? "1") ?? 1
+    if numberOfApplicants > 1 {
+        generalDetails += "Co-Applicant #1  =  \(application.coApplicantOneName ?? "")\n"
+        generalDetails += numberOfApplicants >= 3 ? "Co-Applicant #2  =  \(application.coApplicantTwoName ?? "")\n" : ""
+        generalDetails += numberOfApplicants == 4 ? "Co-Applicant #3  =  \(application.coApplicantThreeName ?? "")\n" : ""
+    }
+
+    // PERSONAL DETAILS
+    var personalDetails = "\n\nPersonal Details:\n"
+
+    var i: Int = 0
+    while i < 27 {
+        let formID = formIDs[1][i] ?? ""
+        if i == 5 {
+            let identityType: String = (application.value(forKey: formID) ?? "") as! String
+            personalDetails += "\(formQuestions[1][5] ?? "")  =  \(identityType.uppercased())\n"
+            personalDetails += "\(formQuestions[1][6] ?? "")  =  \(application.value(forKey: formIDs[1][6] ?? "") ?? "")\n"
+            if identityType == "Passport" {
+                personalDetails += "\(formQuestions[1][10] ?? "")  =  \(dateFormatter.string(from: application.passExpiryDate ?? Date()))\n"
+            }
+            i += 6
+        } else if i == 17 {
+            let value = (application.value(forKey: formID) ?? "")  as! String
+            personalDetails += "\(formQuestions[1][17] ?? "")  =  \(value.uppercased())\n"
+            if value != "Divorced" && value != "Single" { // Checks if the applicant is married
+                var j: Int = 18
+                while j < 22 {
+                    let jFormID = formIDs[1][j] ?? ""
+                    let value = application.value(forKey: jFormID) ?? ""
+                    personalDetails += "\(formQuestions[1][j] ?? "")  =  \(uppercasingIDs.contains(jFormID) ? (value as! String).uppercased() : value)\n"
+                    j += 1
+                }
+            }
+            i += 5
+        } else {
+            let value = application.value(forKey: formID) ?? ""
+            if formID == "dateOfBirth" {
+                personalDetails += "\(formQuestions[1][i] ?? "")  =  \(dateFormatter.string(from: application.dateOfBirth ?? Date()))\n"
+            } else {
+                personalDetails += "\(formQuestions[1][i] ?? "")  =  \(uppercasingIDs.contains(formID) ? (value as! String).uppercased() : value)\n"
+            }
+            i += 1
+        }
+    }
+
+    // RESIDENCY & CONTACT
+    var residencyContact = "\n\nResidency & Contact:\n"
+
+    i = 0
+    while i < 20 {
+        let formID: String = formIDs[2][i] ?? ""
+        let value = application.value(forKey: formID) ?? ""
+        if i == 0 {
+            residencyContact += "\(formQuestions[2][i] ?? "")  =  \((value as! String).uppercased())\n"
+            if (value as! String) == "No" {
+                residencyContact += "\(formQuestions[2][1] ?? "")  =  \(((application.value(forKey: formIDs[2][1] ?? "") ?? "") as! String).uppercased())\n"
+                residencyContact += "\(formQuestions[2][2] ?? "")  =  \(((application.value(forKey: formIDs[2][2] ?? "") ?? "") as! String).uppercased())\n"
+            }
+            
+            i += 3
+        } else if i == 5 {
+            if application.sACitizen == "No" {
+                residencyContact += "\(formQuestions[2][i] ?? "")  =  \((value as! String).uppercased())\n"
+                if (value as! String) == "No" {
+                    let countryPermaRes = ((application.value(forKey: formIDs[2][6] ?? "") ?? "") as! String).uppercased()
+                    residencyContact += "\(formQuestions[2][6] ?? "")  =  \(countryPermaRes)\n"
+                }
+            }
+            
+            i += 2
+        } else if i == 18 {
+            let value = value as! String
+            let openBracketIndices = findNth("[", text: value)
+            let closeBracketIndices = findNth("]", text: value)
+            
+            var lengthAtAddressYears: String = ""
+            var lengthAtAddressMonths: String = ""
+            
+            if !openBracketIndices.isEmpty && !closeBracketIndices.isEmpty {
+                lengthAtAddressYears = String(value[value.index(openBracketIndices[0], offsetBy: 1)..<closeBracketIndices[0]])
+                lengthAtAddressMonths = String(value[value.index(openBracketIndices[1], offsetBy: 1)..<closeBracketIndices[1]])
+            }
+            
+            residencyContact += "\(formQuestions[2][i] ?? "")  =  \(handleLenAtText(years: lengthAtAddressYears, months: lengthAtAddressMonths))\n"
+            i += 1
+        } else {
+            residencyContact += "\(formQuestions[2][i] ?? "")  =  \(uppercasingIDs.contains(formID) ? (value as! String).uppercased() : value)\n"
+            i += 1
+        }
+    }
+
+    if application.resIsPostal == "No" {
+        residencyContact += "\(formQuestions[2][11] ?? "")  =  \(application.postalCountry ?? "")\n"
+        residencyContact += "\(formQuestions[2][12] ?? "")  =  \(application.postalLine1 ?? "")\n"
+        residencyContact += "\(formQuestions[2][13] ?? "")  =  \(application.postalLine2 ?? "")\n"
+        residencyContact += "\(formQuestions[2][14] ?? "")  =  \(application.postalSuburb ?? "")\n"
+        residencyContact += "\(formQuestions[2][15] ?? "")  =  \(application.postalCity ?? "")\n"
+        residencyContact += "\(formQuestions[2][16] ?? "")  =  \(application.postalProvince ?? "")\n"
+        residencyContact += "\(formQuestions[2][17] ?? "")  =  \(application.postalStreetCode ?? "")\n"
+    }
+
+    // SUBSIDY & CREDIT HISTORY
+    var subsidyCredit = "\n\nSubsidy & Credit History:\n"
+
+    for i in 0..<12 {
+        let value = (application.value(forKey: formIDs[3][i] ?? "") ?? "") as! String
+        subsidyCredit += "\(formQuestions[3][i] ?? "")  =  \(value.uppercased())\n"
+    }
+
+    // EMPLOYMENT
+    var employment = "\n\nEmployment:\n"
+
+    for i in 0..<(application.previouslyEmployed == "Yes" ? 25 : 22) {
+        let formID = formIDs[4][i] ?? ""
+        let value = application.value(forKey: formID) ?? ""
+        if formID == "employmentPeriod" {
+            let employValue = value as! String
+            let openBracketIndices = findNth("[", text: employValue)
+            let closeBracketIndices = findNth("]", text: employValue)
+            
+            var employmentPeriodYears: String = ""
+            var employmentPeriodMonths: String = ""
+            
+            if !openBracketIndices.isEmpty && !closeBracketIndices.isEmpty {
+                employmentPeriodYears = String(employValue[employValue.index(openBracketIndices[0], offsetBy: 1)..<closeBracketIndices[0]])
+                employmentPeriodMonths = String(employValue[employValue.index(openBracketIndices[1], offsetBy: 1)..<closeBracketIndices[1]])
+            }
+            
+            employment += "\(formQuestions[4][i] ?? "")  =  \(handleLenAtText(years: employmentPeriodYears, months: employmentPeriodMonths))\n"
+        } else if formID == "pEDuration" {
+            let pEValue = value as! String
+            let openBracketIndices = findNth("[", text: pEValue)
+            let closeBracketIndices = findNth("]", text: pEValue)
+            
+            var pEDurationYears: String = ""
+            var pEDurationMonths: String = ""
+            
+            if !openBracketIndices.isEmpty && !closeBracketIndices.isEmpty {
+                pEDurationYears = String(pEValue[pEValue.index(openBracketIndices[0], offsetBy: 1)..<closeBracketIndices[0]])
+                pEDurationMonths = String(pEValue[pEValue.index(openBracketIndices[1], offsetBy: 1)..<closeBracketIndices[1]])
+            }
+            
+            employment += "\(formQuestions[4][i] ?? "")  =  \(handleLenAtText(years: pEDurationYears, months: pEDurationMonths))\n"
+        } else {
+            employment += "\(formQuestions[4][i] ?? "")  =  \(uppercasingIDs.contains(formID) ? (value as! String).uppercased() : value)\n"
+        }
+    }
+
+    // INCOME & DEDUCTIONS
+    var incomeDeductions = "\n\nIncome & Deductions:\n"
+    var totalIncome: Int = 0
+    var totalDeductions: Int = 0
+
+    for i in 0..<20 {
+        let formID: String = formIDs[5][i] ?? ""
+        var value: String = (application.value(forKey: formID) as? String) ?? ""
+        if (formID == "otherIncome" || formID == "otherDeductions") && !value.isEmpty {
+            let open = findNth("[", text: value)
+            let close = findNth("]", text: value)
+            incomeDeductions += handleOtherRand(value: value, open: open, close: close, j: 5, i: i)
+            value = String(value[value.index(open[1], offsetBy: 1)..<close[1]])
+        } else if !value.isEmpty {
+            let valueFormatted = Int(value.dropFirst())?.formattedWithSeparator
+            incomeDeductions += "\(formQuestions[5][i] ?? "")  =  R\(valueFormatted ?? "")\n"
+        }
+        
+        if i < 15 {
+            totalIncome = totalIncome.advanced(by: Int(value.dropFirst()) ?? 0)
+        } else {
+            totalDeductions = totalDeductions.advanced(by: Int(value.dropFirst()) ?? 0)
+        }
+    }
+
+    let netSalary: String = (totalIncome - totalDeductions).formattedWithSeparator
+    incomeDeductions += "\nTotal Income = R\(totalIncome.formattedWithSeparator)\nTotal Deductions = R\(totalDeductions.formattedWithSeparator)\nNet Salary = R\(netSalary)\n"
+
+    // EXPENSES
+    var expenses = "\n\nExpenses:\n"
+    var totalExpenses: Int = 0
+
+    for i in 0..<25 {
+        let formID: String = formIDs[6][i] ?? ""
+        var value: String = (application.value(forKey: formIDs[6][i] ?? "") as? String) ?? ""
+        if formID == "otherExpenses" && !value.isEmpty {
+            let open = findNth("[", text: value)
+            let close = findNth("]", text: value)
+            expenses += handleOtherRand(value: value, open: open, close: close, j: 6, i: i)
+            value = String(value[value.index(open[1], offsetBy: 1)..<close[1]])
+        } else if !value.isEmpty {
+            let valueFormatted = Int(value.dropFirst())?.formattedWithSeparator
+            expenses += "\(formQuestions[6][i] ?? "")  =  R\(valueFormatted ?? "")\n"
+        }
+        
+        totalExpenses = totalExpenses.advanced(by: Int(value.dropFirst()) ?? 0)
+    }
+
+    expenses += "\nTotal Expenses = R\(totalExpenses.formattedWithSeparator)\n"
+
+    // ASSETS & LIABILITIES
+    var assetsLiabilities = "\n\nAssets & Liabilities:\n"
+    var totalAssets: Int = 0
+    var totalLiabilities: Int = 0
+
+    for i in 0..<15 {
+        let formID = formIDs[7][i] ?? ""
+        var value: String = (application.value(forKey: formID) as? String) ?? ""
+        if (formID == "otherAsset" || formID == "otherAcc" || formID == "otherLiabilities") && !value.isEmpty {
+            let open = findNth("[", text: value)
+            let close = findNth("]", text: value)
+            assetsLiabilities += handleOtherRand(value: value, open: open, close: close, j: 7, i: i)
+            value = String(value[value.index(open[1], offsetBy: 1)..<close[1]])
+        } else if !value.isEmpty {
+            let valueFormatted = Int(value.dropFirst())?.formattedWithSeparator
+            assetsLiabilities += "\(formQuestions[7][i] ?? "")  =  R\(valueFormatted ?? "")\n"
+        }
+        
+        if i < 6 {
+            totalAssets = totalAssets.advanced(by: Int(value.dropFirst()) ?? 0)
+        } else {
+            totalLiabilities = totalLiabilities.advanced(by: Int(value.dropFirst()) ?? 0)
+        }
+    }
+
+    assetsLiabilities += "\nTotal Assets = R\(totalAssets.formattedWithSeparator)\nTotal Liabilities = R\(totalLiabilities.formattedWithSeparator)\n"
+
+    // NOTIFICATION
+    var notification: String = ""
+    let clientName = "\(application.surname ?? "NIL"), \(application.firstNames ?? "NIL")"
+
+    if application.notificationsCheck == "Yes" {
+        notification = "\n\nThe client \(clientName) has accepted the notification.\n"
+    } else {
+        notification = "\n\nThe client \(clientName) has not accepted the notification.\n"
+    }
+
+    let emailBody = generalDetails + personalDetails + residencyContact + subsidyCredit + employment + incomeDeductions + expenses + assetsLiabilities + notification
+
+    return emailBody
+}
+
+// MARK: - handleOtherRand
+func handleOtherRand(value: String, open: [String.Index], close: [String.Index], j: Int, i: Int) -> String {
+    var text: String = ""
+    var randValue: String = ""
+    
+    if !open.isEmpty && !close.isEmpty {
+        text = String(value[value.index(open[0], offsetBy: 1)..<close[0]])
+        randValue = String(value[value.index(open[1], offsetBy: 1)..<close[1]])
+    }
+    
+    return "\(formQuestions[j][i] ?? "")  =  R\(Int(randValue.dropFirst())?.formattedWithSeparator ?? "") for \(text)\n"
+}
+
+// MARK: - handleLenAtText
+func handleLenAtText(years: String, months: String) -> String {
+    var result: String = ""
+    if !years.isEmpty && !months.isEmpty {
+        result = "\(years) YEAR\((Int(years) ?? 0) > 1 ? "S" : ""), \(months) MONTH\((Int(months) ?? 0) > 1 ? "S" : "")"
+    } else if !years.isEmpty {
+        result = "\(years) YEAR\((Int(years) ?? 0) > 1 ? "S" : "")"
+    } else if !months.isEmpty {
+        result = "\(months) MONTH\((Int(months) ?? 0) > 1 ? "S" : "")"
+    }
     
     return result
 }
