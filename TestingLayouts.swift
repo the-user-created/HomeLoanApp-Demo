@@ -8,224 +8,62 @@
 import SwiftUI
 
 struct TestingLayouts: View {
-    
-    @State var identityType: String = ""
-    @State var incomeStructure: String = ""
-    @State var identityScanned: Bool = false
-    @State var salaryPaySlipsScanned: Bool = false
-    @State var bankStatementsScanned: Bool = false
-    
-    @State var isShowingSheet: Bool = false
-    @State var sheetID: ScannerSheets = .none
-    @State var showingAlert: Bool = false
-    @State var alertMessage: String = ""
-    
-    init() {
-        self._identityType = State(wrappedValue: "Smart ID Card")
-    }
-    
     var body: some View {
-        Form() {
-            Section(header: Text("\(identityType) Scan")) {
+        VStack() {
+            Image(systemName: "chevron.compact.down")
+                .resizable()
+                .frame(width: 60, height: 13)
+                .scaledToFit()
+            
+            Divider()
+            
+            List() {
+                // Title
                 HStack() {
-                    // Open Scanner
-                    Button(action: {
-                        sheetID = .identityScanView
-                        isShowingSheet = true
-                    }) {
-                        BackgroundForButton(btnText: "Scan your \(identityType)")
-                    }
-                    
                     Spacer()
                     
-                    Image(systemName: identityScanned ? "checkmark.circle.fill" : "checkmark.circle")
-                        .foregroundColor(identityScanned ? .green : .red)
+                    Text("How to take a good scan")
+                        .bold()
+                        .font(.title2)
+                        .padding()
                     
                     Spacer()
-                    
-                    // Open how to scan sheet
-                    Button(action: {
-                        sheetID = .scanTips
-                        isShowingSheet = true
-                    }) {
-                        Image(systemName: "info.circle")
-                            .resizable()
-                            .frame(width: 22.0, height: 22.0)
-                    }
-                    
                 }
-                .foregroundColor(.blue)
-                .buttonStyle(BorderlessButtonStyle())
-                .padding([.bottom, .leading, .trailing], 15)
-                .padding(.top, 10)
                 
-                // View Scan
-                if identityScanned {
-                    HStack() {
-                        Button(action: {
-                            sheetID = .identityScan
-                            isShowingSheet = true
-                        }) {
-                            Text("View scan\(identityType == "Smart ID Card" ? "s" : "")")
-                                .foregroundColor(.blue)
-                                .font(.headline)
-                        }
-                    }
-                    .padding(.leading, 15)
-                    .padding([.top, .bottom], 5)
-                }
-            }
-            
-            Section(header: Text("Income Documents")) {
-                FormYesNo(iD: "incomeStructure", question: "What is your income structure?", selected: $incomeStructure, buttonOneText: "Salaried", buttonTwoText: "Variable Pay")
+                // Step header
+                Text("Steps")
+                    .bold()
+                    .font(.title3)
                 
-                if !incomeStructure.isEmpty {
-                    HStack() {
-                        Spacer()
-                        
-                        Text("Salary/Pay Scans")
-                            .font(.title2)
-                        
-                        Spacer()
-                    }
+                // Steps
+                Group() {
+                    Text("1. Place your document in a well-lit area.")
                     
+                    Text("2. Tap \"Scan your (something)\".")
                     
-                    VStack() {
-                        HStack() {
-                            Text(incomeStructure == "Salaried" ? "Latest 3 months payslips.": "Latest 6 months consecutive salary slips.")
-                                .padding([.top, .bottom], 5)
-                                .padding(.leading, 15)
-                            
-                            Spacer()
-                        }
-                        
-                        HStack() {
-                            // Open scanner
-                            Button(action: {
-                                //sheetID = .identityScanView
-                                //isShowingSheet = true
-                            }) {
-                                BackgroundForButton(btnText: "Scan your \(incomeStructure == "Salaried" ? "payslips" : "salary")")
-                            }
-                            
-                            Spacer()
-                            
-                            Image(systemName: salaryPaySlipsScanned ? "checkmark.circle.fill" : "checkmark.circle")
-                                .foregroundColor(salaryPaySlipsScanned ? .green : .red)
-                            
-                            Spacer()
-                            
-                            // Open how to scan sheet
-                            Button(action: {
-                                sheetID = .scanTips
-                                isShowingSheet = true
-                            }) {
-                                Image(systemName: "info.circle")
-                                    .resizable()
-                                    .frame(width: 22.0, height: 22.0)
-                            }
-                            
-                        }
-                        .foregroundColor(.blue)
-                        .buttonStyle(BorderlessButtonStyle())
-                        .padding([.bottom, .leading, .trailing], 15)
-                    }
+                    Text("3. Position the document in within the cameras view.")
                     
-                    // View Scan
-                    if true {
-                        HStack() {
-                            Button(action: {
-                                //sheetID = .identityScanView
-                                isShowingSheet = true
-                            }) {
-                                Text("View scans")
-                                    .foregroundColor(.blue)
-                                    .font(.headline)
-                            }
-                        }
-                        .padding(.leading, 15)
-                        .padding([.top, .bottom], 5)
-                    }
+                    Text("4. A transparent-blue overlay will appear around the document's edges.")
                     
-                    HStack() {
-                        Spacer()
-                        
-                        Text("Bank Statement Scans")
-                            .font(.title2)
-                        
-                        Spacer()
-                    }
+                    Text("5. You can either tap the white, circular button (a) to capture a scan of the document, or you can wait for a grid to flash across the document (b).")
                     
-                    VStack() {
-                        HStack() {
-                            Text(incomeStructure == "Salaried" ? "The latest 3 months bank statements.": "Latest 6 months bank statements which reflect your salary deposits.")
-                                .padding([.top, .bottom], 5)
-                                .padding(.leading, 15)
-                            
-                            Spacer()
-                        }
-                        
-                        HStack() {
-                            // Open scanner
-                            Button(action: {
-                                //sheetID = .identityScanView
-                                //isShowingSheet = true
-                            }) {
-                                BackgroundForButton(btnText: "Scan your bank statements")
-                            }
-                            
-                            Spacer()
-                            
-                            Image(systemName: bankStatementsScanned ? "checkmark.circle.fill" : "checkmark.circle")
-                                .foregroundColor(bankStatementsScanned ? .green : .red)
-                            
-                            Spacer()
-                            
-                            // Open how to scan sheet
-                            Button(action: {
-                                sheetID = .scanTips
-                                isShowingSheet = true
-                            }) {
-                                Image(systemName: "info.circle")
-                                    .resizable()
-                                    .frame(width: 22.0, height: 22.0)
-                            }
-                            
-                        }
-                        .foregroundColor(.blue)
-                        .buttonStyle(BorderlessButtonStyle())
-                        .padding([.bottom, .leading, .trailing], 15)
-                    }
+                    Text("a1. You will be taken to a page to adjust the scan area. Here you can adjust the corners of the scan area to suit your documents needs.\n\na2. If you are satisfied with the scan area, tap \"Keep Scan\" to proceed to the next view.")
+                        .padding([.leading, .trailing], 15)
                     
-                    // View Scan
-                    if true {
-                        HStack() {
-                            Button(action: {
-                                //sheetID = .identityScanView
-                                isShowingSheet = true
-                            }) {
-                                Text("View scans")
-                                    .foregroundColor(.blue)
-                                    .font(.headline)
-                            }
-                        }
-                        .padding(.leading, 15)
-                        .padding([.top, .bottom], 5)
-                    }
+                    Text("b1. You will be taken back to the scan capturing view.")
+                        .padding([.leading, .trailing], 15)
+                        .padding(.bottom, 5)
+                    
+                    Text("6. You can either proceed to take scans of more documents, edit/delete previous scans, or you can tap \"Save\" to save the scans (it may take a few moments to save).")
+                    
+                    Text("7. To edit/delete a scan just tap on the icon of the scan in the lower left of the screen.")
                 }
             }
+            .multilineTextAlignment(.leading)
             
-            Section() {
-                Button(action: {
-                    //handleSaving()
-                }) {
-                    Text("Save changes")
-                        .foregroundColor(.blue)
-                        .font(.headline)
-                }
-            }
+            Spacer()
         }
-        .navigationBarTitle("Documents")
+        .padding()
     }
 }
 

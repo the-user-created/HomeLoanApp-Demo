@@ -269,7 +269,7 @@ struct DocumentScansEditing: View {
         .sheet(isPresented: $isShowingSheet) {
             let loanID = application.loanID
             if sheetID == .scanTips {
-                Text("Steps on taking a good scan")
+                ScanTipsView()
             } else if sheetID == .identityScan {
                 ScannerView(scanName: "identity", applicationID: loanID!) { _ in
                     sheetID = .none
@@ -293,6 +293,7 @@ struct DocumentScansEditing: View {
                     changedValues.updateKeyValue("salaryPaySlipsScanned", value: salaryPaySlipsScanned)
                     isShowingSheet = false
                 }
+                
             } else if sheetID == .salaryPayScanView {
                 ScannedIncomeView(url: "salary_pay_scan_\(loanID?.uuidString ?? "nil")_", scanType: "salaryPay")
             } else if sheetID == .bankStatementsScan {
@@ -302,6 +303,7 @@ struct DocumentScansEditing: View {
                     changedValues.updateKeyValue("bankStatementsScanned", value: bankStatementsScanned)
                     isShowingSheet = false
                 }
+                
             } else if sheetID == .bankStatementsScanView {
                 ScannedIncomeView(url: "bank_statement_scan_\(loanID?.uuidString ?? "nil")_", scanType: "bankStatement")
             }

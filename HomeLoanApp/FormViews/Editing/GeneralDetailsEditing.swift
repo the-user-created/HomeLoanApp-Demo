@@ -65,34 +65,34 @@ struct GeneralDetailsEditing: View {
     var body: some View {
         Form() {
             Section(header: Text("GENERAL")) {
-                FormPicker(iD: "salesConsultant",
+                FormPicker(iD: "salesConsultant", infoButton: true,
                            question: formQuestions[0][0] ?? "MISSING",
                            selectionOptions: salesConsultants,
                            selection: $salesConsultantIndex)
                 
-                FormPicker(iD: "applicationType",
+                FormPicker(iD: "applicationType", infoButton: true,
                            question: formQuestions[0][1] ?? "MISSING",
                            selectionOptions: applicationType,
                            selection: $applicationTypeIndex)
                 
-                FormPicker(iD: "applicantType",
+                FormPicker(iD: "applicantType", infoButton: true,
                            question: formQuestions[0][2] ?? "MISSING",
                            selectionOptions: applicantType,
                            selection: $applicantTypeIndex)
                 
-                FormPicker(iD: "loanPurpose",
+                FormPicker(iD: "loanPurpose", infoButton: true,
                            question: formQuestions[0][3] ?? "MISSING",
                            selectionOptions: loanPurpose,
                            selection: $loanPurposeIndex)
                 
-                FormPicker(iD: "propertyType",
+                FormPicker(iD: "propertyType", infoButton: true,
                            question: formQuestions[0][4] ?? "MISSING",
                            selectionOptions: propertyType,
                            selection: $propertyTypeIndex)
             }
             
             Section() {
-                FormTextField(iD: "numberOfApplicants",
+                FormTextField(iD: "numberOfApplicants", infoButton: true,
                               question: formQuestions[0][5] ?? "MISSING",
                               placeholder: formTextFieldPlaceholders[0][5] ?? "MISSING",
                               text: $numberOfApplicants, sender: .editor)
