@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Firebase
+//import Firebase
 
 struct Setting: Identifiable {
     var id = UUID()
@@ -27,8 +27,8 @@ struct SettingRow: View {
 
 struct SettingsView: View {
     // MARK: - Wrapped Objects
-    @EnvironmentObject var settings: UserSettings
-    @ObservedObject var userDetails: UserDetails
+    //@EnvironmentObject var settings: UserSettings
+    //@ObservedObject var userDetails: UserDetails
     
     // MARK: - State Variables
     @State var profileViewShowing: Bool = false
@@ -52,7 +52,7 @@ struct SettingsView: View {
     var body: some View {
         NavigationView() {
             List() {
-                NavigationLink(destination: ProfileView(userDetails: userDetails), isActive: $profileViewShowing) {
+                /*NavigationLink(destination: ProfileView(userDetails: userDetails), isActive: $profileViewShowing) {
                     SettingRow(setting: settingsItems[0])
                 }
                 
@@ -66,7 +66,7 @@ struct SettingsView: View {
                 
                 NavigationLink(destination: HelpScene(), isActive: $helpViewShowing) {
                     SettingRow(setting: settingsItems[3])
-                }
+                }*/
                 
                 NavigationLink(destination: AboutScene(), isActive: $privacyViewShowing) {
                     SettingRow(setting: settingsItems[4])
@@ -76,7 +76,7 @@ struct SettingsView: View {
                     SettingRow(setting: settingsItems[5])
                 }
                 
-                HStack() {
+                /*HStack() {
                     Spacer()
                     
                     Button(action: {
@@ -98,9 +98,9 @@ struct SettingsView: View {
                     
                     Spacer()
                 }
-                .padding()
+                .padding()*/
             }
-            .navigationBarTitle("Settings")
+            .navigationBarTitle("Details")
         }
     }
     

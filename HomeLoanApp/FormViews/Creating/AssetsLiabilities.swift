@@ -44,34 +44,36 @@ struct AssetsLiabilities: View {
     
     var body: some View {
         Form() {
-            Section(header: Text("Assets")) {
-                FormRandTextField(iD: "fixedProperty",
-                                  question: formQuestions[7][0] ?? "MISSING",
-                                  text: $fixedProperty)
-                
-                FormRandTextField(iD: "vehicles",
-                                  question: formQuestions[7][1] ?? "MISSING",
-                                  text: $vehicles)
-                
-                FormRandTextField(iD: "furnitureFittings",
-                                  question: formQuestions[7][2] ?? "MISSING",
-                                  text: $furnitureFittings)
-                
-                FormRandTextField(iD: "assetLiabilityInvestments",
-                                  question: formQuestions[7][3] ?? "MISSING",
-                                  text: $assetLiabilityInvestments)
-                
-                FormRandTextField(iD: "cashOnHand",
-                                  question: formQuestions[7][4] ?? "MISSING",
-                                  text: $cashOnHand)
-                
-                FormOtherRand(iD: "otherAsset",
-                                  question: formQuestions[7][5] ?? "MISSING",
-                                  other: $otherAsset,
-                                  otherText: $otherAssetText)
+            Section(header: AssetLiabilityInfo(whichInfo: "assets")) {
+                Group() {
+                    FormRandTextField(iD: "fixedProperty",
+                                      question: formQuestions[7][0] ?? "MISSING",
+                                      text: $fixedProperty)
+                    
+                    FormRandTextField(iD: "vehicles",
+                                      question: formQuestions[7][1] ?? "MISSING",
+                                      text: $vehicles)
+                    
+                    FormRandTextField(iD: "furnitureFittings",
+                                      question: formQuestions[7][2] ?? "MISSING",
+                                      text: $furnitureFittings)
+                    
+                    FormRandTextField(iD: "assetLiabilityInvestments",
+                                      question: formQuestions[7][3] ?? "MISSING",
+                                      text: $assetLiabilityInvestments)
+                    
+                    FormRandTextField(iD: "cashOnHand",
+                                      question: formQuestions[7][4] ?? "MISSING",
+                                      text: $cashOnHand)
+                    
+                    FormOtherRand(iD: "otherAsset",
+                                      question: formQuestions[7][5] ?? "MISSING",
+                                      other: $otherAsset,
+                                      otherText: $otherAssetText)
+                }
             }
             
-            Section(header: Text("Liabilities")) {
+            Section(header: AssetLiabilityInfo(whichInfo: "liabilities")) {
                 Group {
                     FormRandTextField(iD: "mortgageBonds",
                                       question: formQuestions[7][6] ?? "MISSING",

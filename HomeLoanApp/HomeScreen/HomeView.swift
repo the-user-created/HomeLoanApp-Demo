@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Firebase
+////import Firebase
 
 struct HomeView: View {
     @Environment(\.colorScheme) var colorScheme

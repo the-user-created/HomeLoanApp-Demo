@@ -12,14 +12,40 @@ import Vision
 import VisionKit
 import MessageUI
 
+// MARK: - AssetLiabilityInfo
+struct AssetLiabilityInfo: View {
+    var whichInfo: String
+    @State var infoString: String = ""
+    @State var infoShowing: Bool = false
+    
+    var body: some View {
+        HStack() {
+            Text(whichInfo == "assets" ? "ASSETS" : "LIABILITIES")
+            
+            Button(action: {
+                self.infoShowing = true
+                infoString = whichInfo == "assets" ? "An asset is something which you own." : "A liability is something which you owe."
+            }) {
+                Image(systemName: "info.circle")
+                    .resizable()
+                    .scaledToFit()
+            }
+            .frame(width: 16.0, height: 16.0)
+        }
+        .alert(isPresented: $infoShowing) {
+            Alert(title: Text("Info"), message: Text(infoString), dismissButton: .default(Text("OK")))
+        }
+    }
+}
+
+
 // MARK: - FormLabel
 struct FormLabel: View {
     var iD: String
     var question: String
     var textColor: Color = .primary
     var infoButton: Bool = false
-    var infoSheets = InfoSheets()
-    @State var sheetShowing: Bool = false
+    @State var infoShowing: Bool = false
     
     var body: some View {
         HStack() {
@@ -29,7 +55,7 @@ struct FormLabel: View {
             
             if infoButton {
                 Button(action: {
-                    self.sheetShowing = true
+                    self.infoShowing = true
                 }) {
                     Image(systemName: "info.circle")
                         .resizable()
@@ -39,7 +65,10 @@ struct FormLabel: View {
             }
         }
         .buttonStyle(BorderlessButtonStyle())
-        .sheet(isPresented: $sheetShowing) {
+        .alert(isPresented: $infoShowing) {
+            Alert(title: Text("Info"), message: Text(infos[iD]?[0] ?? "MISSING"), dismissButton: .default(Text("OK")))
+        }
+        /*.sheet(isPresented: $sheetShowing) {
             VStack() {
                 Image(systemName: "chevron.compact.down")
                     .resizable()
@@ -48,14 +77,14 @@ struct FormLabel: View {
                 
                 Spacer()
                 
-                Text("Some info")//infoSheets.findInfo(formID: iD))
+                Text(infos[iD][0])
                     .multilineTextAlignment(.center)
                     .padding()
                 
                 Spacer()
             }
             .padding()
-        }
+        }*/
     }
 }
 
@@ -766,6 +795,8 @@ struct ScannedIncomeView: View {
 
 // MARK: - ScanTipsView
 struct ScanTipsView: View {
+    @State var identityType: String?
+    
     var body: some View {
         VStack() {
             Image(systemName: "chevron.compact.down")
@@ -787,6 +818,12 @@ struct ScanTipsView: View {
                         .padding([.leading, .trailing])
                     
                     Spacer()
+                }
+                
+                if identityType == "Smart ID Card" {
+                    Text("Please scan both the front and back of your Smart ID Card.")
+                } else if identityType != nil {
+                    Text("Please take a clear scan of your identity document.")
                 }
                 
                 // Step header
@@ -861,31 +898,38 @@ struct MailView: UIViewControllerRepresentable {
     @State var attachments: [String: Data]
     @Binding var isShowing: Bool
     @Binding var result: Result<MFMailComposeResult, Error>?
+    @Binding var submitted: Bool
+    //private let completionHandler: ([String]?) -> Void
 
     class Coordinator: NSObject, MFMailComposeViewControllerDelegate {
         
         @Binding var isShowing: Bool
         @Binding var result: Result<MFMailComposeResult, Error>?
+        @Binding var submiited: Bool
 
-        init(isShowing: Binding<Bool>, result: Binding<Result<MFMailComposeResult, Error>?>) {
-            _isShowing = isShowing
-            _result = result
+        init(isShowing: Binding<Bool>, result: Binding<Result<MFMailComposeResult, Error>?>, submitted: Binding<Bool>) {
+            self._isShowing = isShowing
+            self._result = result
+            self._submiited = submitted
         }
 
         func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
             defer {
                 isShowing = false
             }
+            
             guard error == nil else {
                 self.result = .failure(error!)
                 return
             }
+            
             self.result = .success(result)
+            self.submiited = true
         }
     }
 
     func makeCoordinator() -> Coordinator {
-        return Coordinator(isShowing: $isShowing, result: $result)
+        return Coordinator(isShowing: $isShowing, result: $result, submitted: $submitted)
     }
 
     func makeUIViewController(context: UIViewControllerRepresentableContext<MailView>) -> MFMailComposeViewController {

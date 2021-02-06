@@ -7,7 +7,7 @@
 
 import SwiftUI
 import CoreData
-import Firebase
+//import Firebase
 
 struct PersonalDetails: View {
     // MARK: - Wrapped Objects

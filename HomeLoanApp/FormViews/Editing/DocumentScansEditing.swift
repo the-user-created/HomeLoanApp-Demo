@@ -27,6 +27,7 @@ struct DocumentScansEditing: View {
     @State var sheetID: ScannerSheets = .none
     @State var sender: Sender
     @State var showingAlert: Bool = false
+    @State var infoSheetType: String = ""
     @State var alertMessage: String = ""
     @Binding var isDone: Bool
     @Binding var scanGroup: [String]
@@ -77,6 +78,7 @@ struct DocumentScansEditing: View {
                     // Open how to scan sheet
                     Button(action: {
                         sheetID = .scanTips
+                        infoSheetType = "identity"
                         isShowingSheet = true
                     }) {
                         Image(systemName: "info.circle")
@@ -269,7 +271,7 @@ struct DocumentScansEditing: View {
         .sheet(isPresented: $isShowingSheet) {
             let loanID = application.loanID
             if sheetID == .scanTips {
-                ScanTipsView()
+                ScanTipsView(identityType: infoSheetType == "identity" ? (sender == .creator ? applicationCreation.application.identityType : application.identityType) : nil)
             } else if sheetID == .identityScan {
                 ScannerView(scanName: "identity", applicationID: loanID!) { _ in
                     sheetID = .none

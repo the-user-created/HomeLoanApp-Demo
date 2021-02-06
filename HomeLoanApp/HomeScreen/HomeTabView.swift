@@ -7,18 +7,18 @@
 
 import SwiftUI
 import CoreData
-import Firebase
+////import Firebase
 
 struct HomeTabView: View {
     // MARK: - Wrapped Objects
-    @ObservedObject var userDetails: UserDetails
+    //@ObservedObject var userDetails: UserDetails
     
     // MARK: - State Variables
     @State private var selectedView = 0
     
-    init(userDetails: UserDetails) {
+    /*init(userDetails: UserDetails) {
         self.userDetails = userDetails
-    }
+    }*/
     
     // MARK: - body
     var body: some View {
@@ -35,7 +35,7 @@ struct HomeTabView: View {
                     Text("Loan Applications")
             }.tag(1)
             
-            SettingsView(userDetails: userDetails)
+            SettingsView()//userDetails: userDetails)
                 .tabItem {
                 Image(systemName: "gear")
                 Text("Settings")

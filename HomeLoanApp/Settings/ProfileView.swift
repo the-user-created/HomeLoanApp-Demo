@@ -7,7 +7,7 @@
 
 import SwiftUI
 import CoreData
-import Firebase
+//import Firebase
 
 struct ProfileView: View {
     // MARK: - Wrapped Objects
@@ -55,7 +55,7 @@ struct ProfileView: View {
                     .foregroundColor(.blue)
             }
             
-            Button(action: {
+            /*Button(action: {
                 let user = Auth.auth().currentUser
                 
                 user?.delete { error in
@@ -71,7 +71,7 @@ struct ProfileView: View {
             }) {
                 Text("Delete my Account")
                     .foregroundColor(.red)
-            }
+            }*/
         }
         .navigationBarTitle("Profile")
     }

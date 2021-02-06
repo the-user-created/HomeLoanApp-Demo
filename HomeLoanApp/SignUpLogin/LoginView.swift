@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Firebase
+//import Firebase
 
 struct LoginView: View {
     // MARK: - Wrapped Objects
@@ -98,7 +98,7 @@ struct LoginView: View {
                     
                     Button(action: {
                         isLoggingIn = true
-                        logIn()
+                        //logIn()
                     }) {
                         Text("Sign In")
                             .font(.headline)
@@ -158,7 +158,7 @@ struct LoginView: View {
     }
     
     // MARK: - logIn
-    private func logIn() {
+    /*private func logIn() {
         Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
             guard let user = authResult?.user, error == nil else {
                 isLoggingIn = false
@@ -173,7 +173,7 @@ struct LoginView: View {
             self.settings.loggedIn = true
             UserDefaults.standard.setValue(true, forKey: "loggedIn")
         }
-    }
+    }*/
     
     // MARK: - textFieldTextBG
     // Returns the same color as the system setting for the text in the textfield

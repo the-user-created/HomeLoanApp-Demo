@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Firebase
+////import Firebase
 
 struct ForgotPassword: View {
     
@@ -41,7 +41,7 @@ struct ForgotPassword: View {
                 
                 Button(action: {
                     isLoading = true
-                    forgotPassword()
+                    //forgotPassword()
                 }) {
                     Text("Forgot Password")
                         .font(.headline)
@@ -70,7 +70,7 @@ struct ForgotPassword: View {
         })
     }
     
-    private func forgotPassword() {
+    /*private func forgotPassword() {
         Auth.auth().sendPasswordReset(withEmail: email) { error in
             if let error = error {
                 print("print - Error trying to send password reset email: \(error)")
@@ -84,5 +84,5 @@ struct ForgotPassword: View {
             isLoading = false
             showAlert = true
         }
-    }
+    }*/
 }

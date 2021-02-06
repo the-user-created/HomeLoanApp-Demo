@@ -100,12 +100,9 @@ let countries = ["--select--", "Afghanistan", "Albania", "Algeria", "American Sa
                    "Zimbabwe"]
 
 let infos: [String: [String]] = [
-    "salesConsultant": ["Some explanation on how to determine who your sales consultant is"],
-    "applicationType": ["Some explanation on how to determine what your application type is"],
-    "applicantType": [],
-    "loanPurpose": [],
-    "propertyType": [],
-    "numberOfApplicants": []
+    "companyRegNum": ["If you do not know what your company registration number is, leave this blank."],
+    "natureOfBusiness": ["What does your employer do?"],
+    "natureOfOccupation": ["What is your job title?"]
 ]
 
 let salesConsultantEmails: [String: String] = ["Gavin Young": "davidsamuelyoung@protonmail.com"]//"gavinyoung@mweb.co.za"]

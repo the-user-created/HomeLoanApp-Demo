@@ -36,6 +36,7 @@ struct ChoosePageCreating: View {
     @State var scanGroup: [String] = []
     
     @State var result: Result<MFMailComposeResult, Error>? = nil
+    @State var submitted: Bool = false
     @State var isShowingMailView = false
     @State var canSendMail: Bool = MFMailComposeViewController.canSendMail()
     
@@ -219,10 +220,15 @@ struct ChoosePageCreating: View {
         .onChange(of: selection) { _ in
             changedValues.cleanChangedValues()
         }
+        .onChange(of: submitted) { _ in
+            if submitted {
+                applicationCreation.application.loanStatus = Status.submitted.rawValue
+            }
+        }
         .sheet(isPresented: $isShowingMailView) {
             let clientName: String = "\(applicationCreation.application.surname ?? "NIL"), \(applicationCreation.application.firstNames ?? "NIL")"
             let recipients = [salesConsultantEmails[applicationCreation.application.salesConsultant ?? ""] ?? ""]
-            MailView(clientName: clientName, emailBody: makeEmailBody(application: applicationCreation.application), recipients: recipients, attachments: getAttachments(), isShowing: self.$isShowingMailView, result: self.$result)
+            MailView(clientName: clientName, emailBody: makeEmailBody(application: applicationCreation.application), recipients: recipients, attachments: getAttachments(), isShowing: self.$isShowingMailView, result: self.$result, submitted: $submitted)
         }
     }
     

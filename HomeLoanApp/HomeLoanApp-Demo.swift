@@ -9,26 +9,26 @@ import Foundation
 import Combine
 import SwiftUI
 import CoreData
-import Firebase
-import FirebaseAuth
+////import Firebase
+////import FirebaseAuth
 
 // MARK: - Main
 @main
 struct HomeLoanApp: App {
     let persistenceController = PersistenceController.shared
-    var userDetails = UserDetails()
-    var settings = UserSettings()
+    //var userDetails = UserDetails()
+    //var settings = UserSettings()
     var applicationCreation = ApplicationCreation()
     var changedValues = ChangedValues()
     
-    init() {
+    /*init() {
         FirebaseApp.configure()
-    }
+    }*/
     
     var body: some Scene {
         WindowGroup {
-            Main(userDetails: userDetails)
-                .environmentObject(settings)
+            Main()//userDetails: userDetails)
+                //.environmentObject(settings)
                 .environmentObject(applicationCreation)
                 .environmentObject(changedValues)
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
@@ -40,10 +40,12 @@ struct Main: View {
     @Environment(\.managedObjectContext) var viewContext
     @EnvironmentObject var applicationCreation: ApplicationCreation
     @EnvironmentObject var settings: UserSettings
-    @ObservedObject var userDetails: UserDetails
+    //@ObservedObject var userDetails: UserDetails
     
     var body: some View {
-        if self.settings.loggedIn {
+        HomeTabView()//userDetails: userDetails)
+        
+        /*if self.settings.loggedIn {
             let user = Auth.auth().currentUser
                 
             self.userDetails.email = user?.email ?? "nil"
@@ -61,11 +63,6 @@ struct Main: View {
             return AnyView(HomeTabView(userDetails: userDetails))
         } else {
             return AnyView(LoginView())
-        }
-    }
-    
-    private func increment(_ value: Int) -> Int {
-        let value = value + 1
-        return value
+        }*/
     }
 }

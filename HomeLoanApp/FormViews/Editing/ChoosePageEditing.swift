@@ -37,6 +37,7 @@ struct ChoosePageEditing: View {
     @State var scanGroup: [String] = []
     
     @State var result: Result<MFMailComposeResult, Error>? = nil
+    @State var submitted: Bool = false
     @State var isShowingMailView = false
     @State var canSendMail: Bool = MFMailComposeViewController.canSendMail()
     
@@ -211,7 +212,7 @@ struct ChoosePageEditing: View {
                     }
                 } else if notificationDone && canSubmit() { // Mail installed, notification accepted, sections completed
                     Button(action: {
-                        self.isShowingMailView.toggle()
+                        self.isShowingMailView = true
                     }) {
                         Text("Submit Application")
                             .font(.title3)
@@ -226,13 +227,18 @@ struct ChoosePageEditing: View {
             .buttonStyle(BorderlessButtonStyle())
         }
         .navigationBarTitle("Editing", displayMode: .large)
-        .onChange(of: selection) { value in
+        .onChange(of: selection) { _ in
             changedValues.cleanChangedValues()
+        }
+        .onChange(of: submitted) { _ in
+            if submitted {
+                application.loanStatus = Status.submitted.rawValue
+            }
         }
         .sheet(isPresented: $isShowingMailView) {
             let clientName = "\(self.application.surname ?? "NIL"), \(self.application.firstNames ?? "NIL")"
             let recipients = [salesConsultantEmails[salesConsultant] ?? ""]
-            MailView(clientName: clientName, emailBody: makeEmailBody(application: application), recipients: recipients, attachments: [:], isShowing: self.$isShowingMailView, result: self.$result)
+            MailView(clientName: clientName, emailBody: makeEmailBody(application: application), recipients: recipients, attachments: [:], isShowing: self.$isShowingMailView, result: self.$result, submitted: $submitted)
         }
     }
     

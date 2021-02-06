@@ -26,6 +26,7 @@ struct DocumentScans: View {
     
     @State var isShowingSheet: Bool = false
     @State var sheetID: ScannerSheets = .none
+    @State var infoSheetType: String = ""
     @Binding var isDone: Bool
     @Binding var scanGroup: [String]
     
@@ -53,6 +54,7 @@ struct DocumentScans: View {
                     
                     Button(action: {
                         sheetID = .scanTips
+                        infoSheetType = "identity"
                         isShowingSheet = true
                     }) {
                         Image(systemName: "info.circle")
@@ -246,10 +248,13 @@ struct DocumentScans: View {
         .onAppear() {
             isActive = true
         }
+        .onChange(of: isShowingSheet) { _ in
+            isActive = !isShowingSheet
+        }
         .sheet(isPresented: $isShowingSheet) {
             let loanID = applicationCreation.application.loanID
             if sheetID == .scanTips {
-                Text("Steps on taking a good scan")
+                ScanTipsView(identityType: infoSheetType == "identity" ? applicationCreation.application.identityType : nil)
             } else if sheetID == .identityScan {
                 ScannerView(scanName: "identity", applicationID: loanID!) { _ in
                     // May have problems later if needing to do more things than just dismiss on completion

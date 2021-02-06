@@ -131,7 +131,7 @@ struct EmploymentEditing: View {
                            selectionOptions: incomeSources,
                            selection: $incomeSource)
                 
-                FormTextField(iD: "natureOfOccupation",
+                FormTextField(iD: "natureOfOccupation", infoButton: true,
                               question: formQuestions[4][3] ?? "MISSING",
                               placeholder: formTextFieldPlaceholders[4][3] ?? "MISSING",
                               text: $natureOfOccupation, sender: .editor)
@@ -147,7 +147,7 @@ struct EmploymentEditing: View {
                            selection: $employmentSector)
                 
                 Group() {
-                    FormTextField(iD: "natureOfBusiness",
+                    FormTextField(iD: "natureOfBusiness", infoButton: true,
                                   question: formQuestions[4][6] ?? "MISSING",
                                   placeholder: formTextFieldPlaceholders[4][6] ?? "MISSING",
                                   text: $natureOfBusiness, sender: .editor)
@@ -157,7 +157,7 @@ struct EmploymentEditing: View {
                                   placeholder: formTextFieldPlaceholders[4][7] ?? "MISSING",
                                   text: $employer, sender: .editor)
                     
-                    FormTextField(iD: "companyRegNum",
+                    FormTextField(iD: "companyRegNum", infoButton: true,
                                   question: formQuestions[4][8] ?? "MISSING",
                                   placeholder: formTextFieldPlaceholders[4][8] ?? "MISSING",
                                   text: $companyRegNum, sender: .editor)
@@ -283,7 +283,7 @@ struct EmploymentEditing: View {
     // MARK: - determineComplete
     private func determineComplete() -> Bool {
         var isComplete: Bool = false
-        if occupationalStatus != 0 && payingScheme != 0 && incomeSource != 0 && !natureOfOccupation.isEmpty && occupationLevel != 0 && employmentSector != 0 && !natureOfBusiness.isEmpty && !employer.isEmpty && !companyRegNum.isEmpty && (!employmentPeriodYears.isEmpty || !employmentPeriodMonths.isEmpty) && employerCountry != 0 && !employerLine1.isEmpty && !employerSuburb.isEmpty && !employerCity.isEmpty && !employerProvince.isEmpty && !employerStreetCode.isEmpty && !workPhoneNum.isEmpty && !purchaseJobChange.isEmpty && !workInZA.isEmpty && !previouslyEmployed.isEmpty {
+        if occupationalStatus != 0 && payingScheme != 0 && incomeSource != 0 && !natureOfOccupation.isEmpty && occupationLevel != 0 && employmentSector != 0 && !natureOfBusiness.isEmpty && !employer.isEmpty && (!employmentPeriodYears.isEmpty || !employmentPeriodMonths.isEmpty) && employerCountry != 0 && !employerLine1.isEmpty && !employerSuburb.isEmpty && !employerCity.isEmpty && !employerProvince.isEmpty && !employerStreetCode.isEmpty && !workPhoneNum.isEmpty && !purchaseJobChange.isEmpty && !workInZA.isEmpty && !previouslyEmployed.isEmpty {
             
             if previouslyEmployed == "Yes" && (!previousEmployer.isEmpty && !pEContact.isEmpty && (!pEDurationYears.isEmpty || !pEDurationMonths.isEmpty)) {
                 isComplete = true

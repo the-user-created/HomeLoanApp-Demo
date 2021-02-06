@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Firebase
+//import Firebase
 
 // MARK: - EmailTextField
 struct EmailTextField: View {
@@ -144,14 +144,14 @@ struct EditAccount: View {
     
     // MARK: - changeDetails
     private func changeDetails() {
-        if emailChanged {
+        /*if emailChanged {
             changeEmail()
         }
         
         if firstNamesChanged || surnameChanged {
             print("print - Changing display name")
             changeDisplayName()
-        }
+        }*/
         
         if !(nameChangeSuccess ?? true) || !(emailChangeSuccess ?? true) {
             alertIsShowing = true
@@ -166,7 +166,7 @@ struct EditAccount: View {
     }
     
     // MARK: - changeDisplayName
-    private func changeDisplayName() {
+    /*private func changeDisplayName() {
         let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
         changeRequest?.displayName = "[\(self.firstNames)][\(self.surname)]"
         changeRequest?.commitChanges { (error) in
@@ -209,7 +209,7 @@ struct EditAccount: View {
                 }
             }
         }
-    }
+    }*/
 }
 
 /*struct EditAccount_Previews: PreviewProvider {

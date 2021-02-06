@@ -6,8 +6,8 @@
 //
 
 import SwiftUI
-import Firebase
-import FirebaseFirestore
+//import Firebase
+//import FirebaseFirestore
 
 struct SignUpView: View {
     // MARK: - Wrapped Objects
@@ -143,7 +143,7 @@ struct SignUpView: View {
                 
                 Button(action: {
                     isSigningUp = true
-                    signUp()
+                    //signUp()
                 }) {
                     Text("Sign Up")
                         .font(.headline)
@@ -173,7 +173,7 @@ struct SignUpView: View {
     }
     
     // MARK: - signUp
-    private func signUp() {
+    /*private func signUp() {
         withAnimation(.default) {
             let namePassChecked = checkNameAndPass()
             let emailChecked = checkEmails()
@@ -240,7 +240,7 @@ struct SignUpView: View {
                 isSigningUp = false
             }
         }
-    }
+    }*/
     
     // MARK: - checkNameAndPass
     private func checkNameAndPass() -> Bool {

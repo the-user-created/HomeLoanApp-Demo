@@ -75,11 +75,3 @@ class ApplicationCreation: ObservableObject {
         self.incomeSaved = false
     }
 }
-
-class InfoSheets {
-    
-    func findInfo(formID: String) -> String {
-        
-        return ""
-    }
-}

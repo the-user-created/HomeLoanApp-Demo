@@ -20,7 +20,7 @@ struct GeneralDetailsEditing: View {
     // MARK: - Properties
     let resignPub = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
     let salesConsultants = ["--select--", "Gavin Young", "--TBA--"]
-    let applicationType = ["--select--", "Further Loan", "New loan", "Pledge Application", "Switch from other institution"]
+    let applicationType = ["--select--", "Further Loan", "New loan"]//, "Pledge Application", "Switch from other institution"]
     let applicantType = ["--select--","Closed Corporation", "Clubs", "Estate Late Client", "Incorporated Company", "Individual", "Joint with other person", "Joint with other persons", "Joint with spouse", "Joint with spouse and other person", "Joint with spouse and other persons", "Non-Profit Organisations and Friendly Societies", "Partnerships", "Private Company", "Public Company", "Schools", "Sole Proprietor", "Trust"]
     let loanPurpose = ["--select--", "Bond Existing Home/Unbonded", "Build a new home", "Buy an existing home", "Buy vacant land", "Further Advance (ordinary)", "Home improvements"]
     let propertyType = ["--select--", "Duets - Sectional Title", "Normal residential", "Sectional title", "Small Holdings Residential", "Vacant land"]
@@ -65,34 +65,34 @@ struct GeneralDetailsEditing: View {
     var body: some View {
         Form() {
             Section(header: Text("GENERAL")) {
-                FormPicker(iD: "salesConsultant", infoButton: true,
+                FormPicker(iD: "salesConsultant",
                            question: formQuestions[0][0] ?? "MISSING",
                            selectionOptions: salesConsultants,
                            selection: $salesConsultantIndex)
                 
-                FormPicker(iD: "applicationType", infoButton: true,
+                FormPicker(iD: "applicationType",
                            question: formQuestions[0][1] ?? "MISSING",
                            selectionOptions: applicationType,
                            selection: $applicationTypeIndex)
                 
-                FormPicker(iD: "applicantType", infoButton: true,
+                FormPicker(iD: "applicantType",
                            question: formQuestions[0][2] ?? "MISSING",
                            selectionOptions: applicantType,
                            selection: $applicantTypeIndex)
                 
-                FormPicker(iD: "loanPurpose", infoButton: true,
+                FormPicker(iD: "loanPurpose",
                            question: formQuestions[0][3] ?? "MISSING",
                            selectionOptions: loanPurpose,
                            selection: $loanPurposeIndex)
                 
-                FormPicker(iD: "propertyType", infoButton: true,
+                FormPicker(iD: "propertyType",
                            question: formQuestions[0][4] ?? "MISSING",
                            selectionOptions: propertyType,
                            selection: $propertyTypeIndex)
             }
             
             Section() {
-                FormTextField(iD: "numberOfApplicants", infoButton: true,
+                FormTextField(iD: "numberOfApplicants",
                               question: formQuestions[0][5] ?? "MISSING",
                               placeholder: formTextFieldPlaceholders[0][5] ?? "MISSING",
                               text: $numberOfApplicants, sender: .editor)
