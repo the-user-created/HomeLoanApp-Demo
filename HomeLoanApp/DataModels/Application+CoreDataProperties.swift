@@ -202,7 +202,7 @@ extension Application {
     
     // MARK: - Document Scans
     @NSManaged public var documentScansDone: Bool
-    @NSManaged public var scanGroup: [String]?
+    @NSManaged public var scanGroup: [String]
     @NSManaged public var identityScanned: Bool
     @NSManaged public var incomeStructure: String?
     @NSManaged public var salaryPaySlipsScanned: Bool

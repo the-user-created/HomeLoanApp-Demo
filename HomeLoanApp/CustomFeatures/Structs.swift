@@ -795,7 +795,13 @@ struct ScannedIncomeView: View {
 
 // MARK: - ScanTipsView
 struct ScanTipsView: View {
-    @State var identityType: String?
+    @State var infoType: String?
+    private let completionHandler: ([String]?) -> Void
+    
+    init(infoType: String?, completion: @escaping ([String]?) -> Void) {
+        self._infoType = State(wrappedValue: infoType)
+        self.completionHandler = completion
+    }
     
     var body: some View {
         VStack() {
@@ -820,9 +826,9 @@ struct ScanTipsView: View {
                     Spacer()
                 }
                 
-                if identityType == "Smart ID Card" {
+                if infoType == "Smart ID Card" {
                     Text("Please scan both the front and back of your Smart ID Card.")
-                } else if identityType != nil {
+                } else if infoType != nil {
                     Text("Please take a clear scan of your identity document.")
                 }
                 
@@ -835,18 +841,20 @@ struct ScanTipsView: View {
                 Group() {
                     Text("1. Place your document in a well-lit area.")
                     
-                    Text("2. Tap \"Scan your (something)\".")
+                    Text("2. Tap \"Scan your \(infoType ?? "").\"")
                     
                     Text("3. Position the document in within the cameras view.")
                     
-                    Text("4. A transparent-blue overlay will appear around the document's edges.")
+                    Text("4. A transparent blue overlay will appear around the document's edges.")
                     
-                    Text("5. You can either tap the white, circular button (a) to capture a scan of the document, or you can wait for a grid to flash across the document (b).")
+                    Text("5. (a) You can either tap the white, circular button to capture a scan of the document.")
                     
-                    Text("a1. You will be taken to a page to adjust the scan area. Here you can adjust the corners of the scan area to suit your documents needs.\n\na2. If you are satisfied with the scan area, tap \"Keep Scan\" to proceed to the next view.")
+                    Text("a. You will be taken to a page to adjust the scan area. Here you can adjust the corners of the scan area to suit your documents needs.\n\na. If you are satisfied with the scan area, tap \"Keep Scan\" to proceed to the next view.")
                         .padding([.leading, .trailing], 15)
                     
-                    Text("b1. You will be taken back to the scan capturing view.")
+                    Text("5. or (b) you can wait for a grid to flash across the document.")
+                    
+                    Text("b. You will be taken back to the scan capturing view.")
                         .padding([.leading, .trailing], 15)
                         .padding(.bottom, 5)
                     
@@ -924,7 +932,9 @@ struct MailView: UIViewControllerRepresentable {
             }
             
             self.result = .success(result)
-            self.submiited = true
+            if result == .sent {
+                self.submiited = true
+            }
         }
     }
 

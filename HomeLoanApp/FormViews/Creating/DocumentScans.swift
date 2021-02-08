@@ -39,7 +39,7 @@ struct DocumentScans: View {
             Section(header: Text("IDENTITY DOCUMENT")) {
                 HStack() {
                     Button(action: {
-                        sheetID = .identityScanView
+                        sheetID = .identityScan
                         isShowingSheet = true
                     }) {
                         BackgroundForButton(btnText: "Scan your \(String(describing: identityText()))")
@@ -69,7 +69,7 @@ struct DocumentScans: View {
                 if identityScanned {
                     HStack() {
                         Button(action: {
-                            sheetID = .identityScan
+                            sheetID = .identityScanView
                             isShowingSheet = true
                         }) {
                             Text("View scan")
@@ -107,7 +107,7 @@ struct DocumentScans: View {
                             HStack() {
                                 // Open scanner
                                 Button(action: {
-                                    sheetID = .salaryPayScanView
+                                    sheetID = .salaryPayScan
                                     isShowingSheet = true
                                 }) {
                                     BackgroundForButton(btnText: "Scan your \(incomeStructure == "Salaried" ? "payslips" : "salary")")
@@ -120,9 +120,10 @@ struct DocumentScans: View {
                                 
                                 Spacer()
                                 
-                                // Open how to scan sheet
+                                // Open scan tips sheet
                                 Button(action: {
                                     sheetID = .scanTips
+                                    infoSheetType = "salaryPay"
                                     isShowingSheet = true
                                 }) {
                                     Image(systemName: "info.circle")
@@ -140,7 +141,7 @@ struct DocumentScans: View {
                         if salaryPaySlipsScanned {
                             HStack() {
                                 Button(action: {
-                                    sheetID = .salaryPayScan
+                                    sheetID = .salaryPayScanView
                                     isShowingSheet = true
                                 }) {
                                     Text("View scans")
@@ -178,7 +179,7 @@ struct DocumentScans: View {
                             HStack() {
                                 // Open scanner
                                 Button(action: {
-                                    sheetID = .bankStatementsScanView
+                                    sheetID = .bankStatementsScan
                                     isShowingSheet = true
                                 }) {
                                     BackgroundForButton(btnText: "Scan your bank statements")
@@ -191,7 +192,7 @@ struct DocumentScans: View {
                                 
                                 Spacer()
                                 
-                                // Open how to scan sheet
+                                // Open scan tips sheet
                                 Button(action: {
                                     sheetID = .scanTips
                                     isShowingSheet = true
@@ -211,7 +212,8 @@ struct DocumentScans: View {
                         if bankStatementsScanned {
                             HStack() {
                                 Button(action: {
-                                    sheetID = .bankStatementsScan
+                                    sheetID = .bankStatementsScanView
+                                    infoSheetType = "bankStatements"
                                     isShowingSheet = true
                                 }) {
                                     Text("View scans")
@@ -254,10 +256,12 @@ struct DocumentScans: View {
         .sheet(isPresented: $isShowingSheet) {
             let loanID = applicationCreation.application.loanID
             if sheetID == .scanTips {
-                ScanTipsView(identityType: infoSheetType == "identity" ? applicationCreation.application.identityType : nil)
+                let infoType: String? = infoSheetType == "identity" ? applicationCreation.application.identityType : (infoSheetType == "salaryPay" ? "salary/pay slips" : "bank statement documents")
+                ScanTipsView(infoType: infoType) { _ in
+                    infoSheetType = ""
+                }
             } else if sheetID == .identityScan {
                 ScannerView(scanName: "identity", applicationID: loanID!) { _ in
-                    // May have problems later if needing to do more things than just dismiss on completion
                     sheetID = .none
                     identityScanned = hasScanned()
                     changedValues.updateKeyValue("identityScanned", value: identityScanned)
@@ -279,6 +283,7 @@ struct DocumentScans: View {
                     changedValues.updateKeyValue("salaryPaySlipsScanned", value: salaryPaySlipsScanned)
                     isShowingSheet = false
                 }
+                
             } else if sheetID == .salaryPayScanView {
                 ScannedIncomeView(url: "salary_pay_scan_\(loanID?.uuidString ?? "nil")_", scanType: "salaryPay")
             } else if sheetID == .bankStatementsScan {
@@ -288,6 +293,7 @@ struct DocumentScans: View {
                     changedValues.updateKeyValue("bankStatementsScanned", value: bankStatementsScanned)
                     isShowingSheet = false
                 }
+                
             } else if sheetID == .bankStatementsScanView {
                 ScannedIncomeView(url: "bank_statement_scan_\(loanID?.uuidString ?? "nil")_", scanType: "bankStatement")
             }

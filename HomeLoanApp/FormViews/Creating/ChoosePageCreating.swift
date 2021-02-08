@@ -187,7 +187,9 @@ struct ChoosePageCreating: View {
             
             // Submit Application
             Section() {
-                if !canSendMail { // Mail app is not installed
+                if submitted {
+                    Text("You have submitted this application.")
+                } else if !canSendMail { // Mail app is not installed
                     HStack() {
                         Text("Please download the Mail app to submit your application.")
                         
@@ -220,8 +222,8 @@ struct ChoosePageCreating: View {
         .onChange(of: selection) { _ in
             changedValues.cleanChangedValues()
         }
-        .onChange(of: submitted) { _ in
-            if submitted {
+        .onChange(of: submitted) { value in
+            if value {
                 applicationCreation.application.loanStatus = Status.submitted.rawValue
             }
         }

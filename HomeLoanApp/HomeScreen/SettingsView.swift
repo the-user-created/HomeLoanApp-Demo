@@ -68,7 +68,7 @@ struct SettingsView: View {
                     SettingRow(setting: settingsItems[3])
                 }*/
                 
-                NavigationLink(destination: AboutScene(), isActive: $privacyViewShowing) {
+                NavigationLink(destination: AboutScene(), isActive: $aboutViewShowing) {
                     SettingRow(setting: settingsItems[4])
                 }
                 

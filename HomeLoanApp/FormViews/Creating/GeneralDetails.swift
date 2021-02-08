@@ -242,6 +242,7 @@ struct GeneralDetails: View {
     private func saveApplication() {
         UIApplication.shared.endEditing()
         applicationCreation.makeApplication()
+        
         for (key, value) in changedValues.changedValues {
             applicationCreation.application.setValue(value, forKey: key)
         }
@@ -256,7 +257,7 @@ struct GeneralDetails: View {
             applicationCreation.generalDetailsSaved = true
             changedValues.cleanChangedValues()
         } catch {
-            print(error.localizedDescription)
+            print("print - \(error.localizedDescription)")
         }
     }
 }

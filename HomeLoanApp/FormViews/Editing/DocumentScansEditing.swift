@@ -151,9 +151,10 @@ struct DocumentScansEditing: View {
                                 
                                 Spacer()
                                 
-                                // Open how to scan sheet
+                                // Open scan tips sheet
                                 Button(action: {
                                     sheetID = .scanTips
+                                    infoSheetType = "salaryPay"
                                     isShowingSheet = true
                                 }) {
                                     Image(systemName: "info.circle")
@@ -222,9 +223,10 @@ struct DocumentScansEditing: View {
                                 
                                 Spacer()
                                 
-                                // Open how to scan sheet
+                                // Open scan tips sheet
                                 Button(action: {
                                     sheetID = .scanTips
+                                    infoSheetType = "bankStatements"
                                     isShowingSheet = true
                                 }) {
                                     Image(systemName: "info.circle")
@@ -271,7 +273,10 @@ struct DocumentScansEditing: View {
         .sheet(isPresented: $isShowingSheet) {
             let loanID = application.loanID
             if sheetID == .scanTips {
-                ScanTipsView(identityType: infoSheetType == "identity" ? (sender == .creator ? applicationCreation.application.identityType : application.identityType) : nil)
+                let infoType: String? = infoSheetType == "identity" ? (sender == .creator ? applicationCreation.application.identityType : application.identityType) : (infoSheetType == "salaryPay" ? "salary/pay slips" : "bank statement documents")
+                ScanTipsView(infoType: infoType) { _ in
+                    infoSheetType = ""
+                }
             } else if sheetID == .identityScan {
                 ScannerView(scanName: "identity", applicationID: loanID!) { _ in
                     sheetID = .none

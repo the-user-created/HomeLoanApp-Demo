@@ -39,7 +39,7 @@ struct HomeLoanApp: App {
 struct Main: View {
     @Environment(\.managedObjectContext) var viewContext
     @EnvironmentObject var applicationCreation: ApplicationCreation
-    @EnvironmentObject var settings: UserSettings
+    //@EnvironmentObject var settings: UserSettings
     //@ObservedObject var userDetails: UserDetails
     
     var body: some View {

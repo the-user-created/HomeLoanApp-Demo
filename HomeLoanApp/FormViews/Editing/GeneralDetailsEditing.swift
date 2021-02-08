@@ -64,6 +64,8 @@ struct GeneralDetailsEditing: View {
     
     var body: some View {
         Form() {
+            Text("Editing")
+            
             Section(header: Text("GENERAL")) {
                 FormPicker(iD: "salesConsultant",
                            question: formQuestions[0][0] ?? "MISSING",

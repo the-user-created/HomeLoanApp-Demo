@@ -7,10 +7,11 @@
 
 import SwiftUI
 import CoreData
-////import Firebase
+//import Firebase
 
 struct HomeTabView: View {
     // MARK: - Wrapped Objects
+    @EnvironmentObject var applicationCreation: ApplicationCreation
     //@ObservedObject var userDetails: UserDetails
     
     // MARK: - State Variables

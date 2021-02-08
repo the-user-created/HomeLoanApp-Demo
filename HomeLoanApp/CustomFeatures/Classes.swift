@@ -26,11 +26,11 @@ class UserDetails: ObservableObject {
 
 class ChangedValues: ObservableObject {
     // Stores each of the changed key-value pairs of the questions and answers in the form
-    @Published var changedValues: Dictionary<String, Any> = [:] {
+    @Published var changedValues: Dictionary<String, Any> = [:] /*{
         didSet {
             print("print - changedValues: \(changedValues)")
         }
-    }
+    }*/
     
     func updateKeyValue(_ key: String, value: Any) {
         changedValues.updateValue(value, forKey: key)

@@ -56,7 +56,7 @@ struct ChoosePageEditing: View {
         self._identityDone = State(wrappedValue: self.application.identityType != "--select--" && self.application.identityType != "" && self.application.identityType != nil)
         
         self._salesConsultant = State(wrappedValue: self.application.salesConsultant ?? "")
-        self._scanGroup = State(wrappedValue: self.application.scanGroup ?? [])
+        self._scanGroup = State(wrappedValue: self.application.scanGroup)
     }
     
     // MARK: - body
@@ -197,7 +197,9 @@ struct ChoosePageEditing: View {
             
             // Submit Application
             Section() {
-                if !canSendMail { // Mail app is not installed
+                if application.loanStatus == Status.submitted.rawValue {
+                    Text("You have submitted this application.")
+                } else if !canSendMail { // Mail app is not installed
                     HStack() {
                         Text("Please download the Mail app to submit your application.")
                         
@@ -233,6 +235,13 @@ struct ChoosePageEditing: View {
         .onChange(of: submitted) { _ in
             if submitted {
                 application.loanStatus = Status.submitted.rawValue
+                
+                do {
+                    try viewContext.save()
+                    print("Application Entity Updated")
+                } catch {
+                    print(error.localizedDescription)
+                }
             }
         }
         .sheet(isPresented: $isShowingMailView) {
