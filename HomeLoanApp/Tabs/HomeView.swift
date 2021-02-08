@@ -14,7 +14,7 @@ struct HomeView: View {
     @State var viewLoaded: Bool = false
     @State var screenWidth = UIScreen.main.bounds.size.width
     @State var screenHeight = UIScreen.main.bounds.size.height
-    @State var imagePadding: CGFloat = -10
+    @State var imagePadding: CGFloat = 0
     
     let orientationPub = NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)
     let scale: CGFloat = UIScreen.main.scale
@@ -28,11 +28,11 @@ struct HomeView: View {
     
     var body: some View {
         ZStack {
-            Image("LSImage")
-                .resizable()
-                .ignoresSafeArea(.all)
-            
-            VStack() {
+            Group() {
+                Image("LSImage")
+                    .resizable()
+                    .ignoresSafeArea(.all)
+                
                 Image("LSLogo")
                     .resizable()
                     .scaledToFit()
@@ -40,6 +40,24 @@ struct HomeView: View {
                     .animation(.timingCurve(0.65, 0.0, 0.25, 0.75, duration: 2.0))
                     .padding(.top, viewLoaded ? imagePadding : 30)
             }
+            
+            VStack(spacing: 0) {
+                Spacer()
+                
+                Text("Start Here")
+                    .foregroundColor(.white)
+                    .font(.title)
+                
+                Image("DownArrow")
+                    .renderingMode(.template)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 80, height: 80)
+                    //.foregroundColor(Color.init(hex: "41702b"))
+            }
+            .foregroundColor(Color.init(hex: "41702b"))
+            .animation(.timingCurve(0.65, 0.0, 0.25, 0.75, duration: 2.0))
+            .padding(.bottom, viewLoaded ? 10 : -150)
         }
         .onAppear() {
             self.viewLoaded = true
