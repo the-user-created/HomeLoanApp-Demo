@@ -1,5 +1,5 @@
 //
-//  HomeTabView.swift
+//  TabSelectionView.swift
 //  HomeLoanApp
 //
 //  Created by David Young on 2020/09/24.
@@ -9,7 +9,7 @@ import SwiftUI
 import CoreData
 //import Firebase
 
-struct HomeTabView: View {
+struct TabSelectionView: View {
     // MARK: - Wrapped Objects
     @EnvironmentObject var applicationCreation: ApplicationCreation
     //@ObservedObject var userDetails: UserDetails
@@ -36,10 +36,12 @@ struct HomeTabView: View {
                     Text("Loan Applications")
             }.tag(1)
             
-            SettingsView()//userDetails: userDetails)
+            PrivacyPolicyView()//userDetails: userDetails)
                 .tabItem {
-                Image(systemName: "gear")
-                Text("Settings")
+                    Image(systemName: "key.fill")
+                    Text("Privacy")
+                    /*Image(systemName: "gear")
+                    Text("Settings")*/
             }.tag(3)
         }
     }

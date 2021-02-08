@@ -35,7 +35,7 @@
 		BDA1B11D2590E4DD006D2F97 /* GeneralDetailsEditing.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA1B11C2590E4DD006D2F97 /* GeneralDetailsEditing.swift */; };
 		BDA3E0392572199100789E67 /* ResidencyContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA3E0382572199100789E67 /* ResidencyContact.swift */; };
 		BDB7160F251C7B1600BA1754 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB7160E251C7B1600BA1754 /* LoginView.swift */; };
-		BDB71613251CEC3600BA1754 /* HomeTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB71612251CEC3600BA1754 /* HomeTabView.swift */; };
+		BDB71613251CEC3600BA1754 /* TabSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB71612251CEC3600BA1754 /* TabSelectionView.swift */; };
 		BDB835E325B711250013D4B7 /* DocumentScansEditing.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB835E225B711250013D4B7 /* DocumentScansEditing.swift */; };
 		BDBADCB625A5F101008B98DF /* ResidencyContactEditing.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBADCB525A5F101008B98DF /* ResidencyContactEditing.swift */; };
 		BDC23C56257514B400C3F97B /* IncomeDeductions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC23C55257514B400C3F97B /* IncomeDeductions.swift */; };
@@ -51,7 +51,7 @@
 		BDECD325251A2A8800382FED /* TellAFriendScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDECD324251A2A8800382FED /* TellAFriendScene.swift */; };
 		BDECD328251A2AC300382FED /* HelpScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDECD327251A2AC300382FED /* HelpScene.swift */; };
 		BDECD32B251A2ADB00382FED /* AboutScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDECD32A251A2ADB00382FED /* AboutScene.swift */; };
-		BDECD32E251A2AFB00382FED /* PrivacyPolicyScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDECD32D251A2AFB00382FED /* PrivacyPolicyScene.swift */; };
+		BDECD32E251A2AFB00382FED /* PrivacyPolicyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDECD32D251A2AFB00382FED /* PrivacyPolicyView.swift */; };
 		BDEFBC45251B33F400638ED1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDEFBC44251B33F400638ED1 /* LaunchScreen.storyboard */; };
 		BDEFBC4A251B5DD800638ED1 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEFBC49251B5DD800638ED1 /* HomeView.swift */; };
 		BDEFBC4E251B5E4000638ED1 /* LoanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEFBC4D251B5E4000638ED1 /* LoanView.swift */; };
@@ -92,7 +92,7 @@
 		BDA1B11C2590E4DD006D2F97 /* GeneralDetailsEditing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralDetailsEditing.swift; sourceTree = "<group>"; };
 		BDA3E0382572199100789E67 /* ResidencyContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResidencyContact.swift; sourceTree = "<group>"; };
 		BDB7160E251C7B1600BA1754 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
-		BDB71612251CEC3600BA1754 /* HomeTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabView.swift; sourceTree = "<group>"; };
+		BDB71612251CEC3600BA1754 /* TabSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabSelectionView.swift; sourceTree = "<group>"; };
 		BDB835E225B711250013D4B7 /* DocumentScansEditing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentScansEditing.swift; sourceTree = "<group>"; };
 		BDBADCB525A5F101008B98DF /* ResidencyContactEditing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResidencyContactEditing.swift; sourceTree = "<group>"; };
 		BDC23C55257514B400C3F97B /* IncomeDeductions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeDeductions.swift; sourceTree = "<group>"; };
@@ -108,7 +108,7 @@
 		BDECD324251A2A8800382FED /* TellAFriendScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TellAFriendScene.swift; sourceTree = "<group>"; };
 		BDECD327251A2AC300382FED /* HelpScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpScene.swift; sourceTree = "<group>"; };
 		BDECD32A251A2ADB00382FED /* AboutScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutScene.swift; sourceTree = "<group>"; };
-		BDECD32D251A2AFB00382FED /* PrivacyPolicyScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyScene.swift; sourceTree = "<group>"; };
+		BDECD32D251A2AFB00382FED /* PrivacyPolicyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyView.swift; sourceTree = "<group>"; };
 		BDEFBC44251B33F400638ED1 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BDEFBC49251B5DD800638ED1 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		BDEFBC4D251B5E4000638ED1 /* LoanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoanView.swift; sourceTree = "<group>"; };
@@ -171,7 +171,7 @@
 				BDCACB5B25AE1A2800A418B1 /* DataModels */,
 				BDD53211252E33B400255C4F /* FormViews */,
 				BD538DC32519FE570019AA11 /* HomeLoanApp-Demo.swift */,
-				BDEFBC48251B5DBD00638ED1 /* HomeScreen */,
+				BDEFBC48251B5DBD00638ED1 /* Tabs */,
 				BD538DD12519FE5B0019AA11 /* Info.plist */,
 				BDEFBC44251B33F400638ED1 /* LaunchScreen.storyboard */,
 				BD538DCC2519FE5B0019AA11 /* Persistence.swift */,
@@ -267,22 +267,22 @@
 				BD80D06525A9CEF500E5DBA3 /* AccountViews */,
 				BDECD327251A2AC300382FED /* HelpScene.swift */,
 				BDECD320251A2A5100382FED /* NotificationsScene.swift */,
-				BDECD32D251A2AFB00382FED /* PrivacyPolicyScene.swift */,
+				BDECD32D251A2AFB00382FED /* PrivacyPolicyView.swift */,
 				BDECD31C251A219000382FED /* ProfileView.swift */,
 				BDECD324251A2A8800382FED /* TellAFriendScene.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
 		};
-		BDEFBC48251B5DBD00638ED1 /* HomeScreen */ = {
+		BDEFBC48251B5DBD00638ED1 /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
-				BDB71612251CEC3600BA1754 /* HomeTabView.swift */,
+				BDB71612251CEC3600BA1754 /* TabSelectionView.swift */,
 				BDEFBC49251B5DD800638ED1 /* HomeView.swift */,
 				BDEFBC4D251B5E4000638ED1 /* LoanView.swift */,
 				BDEFBC50251B5E5200638ED1 /* SettingsView.swift */,
 			);
-			path = HomeScreen;
+			path = Tabs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -387,7 +387,7 @@
 				BD1FF77825AEC76400B972D2 /* ChoosePageCreating.swift in Sources */,
 				BD538DC42519FE570019AA11 /* HomeLoanApp-Demo.swift in Sources */,
 				BDF68F4C2575F6BA0004E6CD /* Expenses.swift in Sources */,
-				BDECD32E251A2AFB00382FED /* PrivacyPolicyScene.swift in Sources */,
+				BDECD32E251A2AFB00382FED /* PrivacyPolicyView.swift in Sources */,
 				BD81C20E25B98EDA001CD8AF /* TestingLayouts.swift in Sources */,
 				BDD53213252E33E900255C4F /* GeneralDetails.swift in Sources */,
 				BDECD31D251A219000382FED /* ProfileView.swift in Sources */,
@@ -397,7 +397,7 @@
 				BD01DB582575008700F2B41A /* SubsidyCredit.swift in Sources */,
 				BD7C6921251DFF750001514B /* SignUpView.swift in Sources */,
 				BD5A0FB725B18E7D00A56ACE /* Structs.swift in Sources */,
-				BDB71613251CEC3600BA1754 /* HomeTabView.swift in Sources */,
+				BDB71613251CEC3600BA1754 /* TabSelectionView.swift in Sources */,
 				BD823A1F25AFF017008B54C7 /* ExpensesEditing.swift in Sources */,
 				BD823A2225AFF026008B54C7 /* AssetsLiabilitiesEditing.swift in Sources */,
 				BDECD325251A2A8800382FED /* TellAFriendScene.swift in Sources */,

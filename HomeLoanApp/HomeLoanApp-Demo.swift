@@ -43,7 +43,7 @@ struct Main: View {
     //@ObservedObject var userDetails: UserDetails
     
     var body: some View {
-        HomeTabView()//userDetails: userDetails)
+        TabSelectionView()//userDetails: userDetails)
         
         /*if self.settings.loggedIn {
             let user = Auth.auth().currentUser
