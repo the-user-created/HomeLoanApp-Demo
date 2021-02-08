@@ -137,7 +137,6 @@ struct GeneralDetails: View {
                 }
             }
         }
-        .onTapGesture(count: 2, perform: UIApplication.shared.endEditing)
         .navigationBarTitle("General")
         .onReceive(resignPub) { _ in
             if isActive {

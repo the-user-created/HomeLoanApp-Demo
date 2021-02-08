@@ -207,7 +207,6 @@ struct Employment: View {
             }
         }
         .navigationBarTitle("Employment")
-        .onTapGesture(count: 2, perform: UIApplication.shared.endEditing)
         .onReceive(resignPub) { _ in
             if isActive {
                 handleSaving()

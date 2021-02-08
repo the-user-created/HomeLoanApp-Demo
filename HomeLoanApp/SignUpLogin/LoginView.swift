@@ -143,9 +143,6 @@ struct LoginView: View {
                 .aspectRatio(contentMode: .fit)
             }
         }
-        .onTapGesture(count: 2) {
-            UIApplication.shared.endEditing()
-        }
         .sheet(isPresented: $showSignUp) {
             SignUpView(email: $email, password: $password)
         }

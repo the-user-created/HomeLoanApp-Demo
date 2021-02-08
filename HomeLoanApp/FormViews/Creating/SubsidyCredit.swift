@@ -102,7 +102,6 @@ struct SubsidyCredit: View {
             }
         }
         .navigationBarTitle("Subsidy & Credit")
-        .onTapGesture(count: 2, perform: UIApplication.shared.endEditing)
         .onReceive(resignPub) { _ in
             if isActive {
                 handleSaving()

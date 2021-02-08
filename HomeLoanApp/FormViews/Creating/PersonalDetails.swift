@@ -205,7 +205,6 @@ struct PersonalDetails: View {
                 }
             }
         }
-        .onTapGesture(count: 2, perform: UIApplication.shared.endEditing)
         .navigationBarTitle("Personal Details")
         .onReceive(resignPub) { _ in
             if isActive {

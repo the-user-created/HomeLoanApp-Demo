@@ -164,9 +164,6 @@ struct SignUpView: View {
                     .ignoresSafeArea(.all))
             .edgesIgnoringSafeArea(.all)
         }
-        .onTapGesture(count: 2) {
-            UIApplication.shared.endEditing()
-        }
         .alert(isPresented: $signUpUnsuccessful, content: {
             Alert(title: Text("Sign Up Failed"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         })

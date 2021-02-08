@@ -273,9 +273,6 @@ struct ResidencyContactEditing: View {
             }
         }
         .navigationBarTitle("Residency & Contact")
-        .onTapGesture(count: 2) {
-            UIApplication.shared.endEditing()
-        }
         .onReceive(resignPub) { _ in
             handleSaving()
         }

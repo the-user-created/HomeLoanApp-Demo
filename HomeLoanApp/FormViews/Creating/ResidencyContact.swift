@@ -224,7 +224,6 @@ struct ResidencyContact: View {
                 }
             }
         }
-        .onTapGesture(count: 2, perform: UIApplication.shared.endEditing)
         .navigationBarTitle("Residency & Contact")
         .onReceive(resignPub) { _ in
             if isActive {

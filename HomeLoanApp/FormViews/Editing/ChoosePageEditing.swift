@@ -229,6 +229,7 @@ struct ChoosePageEditing: View {
             .buttonStyle(BorderlessButtonStyle())
         }
         .navigationBarTitle("Editing", displayMode: .large)
+        .onAppear(perform: UIApplication.shared.addTapGestureRecognizer)
         .onChange(of: selection) { _ in
             changedValues.cleanChangedValues()
         }

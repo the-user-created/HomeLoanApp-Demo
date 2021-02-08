@@ -219,6 +219,7 @@ struct ChoosePageCreating: View {
             .buttonStyle(BorderlessButtonStyle())
         }
         .navigationBarTitle("Creating", displayMode: .large)
+        .onAppear(perform: UIApplication.shared.addTapGestureRecognizer)
         .onChange(of: selection) { _ in
             changedValues.cleanChangedValues()
         }

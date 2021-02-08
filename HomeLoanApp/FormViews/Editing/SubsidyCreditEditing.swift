@@ -126,9 +126,6 @@ struct SubsidyCreditEditing: View {
             }
         }
         .navigationBarTitle("Subsidy & Credit")
-        .onTapGesture(count: 2) {
-            UIApplication.shared.endEditing()
-        }
         .onReceive(resignPub) { _ in
             handleSaving()
         }

@@ -234,7 +234,6 @@ struct ExpensesEditing: View {
             }
         }
         .navigationBarTitle("Expenses")
-        .onTapGesture(count: 2, perform: UIApplication.shared.endEditing)
         .onReceive(resignPub) { _ in
             handleSaving()
         }

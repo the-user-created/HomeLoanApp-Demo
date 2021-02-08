@@ -130,9 +130,6 @@ struct EditAccount: View {
             print("print - EditAccount disappear: \(userDetails.firstNames), \(userDetails.surname), \(userDetails.email)")
         }*/
         .buttonStyle(BorderlessButtonStyle())
-        .onTapGesture(count: 2) {
-            UIApplication.shared.endEditing()
-        }
         .alert(isPresented: $alertIsShowing, content: {
             Alert(title: Text(""), message: Text("There was a problem updating your account details. Please try again later."), dismissButton: .default(Text("OK")))
         })

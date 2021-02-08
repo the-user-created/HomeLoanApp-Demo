@@ -62,9 +62,6 @@ struct ForgotPassword: View {
                     .ignoresSafeArea(.all))
             .edgesIgnoringSafeArea(.all)
         }
-        .onTapGesture(count: 2) {
-            UIApplication.shared.endEditing()
-        }
         .alert(isPresented: $showAlert, content: {
             Alert(title: Text("Forgot Password Unsuccesful"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         })
