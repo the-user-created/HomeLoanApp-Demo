@@ -157,7 +157,10 @@ struct ChoosePageCreating: View {
             // Document Scans, Notification & Warranty
             Group {
                 // Document Scans
-                NavigationLink(destination: applicationCreation.documentScansSaved ? AnyView(DocumentScansEditing(application: applicationCreation.application, isDone: $documentScansDone, scanGroup: $scanGroup, sender: .creator)) : AnyView(DocumentScans(isDone: $documentScansDone, scanGroup: $scanGroup))) {
+                NavigationLink(destination: applicationCreation.documentScansSaved ?
+                        AnyView(DocumentScansEditing(application: applicationCreation.application, isDone: $documentScansDone, scanGroup: $scanGroup,
+                                sender: .creator)) :
+                        AnyView(DocumentScans(isDone: $documentScansDone, scanGroup: $scanGroup))) {
                     HStack {
                         Text("Supporting Documents")
                             .font(.headline)
@@ -171,7 +174,8 @@ struct ChoosePageCreating: View {
                 .disabled(generalDetailsDone ? !(identityDone ?? false) : true)
                 
                 // Notification & Warranty
-                NavigationLink(destination: NotificationView(application: applicationCreation.application, signatureDone: $signatureDone, notificationCheck: $notificationCheck, isDone: $notificationDone, sender: .creator), tag: 18, selection: $selection) {
+                NavigationLink(destination: NotificationView(application: applicationCreation.application, signatureDone: $signatureDone,
+                        notificationCheck: $notificationCheck, isDone: $notificationDone, sender: .creator), tag: 18, selection: $selection) {
                     HStack {
                         Text("Notification")
                             .font(.headline)
