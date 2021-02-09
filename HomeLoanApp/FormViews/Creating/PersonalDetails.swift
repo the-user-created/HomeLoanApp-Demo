@@ -51,14 +51,6 @@ struct PersonalDetails: View {
     // MARK: - Properties
     let resignPub: NotificationCenter.Publisher = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
     
-    let titles = ["--select--", "Dr", "Me", "Mej", "Mev", "Miss", "Mnr", "Mr", "Mrs", "Ms", "Prof"]
-    let identityTypes = ["--select--", "ID Book", "Passport", "Recognised Refugee in SA (Section 24)", "SA Refugee Identity (Maroon ID)", "Smart ID Card"]
-    let genderSelection = ["--select--", "Male", "Female"]
-    let educationLevels = ["--select--", "Cretificate 24 Months", "Degree", "Diploma 1 Years", "Diploma 2 Years", "Diploma 3 Years", "Doctorate", "Honours", "Masters", "Matric", "No Matric", "Post Graduate Diploma"]
-    let ethnicGroups = ["--select--", "Asian", "Black", "Coloured", "White"]
-    let maritalStatuses = ["--select--", "Divorced", "Married Antenuptial Contract", "Married in Community of Property", "Other (Including Common Law)", "Single"]
-    let currentResStatuses = ["--select--", "Other", "Owner", "Tenant"]
-    
     // MARK: - body
     var body: some View {
         Form() {

@@ -25,8 +25,8 @@ struct SignatureView: View {
                 Text("Sign below")
                     .font(.title)
                 
-                Image(systemName: signatureDone ? "checkmark.circle.fill" : "checkmark.circle")
-                    .foregroundColor(signatureDone ? .green : .red)
+                Image(systemName: signatureSaved ? "checkmark.circle.fill" : "checkmark.circle")
+                    .foregroundColor(signatureSaved ? .green : .red)
                     .padding(.leading, 10)
             }
             
@@ -43,10 +43,10 @@ struct SignatureView: View {
                        lineWidth: $lineWidth)
                 .background(RectGetter(rect: $rect))
         }
-        .onChange(of: drawings.isEmpty) { value in
-            if signatureSaved {
+        .onChange(of: signatureSaved) { value in
+            if value {
                 signatureDone = true
-            } else {
+            } else { 
                 signatureDone = false
             }
         }
@@ -80,9 +80,8 @@ struct DrawingControls: View {
                 Spacer()
                 
                 Button(action: {
-                    signatureSaved = true
                     self.saveImage("signature_\(loanID)_image.png") // Saves the signature png
-                    self.drawings = [Drawing]() // Clears the drawing pad
+                    //self.drawings = [Drawing]() // Clears the drawing pad
                 }) {
                     Text("Save")
                 }
@@ -116,6 +115,7 @@ struct DrawingControls: View {
             // Writes the image to the directory
             do {
                 try data.write(to: fileURL)
+                self.signatureSaved = true
                 print("print - Added signature to directory: \(fileURL)")
             } catch let error {
                 print("print - Error saving signature with error", error)

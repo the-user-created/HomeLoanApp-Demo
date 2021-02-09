@@ -51,12 +51,6 @@ struct Employment: View {
     // MARK: - Properties
     let resignPub = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
     
-    let occupationalStatuses = ["--select--", "Full-time employed (non-Professional)", "Full-time employed (Professional)", "Housewife", "Part-time employed", "Pensioner", "Scholar", "Self employed (non-Professional)", "Self employed (Professional)", "Student", "Temporary employed", "Unemployed"]
-    let payingSchemes = ["--select--", "Annually", "Monthly", "Quarterly", "Weekly"]
-    let incomeSources = ["--select--", "Salary", "Pension", "Retirement Annuity", "Investments", "Donation/Gift", "Allowance", "Commission", "Inheritance", "Maintenance / Alimony", "Social Grant", "Bonus", "Insurance Claim", "Profit from Own Business", "Prize Winnings", "Asset Disposal"]
-    let occupationLevels = ["--select--", "Junior position", "Management", "Semi-skilled worker", "Senior Management", "Skilled Worker", "Supervisor", "Unskilled worker"]
-    let employmentSectors = ["--select--", "Animal Specialist", "Armed Forces", "Catering and entertainment", "Civil Service", "Construction", "Education", "Finance", "Forestry", "Health / Medical", "Industry", "Information Technology", "Legal Profession", "Media", "Other", "Science", "Security", "Selling", "Transportation", "Welfare"]
-    
     // MARK: - body
     var body: some View {
         Form() {

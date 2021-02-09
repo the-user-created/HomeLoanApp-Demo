@@ -5,9 +5,7 @@
 //  Created by David Young on 2021/01/15.
 //
 
-import Foundation
 import SwiftUI
-import MessageUI
 
 class UserSettings: ObservableObject {
     @Published var loggedIn: Bool = UserDefaults.standard.bool(forKey: "loggedIn")
@@ -39,10 +37,6 @@ class ChangedValues: ObservableObject {
     func cleanChangedValues() {
         changedValues.removeAll()
     }
-}
-
-class ApplicationDetails: ObservableObject {
-    var appID: UUID = UUID()
 }
 
 class ApplicationCreation: ObservableObject {

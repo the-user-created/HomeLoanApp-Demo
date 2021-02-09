@@ -91,7 +91,7 @@ let uppercasingIDs: [String] = ["salesConsultant", "applicationType", "applicant
 let formTextFieldPlaceholders: [[Int: String]] = [
     [5: "1"],
     [1: "Appleseed", 2: "Johnny", 6: "1234567891012", 7: "1234567891012", 8: "123456789", 9: "", 11: "1110502222", 21: "2"],
-    [4: "Cape Town", 9: "021 481 7300", 10: "homeloans@ooba.co.za", 12: "33 Bree Street", 13: "8th Floor, ooba House", 14: "City Centre", 15: "Cape Town", 16: "Western Province", 17: "8000"],
+    [4: "Cape Town", 9: "082 345 6789", 10: "homeloans@ooba.co.za", 12: "33 Bree Street", 13: "8th Floor, ooba House", 14: "City Centre", 15: "Cape Town", 16: "Western Cape", 17: "8000"],
     [:],
     [3: "Technician", 6: "Other Service Activities", 7: "Jobs", 8: "", 9: "", 12: "", 13: "", 14: "", 15: "", 16: "", 17: "", 18: "", 22: "", 23: ""]
 ]

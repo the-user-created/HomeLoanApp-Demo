@@ -30,6 +30,64 @@ extension UIApplication: UIGestureRecognizerDelegate {
     }
 }
 
+extension UIDevice {
+    /// Code Provided by HAS and Harshil Patel at `https://stackoverflow.com/questions/26028918/how-to-determine-the-current-iphone-device-model`
+    static let modelName: String = {
+        var systemInfo = utsname()
+        uname(&systemInfo)
+        let machineMirror = Mirror(reflecting: systemInfo.machine)
+        let identifier = machineMirror.children.reduce("") { identifier, element in
+            guard let value = element.value as? Int8, value != 0 else { return identifier }
+            return identifier + String(UnicodeScalar(UInt8(value)))
+        }
+
+        func mapToDevice(identifier: String) -> String { // swiftlint:disable:this cyclomatic_complexity
+            switch identifier {
+                case "iPhone3,1", "iPhone3,2", "iPhone3,3":     return "iPhone 4"
+                case "iPhone4,1":                               return "iPhone 4s"
+                case "iPhone5,1", "iPhone5,2":                  return "iPhone 5"
+                case "iPhone5,3", "iPhone5,4":                  return "iPhone 5c"
+                case "iPhone6,1", "iPhone6,2":                  return "iPhone 5s"
+                case "iPhone7,2":                               return "iPhone 6"
+                case "iPhone7,1":                               return "iPhone 6 Plus"
+                case "iPhone8,1":                               return "iPhone 6s"
+                case "iPhone8,2":                               return "iPhone 6s Plus"
+                case "iPhone8,4":                               return "iPhone SE"
+                case "iPhone9,1", "iPhone9,3":                  return "iPhone 7"
+                case "iPhone9,2", "iPhone9,4":                  return "iPhone 7 Plus"
+                case "iPhone10,1", "iPhone10,4":                return "iPhone 8"
+                case "iPhone10,2", "iPhone10,5":                return "iPhone 8 Plus"
+                case "iPhone10,3", "iPhone10,6":                return "iPhone X"
+                case "iPhone11,2":                              return "iPhone XS"
+                case "iPhone11,4", "iPhone11,6":                return "iPhone XS Max"
+                case "iPhone11,8":                              return "iPhone XR"
+                case "iPhone12,1":                              return "iPhone 11"
+                case "iPhone12,3":                              return "iPhone 11 Pro"
+                case "iPhone12,5":                              return "iPhone 11 Pro Max"
+                case "iPhone12,8":                              return "iPhone SE (2nd generation)"
+                case "iPhone13,1":                              return "iPhone 12 mini"
+                case "iPhone13,2":                              return "iPhone 12"
+                case "iPhone13,3":                              return "iPhone 12 Pro"
+                case "iPhone13,4":                              return "iPhone 12 Pro Max"
+                case "i386", "x86_64":                          return "Simulator \(mapToDevice(identifier: ProcessInfo().environment["SIMULATOR_MODEL_IDENTIFIER"] ?? "iOS"))"
+                default:                                        return identifier
+            }
+        }
+
+        return mapToDevice(identifier: identifier)
+    }()
+
+}
+
+extension UIView {
+    func asImage(rect: CGRect) -> UIImage {
+        let renderer = UIGraphicsImageRenderer(bounds: rect)
+        return renderer.image { rendererContext in
+            layer.render(in: rendererContext.cgContext)
+        }
+    }
+}
+
 extension View {
     func textFieldAlert(isShowing: Binding<Bool>,
                         text: Binding<String>,
@@ -125,55 +183,6 @@ extension Color {
     }
 }
 
-extension UIDevice {
-    /// Code Provided by HAS and Harshil Patel at `https://stackoverflow.com/questions/26028918/how-to-determine-the-current-iphone-device-model`
-    static let modelName: String = {
-        var systemInfo = utsname()
-        uname(&systemInfo)
-        let machineMirror = Mirror(reflecting: systemInfo.machine)
-        let identifier = machineMirror.children.reduce("") { identifier, element in
-            guard let value = element.value as? Int8, value != 0 else { return identifier }
-            return identifier + String(UnicodeScalar(UInt8(value)))
-        }
-
-        func mapToDevice(identifier: String) -> String { // swiftlint:disable:this cyclomatic_complexity
-            switch identifier {
-                case "iPhone3,1", "iPhone3,2", "iPhone3,3":     return "iPhone 4"
-                case "iPhone4,1":                               return "iPhone 4s"
-                case "iPhone5,1", "iPhone5,2":                  return "iPhone 5"
-                case "iPhone5,3", "iPhone5,4":                  return "iPhone 5c"
-                case "iPhone6,1", "iPhone6,2":                  return "iPhone 5s"
-                case "iPhone7,2":                               return "iPhone 6"
-                case "iPhone7,1":                               return "iPhone 6 Plus"
-                case "iPhone8,1":                               return "iPhone 6s"
-                case "iPhone8,2":                               return "iPhone 6s Plus"
-                case "iPhone8,4":                               return "iPhone SE"
-                case "iPhone9,1", "iPhone9,3":                  return "iPhone 7"
-                case "iPhone9,2", "iPhone9,4":                  return "iPhone 7 Plus"
-                case "iPhone10,1", "iPhone10,4":                return "iPhone 8"
-                case "iPhone10,2", "iPhone10,5":                return "iPhone 8 Plus"
-                case "iPhone10,3", "iPhone10,6":                return "iPhone X"
-                case "iPhone11,2":                              return "iPhone XS"
-                case "iPhone11,4", "iPhone11,6":                return "iPhone XS Max"
-                case "iPhone11,8":                              return "iPhone XR"
-                case "iPhone12,1":                              return "iPhone 11"
-                case "iPhone12,3":                              return "iPhone 11 Pro"
-                case "iPhone12,5":                              return "iPhone 11 Pro Max"
-                case "iPhone12,8":                              return "iPhone SE (2nd generation)"
-                case "iPhone13,1":                              return "iPhone 12 mini"
-                case "iPhone13,2":                              return "iPhone 12"
-                case "iPhone13,3":                              return "iPhone 12 Pro"
-                case "iPhone13,4":                              return "iPhone 12 Pro Max"
-                case "i386", "x86_64":                          return "Simulator \(mapToDevice(identifier: ProcessInfo().environment["SIMULATOR_MODEL_IDENTIFIER"] ?? "iOS"))"
-                default:                                        return identifier
-            }
-        }
-
-        return mapToDevice(identifier: identifier)
-    }()
-
-}
-
 extension FileManager {
     func urls(for directory: FileManager.SearchPathDirectory, skipsHiddenFiles: Bool = true ) -> [URL]? {
         let documentsURL = urls(for: directory, in: .userDomainMask)[0]
@@ -197,15 +206,6 @@ extension Float {
         formatter.minimumFractionDigits = 2
         formatter.maximumFractionDigits = 2 // maximum digits in Float after dot (maximum precision)
         return String(formatter.string(from: number) ?? "")
-    }
-}
-
-extension UIView {
-    func asImage(rect: CGRect) -> UIImage {
-        let renderer = UIGraphicsImageRenderer(bounds: rect)
-        return renderer.image { rendererContext in
-            layer.render(in: rendererContext.cgContext)
-        }
     }
 }
 

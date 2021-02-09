@@ -17,7 +17,7 @@
 		BD538DC82519FE5B0019AA11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BD538DC72519FE5B0019AA11 /* Assets.xcassets */; };
 		BD538DCB2519FE5B0019AA11 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BD538DCA2519FE5B0019AA11 /* Preview Assets.xcassets */; };
 		BD538DCD2519FE5B0019AA11 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD538DCC2519FE5B0019AA11 /* Persistence.swift */; };
-		BD5A0FB725B18E7D00A56ACE /* Structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5A0FB625B18E7D00A56ACE /* Structs.swift */; };
+		BD5A0FB725B18E7D00A56ACE /* TextFieldStructs.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5A0FB625B18E7D00A56ACE /* TextFieldStructs.swift */; };
 		BD5A0FBA25B18EE300A56ACE /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5A0FB925B18EE300A56ACE /* Extensions.swift */; };
 		BD5A0FBE25B18F0500A56ACE /* Classes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5A0FBD25B18F0500A56ACE /* Classes.swift */; };
 		BD5A0FC125B18F1A00A56ACE /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5A0FC025B18F1A00A56ACE /* Properties.swift */; };
@@ -31,6 +31,11 @@
 		BD823A1F25AFF017008B54C7 /* ExpensesEditing.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD823A1E25AFF017008B54C7 /* ExpensesEditing.swift */; };
 		BD823A2225AFF026008B54C7 /* AssetsLiabilitiesEditing.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD823A2125AFF026008B54C7 /* AssetsLiabilitiesEditing.swift */; };
 		BD8769372587903B00B2C2D4 /* ChoosePageEditing.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD8769362587903B00B2C2D4 /* ChoosePageEditing.swift */; };
+		BD93497A25D242E9005CE137 /* FormPickerSelections.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD93497925D242E9005CE137 /* FormPickerSelections.swift */; };
+		BD93497D25D25080005CE137 /* FormStructs.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD93497C25D25080005CE137 /* FormStructs.swift */; };
+		BD93498125D250C1005CE137 /* ScanStructs.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD93498025D250C1005CE137 /* ScanStructs.swift */; };
+		BD93498625D2513B005CE137 /* VisualStructs.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD93498525D2513B005CE137 /* VisualStructs.swift */; };
+		BD93498925D2516E005CE137 /* MailStructs.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD93498825D2516E005CE137 /* MailStructs.swift */; };
 		BDA1B11A2590E48B006D2F97 /* PersonalDetailsEditing.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA1B1192590E48B006D2F97 /* PersonalDetailsEditing.swift */; };
 		BDA1B11D2590E4DD006D2F97 /* GeneralDetailsEditing.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA1B11C2590E4DD006D2F97 /* GeneralDetailsEditing.swift */; };
 		BDA3E0392572199100789E67 /* ResidencyContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA3E0382572199100789E67 /* ResidencyContact.swift */; };
@@ -74,7 +79,7 @@
 		BD538DCA2519FE5B0019AA11 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		BD538DCC2519FE5B0019AA11 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		BD538DD12519FE5B0019AA11 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BD5A0FB625B18E7D00A56ACE /* Structs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Structs.swift; sourceTree = "<group>"; };
+		BD5A0FB625B18E7D00A56ACE /* TextFieldStructs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldStructs.swift; sourceTree = "<group>"; };
 		BD5A0FB925B18EE300A56ACE /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		BD5A0FBD25B18F0500A56ACE /* Classes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Classes.swift; sourceTree = "<group>"; };
 		BD5A0FC025B18F1A00A56ACE /* Properties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Properties.swift; sourceTree = "<group>"; };
@@ -88,6 +93,11 @@
 		BD823A1E25AFF017008B54C7 /* ExpensesEditing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesEditing.swift; sourceTree = "<group>"; };
 		BD823A2125AFF026008B54C7 /* AssetsLiabilitiesEditing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsLiabilitiesEditing.swift; sourceTree = "<group>"; };
 		BD8769362587903B00B2C2D4 /* ChoosePageEditing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoosePageEditing.swift; sourceTree = "<group>"; };
+		BD93497925D242E9005CE137 /* FormPickerSelections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPickerSelections.swift; sourceTree = "<group>"; };
+		BD93497C25D25080005CE137 /* FormStructs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormStructs.swift; sourceTree = "<group>"; };
+		BD93498025D250C1005CE137 /* ScanStructs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanStructs.swift; sourceTree = "<group>"; };
+		BD93498525D2513B005CE137 /* VisualStructs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualStructs.swift; sourceTree = "<group>"; };
+		BD93498825D2516E005CE137 /* MailStructs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailStructs.swift; sourceTree = "<group>"; };
 		BDA1B1192590E48B006D2F97 /* PersonalDetailsEditing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalDetailsEditing.swift; sourceTree = "<group>"; };
 		BDA1B11C2590E4DD006D2F97 /* GeneralDetailsEditing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralDetailsEditing.swift; sourceTree = "<group>"; };
 		BDA3E0382572199100789E67 /* ResidencyContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResidencyContact.swift; sourceTree = "<group>"; };
@@ -194,13 +204,14 @@
 		BD5A0FB525B18E6500A56ACE /* CustomFeatures */ = {
 			isa = PBXGroup;
 			children = (
+				BD93497F25D250AF005CE137 /* Structs */,
 				BD5A0FBD25B18F0500A56ACE /* Classes.swift */,
 				BD5A0FC425B18F4000A56ACE /* Enums.swift */,
 				BD5A0FB925B18EE300A56ACE /* Extensions.swift */,
 				BD5A0FC025B18F1A00A56ACE /* Properties.swift */,
-				BD5A0FB625B18E7D00A56ACE /* Structs.swift */,
 				BD0DE70725833DCE0080FE3F /* SignatureView.swift */,
 				BD3A452225C31B2200ACB8F2 /* Functions.swift */,
+				BD93497925D242E9005CE137 /* FormPickerSelections.swift */,
 			);
 			path = CustomFeatures;
 			sourceTree = "<group>";
@@ -228,6 +239,18 @@
 				BD5D708625AB517C005F7A4B /* SubsidyCreditEditing.swift */,
 			);
 			path = Editing;
+			sourceTree = "<group>";
+		};
+		BD93497F25D250AF005CE137 /* Structs */ = {
+			isa = PBXGroup;
+			children = (
+				BD93497C25D25080005CE137 /* FormStructs.swift */,
+				BD93498025D250C1005CE137 /* ScanStructs.swift */,
+				BD93498525D2513B005CE137 /* VisualStructs.swift */,
+				BD93498825D2516E005CE137 /* MailStructs.swift */,
+				BD5A0FB625B18E7D00A56ACE /* TextFieldStructs.swift */,
+			);
+			path = Structs;
 			sourceTree = "<group>";
 		};
 		BDC9067A25AE9F9B00A67117 /* SignUpLogin */ = {
@@ -362,6 +385,7 @@
 				BDECD32B251A2ADB00382FED /* AboutScene.swift in Sources */,
 				BDBADCB625A5F101008B98DF /* ResidencyContactEditing.swift in Sources */,
 				BDC9067D25AEA1D200A67117 /* ForgotPassword.swift in Sources */,
+				BD93498625D2513B005CE137 /* VisualStructs.swift in Sources */,
 				BDEFBC4E251B5E4000638ED1 /* LoanView.swift in Sources */,
 				BD8769372587903B00B2C2D4 /* ChoosePageEditing.swift in Sources */,
 				BD5A0FC525B18F4000A56ACE /* Enums.swift in Sources */,
@@ -376,27 +400,31 @@
 				BDECD321251A2A5100382FED /* NotificationsScene.swift in Sources */,
 				BD5A0FBA25B18EE300A56ACE /* Extensions.swift in Sources */,
 				BD538DCD2519FE5B0019AA11 /* Persistence.swift in Sources */,
+				BD93498125D250C1005CE137 /* ScanStructs.swift in Sources */,
 				BDCACB7325AE1ABF00A418B1 /* Application+CoreDataClass.swift in Sources */,
 				BDEFBC4A251B5DD800638ED1 /* HomeView.swift in Sources */,
 				BDCACB7025AE1ABB00A418B1 /* Application+CoreDataProperties.swift in Sources */,
 				BDA3E0392572199100789E67 /* ResidencyContact.swift in Sources */,
 				BD0DE70825833DCE0080FE3F /* SignatureView.swift in Sources */,
+				BD93497A25D242E9005CE137 /* FormPickerSelections.swift in Sources */,
 				BD1912D3254EFC8D0095B1E9 /* PersonalDetails.swift in Sources */,
 				BDC23C56257514B400C3F97B /* IncomeDeductions.swift in Sources */,
 				BDB7160F251C7B1600BA1754 /* LoginView.swift in Sources */,
 				BD1FF77825AEC76400B972D2 /* ChoosePageCreating.swift in Sources */,
 				BD538DC42519FE570019AA11 /* HomeLoanApp-Demo.swift in Sources */,
 				BDF68F4C2575F6BA0004E6CD /* Expenses.swift in Sources */,
+				BD93498925D2516E005CE137 /* MailStructs.swift in Sources */,
 				BDECD32E251A2AFB00382FED /* PrivacyPolicyView.swift in Sources */,
 				BD81C20E25B98EDA001CD8AF /* TestingLayouts.swift in Sources */,
 				BDD53213252E33E900255C4F /* GeneralDetails.swift in Sources */,
 				BDECD31D251A219000382FED /* ProfileView.swift in Sources */,
+				BD93497D25D25080005CE137 /* FormStructs.swift in Sources */,
 				BD823A1C25AFF00B008B54C7 /* IncomeDeductionsEditing.swift in Sources */,
 				BDF68F5325761EC30004E6CD /* NotificationView.swift in Sources */,
 				BDCBFFE125C042BC00281E75 /* test.swift in Sources */,
 				BD01DB582575008700F2B41A /* SubsidyCredit.swift in Sources */,
 				BD7C6921251DFF750001514B /* SignUpView.swift in Sources */,
-				BD5A0FB725B18E7D00A56ACE /* Structs.swift in Sources */,
+				BD5A0FB725B18E7D00A56ACE /* TextFieldStructs.swift in Sources */,
 				BDB71613251CEC3600BA1754 /* TabSelectionView.swift in Sources */,
 				BD823A1F25AFF017008B54C7 /* ExpensesEditing.swift in Sources */,
 				BD823A2225AFF026008B54C7 /* AssetsLiabilitiesEditing.swift in Sources */,

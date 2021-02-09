@@ -56,9 +56,6 @@ struct ResidencyContactEditing: View {
     // MARK: - Properties
     let resignPub = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
     
-    let languages = ["--select--", "English", "Afrikaans", "IsiNdebele", "IsiXhosa", "IsiZulu", "Other", "Sepedi", "Sesotho", "Setswana", "SiSwati", "Tshivenda", "Xitsonga"]
-    let correslanguages = ["--select--", "English", "Afrikaans", "IsiZulu", "Sesotho", "Xitsonga"]
-    
     // MARK: - init
     init(isDone: Binding<Bool>, application: Application, sender: Sender) {
         self._isDone = isDone
