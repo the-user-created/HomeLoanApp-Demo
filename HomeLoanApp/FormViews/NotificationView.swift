@@ -52,7 +52,8 @@ struct NotificationView: View {
             }
             
             Section(header: Text("Signature")) {
-                SignatureView(loanID: sender == .creator ? applicationCreation.application.loanID?.uuidString : application.loanID?.uuidString, signatureDone: $signatureDone)
+                SignatureView(loanID: sender == .creator ? applicationCreation.application.loanID?.uuidString : application.loanID?.uuidString,
+                        signatureDone: $signatureDone, alertMessage: $alertMessage, showingAlert: $showingAlert)
                     .frame(height: 300)
             }
             

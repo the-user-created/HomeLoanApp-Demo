@@ -18,6 +18,8 @@ struct SignatureView: View {
     @State var signatureSaved: Bool = false
     @State var loanID: String? = ""
     @Binding var signatureDone: Bool
+    @Binding var alertMessage: String
+    @Binding var showingAlert: Bool
     
     var body: some View {
         VStack(alignment: .center) {
@@ -30,17 +32,10 @@ struct SignatureView: View {
                     .padding(.leading, 10)
             }
             
-            DrawingControls(color: $color,
-                            drawings: $drawings,
-                            lineWidth: $lineWidth,
-                            rect: $rect,
-                            signatureSaved: $signatureSaved,
-                            loanID: loanID ?? "")
+            DrawingControls(color: $color, drawings: $drawings, lineWidth: $lineWidth, rect: $rect, signatureSaved: $signatureSaved,
+                    alertMessage: $alertMessage, showingAlert: $showingAlert, loanID: loanID ?? "")
             
-            DrawingPad(currentDrawing: $currentDrawing,
-                       drawings: $drawings,
-                       color: $color,
-                       lineWidth: $lineWidth)
+            DrawingPad(currentDrawing: $currentDrawing, drawings: $drawings, color: $color, lineWidth: $lineWidth)
                 .background(RectGetter(rect: $rect))
         }
         .onChange(of: signatureSaved) { value in
@@ -59,6 +54,8 @@ struct DrawingControls: View {
     @Binding var lineWidth: CGFloat
     @Binding var rect: CGRect
     @Binding var signatureSaved: Bool
+    @Binding var alertMessage: String
+    @Binding var showingAlert: Bool
     @State var loanID: String
     
     var body: some View {
@@ -108,6 +105,8 @@ struct DrawingControls: View {
                     print("print - Removed old signature")
                 } catch let removeError {
                     print("print - Couldn't remove signature at path", removeError)
+                    alertMessage = "Unable to remove the previously saved signature."
+                    showingAlert = true
                 }
 
             }
@@ -119,6 +118,8 @@ struct DrawingControls: View {
                 print("print - Added signature to directory: \(fileURL)")
             } catch let error {
                 print("print - Error saving signature with error", error)
+                alertMessage = "Unable to save the signature."
+                showingAlert = true
             }
         }
     }

@@ -278,8 +278,9 @@ struct DocumentScansEditing: View {
                     infoSheetType = ""
                 }
             } else if sheetID == .identityScan {
-                ScannerView(scanName: "identity", applicationID: loanID!) { _ in
+                ScannerView(scanName: "identity", applicationID: loanID!, alertMessage: $alertMessage, alertShowing: $showingAlert) { _ in
                     sheetID = .none
+                    alertMessage = ""
                     identityScanned = hasScanned()
                     changedValues.updateKeyValue("identityScanned", value: identityScanned)
                     isShowingSheet = false
@@ -294,8 +295,9 @@ struct DocumentScansEditing: View {
                     }
                 }
             } else if sheetID == .salaryPayScan {
-                ScannerView(scanName: "salary_pay", applicationID: loanID!) { _ in
+                ScannerView(scanName: "salary_pay", applicationID: loanID!, alertMessage: $alertMessage, alertShowing: $showingAlert) { _ in
                     sheetID = .none
+                    alertMessage = ""
                     salaryPaySlipsScanned = hasScanned(scanType: "salaryPay")
                     changedValues.updateKeyValue("salaryPaySlipsScanned", value: salaryPaySlipsScanned)
                     isShowingSheet = false
@@ -304,8 +306,9 @@ struct DocumentScansEditing: View {
             } else if sheetID == .salaryPayScanView {
                 ScannedIncomeView(url: "salary_pay_scan_\(loanID?.uuidString ?? "nil")_", scanType: "salaryPay")
             } else if sheetID == .bankStatementsScan {
-                ScannerView(scanName: "bank_statement", applicationID: loanID!) { _ in
+                ScannerView(scanName: "bank_statement", applicationID: loanID!, alertMessage: $alertMessage, alertShowing: $showingAlert) { _ in
                     sheetID = .none
+                    alertMessage = ""
                     bankStatementsScanned = hasScanned(scanType: "bankStatement")
                     changedValues.updateKeyValue("bankStatementsScanned", value: bankStatementsScanned)
                     isShowingSheet = false

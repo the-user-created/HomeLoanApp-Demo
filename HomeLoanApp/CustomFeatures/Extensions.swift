@@ -26,7 +26,7 @@ extension UIApplication {
 
 extension UIApplication: UIGestureRecognizerDelegate {
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        true // set to `false` if you don't want to detect tap during other gestures
+        false // set to `false` if you don't want to detect tap during other gestures
     }
 }
 

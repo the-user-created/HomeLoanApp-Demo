@@ -16,10 +16,15 @@ struct ScannerView: UIViewControllerRepresentable {
     private let scanName: String
     private let applicationID: UUID
     private let completionHandler: ([String]?) -> Void
+
+    @Binding var alertMessage: String
+    @Binding var alertShowing: Bool
         
-    init(scanName: String, applicationID: UUID, completion: @escaping ([String]?) -> Void) {
+    init(scanName: String, applicationID: UUID, alertMessage: Binding<String>, alertShowing: Binding<Bool>, completion: @escaping ([String]?) -> Void) {
         self.scanName = scanName
         self.applicationID = applicationID
+        self._alertMessage = alertMessage
+        self._alertShowing = alertShowing
         completionHandler = completion
     }
     
@@ -36,17 +41,22 @@ struct ScannerView: UIViewControllerRepresentable {
     }
     
     func makeCoordinator() -> Coordinator {
-        Coordinator(scanName: scanName, applicationID: applicationID, completion: completionHandler)
+        Coordinator(scanName: scanName, applicationID: applicationID, alertMessage: $alertMessage, alertShowing: $alertShowing, completion: completionHandler)
     }
     
     final class Coordinator: NSObject, VNDocumentCameraViewControllerDelegate {
         private let scanName: String
         private let applicationID: UUID
         private let completionHandler: ([String]?) -> Void
+
+        @Binding var alertMessage: String
+        @Binding var alertShowing: Bool
                 
-        init(scanName: String, applicationID: UUID, completion: @escaping ([String]?) -> Void) {
+        init(scanName: String, applicationID: UUID, alertMessage: Binding<String>, alertShowing: Binding<Bool>, completion: @escaping ([String]?) -> Void) {
             self.scanName = scanName
             self.applicationID = applicationID
+            self._alertMessage = alertMessage
+            self._alertShowing = alertShowing
             completionHandler = completion
         }
          
@@ -136,6 +146,8 @@ struct ScannerView: UIViewControllerRepresentable {
                     print("print - Removed old image")
                 } catch let removeError {
                     print("print - Couldn't remove file at path", removeError)
+                    alertMessage = "Was not able to remove previously saved image."
+                    alertShowing = true
                 }
 
             }
@@ -146,6 +158,8 @@ struct ScannerView: UIViewControllerRepresentable {
                 print("print - Added image to directory: \(fileURL)")
             } catch let error {
                 print("print - Error saving file with error", error)
+                alertMessage = "Was not able to save the scan."
+                alertShowing = true
             }
 
         }
