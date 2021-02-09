@@ -23,6 +23,12 @@ enum ScannerSheets {
     case none
 }
 
+enum SubmissionSheets {
+    case mailView
+    case whatsNext
+    case none
+}
+
 enum OtherQuestionCheck {
     case both
     case one

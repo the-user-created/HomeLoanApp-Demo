@@ -64,6 +64,7 @@
 		BDF68F4C2575F6BA0004E6CD /* Expenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF68F4B2575F6BA0004E6CD /* Expenses.swift */; };
 		BDF68F50257617470004E6CD /* AssetsLiabilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF68F4F257617470004E6CD /* AssetsLiabilities.swift */; };
 		BDF68F5325761EC30004E6CD /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF68F5225761EC30004E6CD /* NotificationView.swift */; };
+		BDF76C7B25D2798D00C20FE9 /* WhatsNext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF76C7A25D2798D00C20FE9 /* WhatsNext.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -126,6 +127,7 @@
 		BDF68F4B2575F6BA0004E6CD /* Expenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Expenses.swift; sourceTree = "<group>"; };
 		BDF68F4F257617470004E6CD /* AssetsLiabilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsLiabilities.swift; sourceTree = "<group>"; };
 		BDF68F5225761EC30004E6CD /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
+		BDF76C7A25D2798D00C20FE9 /* WhatsNext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsNext.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -279,6 +281,7 @@
 				BD1912D1254EFC480095B1E9 /* Creating */,
 				BD87693525878FDE00B2C2D4 /* Editing */,
 				BDF68F5225761EC30004E6CD /* NotificationView.swift */,
+				BDF76C7A25D2798D00C20FE9 /* WhatsNext.swift */,
 			);
 			path = FormViews;
 			sourceTree = "<group>";
@@ -401,6 +404,7 @@
 				BD5A0FBA25B18EE300A56ACE /* Extensions.swift in Sources */,
 				BD538DCD2519FE5B0019AA11 /* Persistence.swift in Sources */,
 				BD93498125D250C1005CE137 /* ScanStructs.swift in Sources */,
+				BDF76C7B25D2798D00C20FE9 /* WhatsNext.swift in Sources */,
 				BDCACB7325AE1ABF00A418B1 /* Application+CoreDataClass.swift in Sources */,
 				BDEFBC4A251B5DD800638ED1 /* HomeView.swift in Sources */,
 				BDCACB7025AE1ABB00A418B1 /* Application+CoreDataProperties.swift in Sources */,

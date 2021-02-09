@@ -36,9 +36,11 @@ struct ChoosePageEditing: View {
     @State var salesConsultant: String = ""
     @State var scanGroup: [String] = []
     
+    @State var sheetType: SubmissionSheets = .none
+    
     @State var result: Result<MFMailComposeResult, Error>? = nil
     @State var submitted: Bool = false
-    @State var isShowingMailView = false
+    @State var sheetShowing = false
     @State var canSendMail: Bool = MFMailComposeViewController.canSendMail()
     
     init(application: Application) {
@@ -53,7 +55,8 @@ struct ChoosePageEditing: View {
         self._assetsLiabilitiesDone = State(wrappedValue: self.application.assetsLiabilitiesDone)
         self._documentScansDone = State(wrappedValue: self.application.documentScansDone)
         
-        self._identityDone = State(wrappedValue: self.application.identityType != "--select--" && self.application.identityType != "" && self.application.identityType != nil)
+        self._identityDone = State(wrappedValue: self.application.identityType != "--select--" && self.application.identityType != "" &&
+                self.application.identityType != nil)
         
         self._salesConsultant = State(wrappedValue: self.application.salesConsultant ?? "")
         self._scanGroup = State(wrappedValue: self.application.scanGroup)
@@ -63,7 +66,8 @@ struct ChoosePageEditing: View {
     var body: some View {
         Form {
             Group {
-                NavigationLink(destination: GeneralDetailsEditing(isDone: $generalDetailsDone, application: application, sender: .editor), tag: 0, selection: $selection) {
+                NavigationLink(destination: GeneralDetailsEditing(isDone: $generalDetailsDone, application: application, sender: .editor), tag: 0,
+                        selection: $selection) {
                     HStack {
                         Text("General Details")
                             .font(.headline)
@@ -75,7 +79,8 @@ struct ChoosePageEditing: View {
                     }
                 }
                 
-                NavigationLink(destination: PersonalDetailsEditing(isDone: $personalDetailsDone, identityDoneBinding: $identityDone, application: application, sender: .editor), tag: 1, selection: $selection) {
+                NavigationLink(destination: PersonalDetailsEditing(isDone: $personalDetailsDone, identityDoneBinding: $identityDone, application: application,
+                        sender: .editor), tag: 1, selection: $selection) {
                     HStack {
                         Text("Personal Details")
                             .font(.headline)
@@ -88,7 +93,8 @@ struct ChoosePageEditing: View {
                 }
                 .disabled(!generalDetailsDone)
                 
-                NavigationLink(destination: ResidencyContactEditing(isDone: $residencyContactDone, application: application, sender: .editor), tag: 2, selection: $selection) {
+                NavigationLink(destination: ResidencyContactEditing(isDone: $residencyContactDone, application: application, sender: .editor), tag: 2,
+                        selection: $selection) {
                     HStack {
                         Text("Residency & Contact")
                             .font(.headline)
@@ -101,7 +107,8 @@ struct ChoosePageEditing: View {
                 }
                 .disabled(!generalDetailsDone)
                 
-                NavigationLink(destination: SubsidyCreditEditing(isDone: $subsidyCreditDone, application: application, sender: .editor), tag: 3, selection: $selection) {
+                NavigationLink(destination: SubsidyCreditEditing(isDone: $subsidyCreditDone, application: application, sender: .editor), tag: 3,
+                        selection: $selection) {
                     HStack {
                         Text("Subsidy & Credit")
                             .font(.headline)
@@ -114,7 +121,8 @@ struct ChoosePageEditing: View {
                 }
                 .disabled(!generalDetailsDone)
                 
-                NavigationLink(destination: EmploymentEditing(isDone: $employmentDone, application: application, sender: .editor), tag: 4, selection: $selection) {
+                NavigationLink(destination: EmploymentEditing(isDone: $employmentDone, application: application, sender: .editor), tag: 4,
+                        selection: $selection) {
                     HStack {
                         Text("Employment")
                             .font(.headline)
@@ -129,7 +137,8 @@ struct ChoosePageEditing: View {
             }
             
             Group {
-                NavigationLink(destination: IncomeDeductionsEditing(isDone: $incomeDeductionsDone, application: application, sender: .editor), tag: 5, selection: $selection) {
+                NavigationLink(destination: IncomeDeductionsEditing(isDone: $incomeDeductionsDone, application: application, sender: .editor), tag: 5,
+                        selection: $selection) {
                     HStack {
                         Text("Income & Deductions")
                             .font(.headline)
@@ -155,7 +164,8 @@ struct ChoosePageEditing: View {
                 }
                 .disabled(!generalDetailsDone)
                 
-                NavigationLink(destination: AssetsLiabilitiesEditing(isDone: $assetsLiabilitiesDone, application: application, sender: .editor), tag: 7, selection: $selection) {
+                NavigationLink(destination: AssetsLiabilitiesEditing(isDone: $assetsLiabilitiesDone, application: application, sender: .editor), tag: 7,
+                        selection: $selection) {
                     HStack {
                         Text("Assets & Liabilities")
                             .font(.headline)
@@ -168,7 +178,8 @@ struct ChoosePageEditing: View {
                 }
                 .disabled(!generalDetailsDone)
                 
-                NavigationLink(destination: DocumentScansEditing(application: application, isDone: $documentScansDone, scanGroup: $scanGroup, sender: .editor), tag: 8, selection: $selection) {
+                NavigationLink(destination: DocumentScansEditing(application: application, isDone: $documentScansDone, scanGroup: $scanGroup, sender: .editor),
+                        tag: 8, selection: $selection) {
                     HStack {
                         Text("Supporting Documents")
                             .font(.headline)
@@ -182,7 +193,8 @@ struct ChoosePageEditing: View {
                 .disabled(generalDetailsDone ? !identityDone! : true)
             }
             
-            NavigationLink(destination: NotificationView(application: application, signatureDone: $signatureDone, notificationCheck: $notificationCheck, isDone: $notificationDone, sender: .editor), tag: 9, selection: $selection) {
+            NavigationLink(destination: NotificationView(application: application, signatureDone: $signatureDone, notificationCheck: $notificationCheck,
+                    isDone: $notificationDone, sender: .editor), tag: 9, selection: $selection) {
                 HStack {
                     Text("Notification")
                         .font(.headline)
@@ -214,7 +226,8 @@ struct ChoosePageEditing: View {
                     }
                 } else if notificationDone && canSubmit() { // Mail installed, notification accepted, sections completed
                     Button(action: {
-                        self.isShowingMailView = true
+                        sheetType = .mailView
+                        self.sheetShowing = true
                     }) {
                         Text("Submit Application")
                             .font(.title3)
@@ -243,15 +256,22 @@ struct ChoosePageEditing: View {
                 do {
                     try viewContext.save()
                     print("Application Entity Updated")
+                    //sheetType = .whatsNext
+                    //sheetShowing = true
                 } catch {
                     print(error.localizedDescription)
                 }
             }
         }
-        .sheet(isPresented: $isShowingMailView) {
-            let clientName = "\(application.surname ?? "NIL"), \(application.firstNames ?? "NIL")"
-            let recipients = [salesConsultantEmails[salesConsultant] ?? ""]
-            MailView(clientName: clientName, emailBody: makeEmailBody(application: application), recipients: recipients, attachments: [:], isShowing: self.$isShowingMailView, result: self.$result, submitted: $submitted)
+        .sheet(isPresented: $sheetShowing) {
+            if sheetType == .mailView {
+                let clientName = "\(application.surname ?? "NIL"), \(application.firstNames ?? "NIL")"
+                let recipients = [salesConsultantEmails[salesConsultant] ?? ""]
+                MailView(clientName: clientName, emailBody: makeEmailBody(application: application), recipients: recipients, attachments: [:],
+                         isShowing: self.$sheetShowing, result: self.$result, submitted: $submitted)
+            } /*else if sheetType == .whatsNext {
+                WhatsNext()
+            }*/
         }
     }
     

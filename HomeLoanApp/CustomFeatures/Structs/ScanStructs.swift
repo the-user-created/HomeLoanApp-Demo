@@ -16,7 +16,7 @@ struct ScannerView: UIViewControllerRepresentable {
     private let scanName: String
     private let applicationID: UUID
     private let completionHandler: ([String]?) -> Void
-
+    
     @Binding var alertMessage: String
     @Binding var alertShowing: Bool
         

@@ -51,8 +51,8 @@ struct HomeView: View {
                 Image("DownArrow")
                     .renderingMode(.template)
                     .resizable()
-                    .scaledToFill()
-                    .frame(width: 80, height: 80)
+                    .scaledToFit()
+                    .frame(width: 70, height: 80)
                     .foregroundColor(Color.init(hex: "41702b"))
             }
             .animation(.timingCurve(0.65, 0.0, 0.25, 0.75, duration: 2.0))
