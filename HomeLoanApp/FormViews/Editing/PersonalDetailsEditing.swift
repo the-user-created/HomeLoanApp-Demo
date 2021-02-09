@@ -85,14 +85,14 @@ struct PersonalDetailsEditing: View {
         self._publicOfficial = State(wrappedValue: self.application.publicOfficial ?? "")
         self._relatedOfficial = State(wrappedValue: self.application.relatedOfficial ?? "")
         
-        self._initValues = State(wrappedValue: ["title": self.title, "surname": self.surname, "firstNames": self.firstNames, "gender": self.gender, "dateOfBirth": self.dateOfBirth, "identityType": self.identityType, "identityNumber": self.identityNumber, "passExpiryDate": self.passExpiryDate, "taxNumber": self.taxNumber, "taxReturn": self.taxReturn, "educationLevel": self.educationLevel, "ethnicGroup": self.ethnicGroup, "singleHouse": self.singleHouse, "maritalStatus": self.maritalStatus, "countryMarriage": self.countryMarriage, "spouseIncome": self.spouseIncome, "aNC": self.aNC, "numDependents": self.numDependents, "mainResidence": self.mainResidence, "firstTimeHomeBuyer": self.firstTimeHomeBuyer, "socialGrant": self.socialGrant, "publicOfficial": self.publicOfficial, "relatedOfficial": self.relatedOfficial])
+        self._initValues = State(wrappedValue: ["title": title, "surname": surname, "firstNames": firstNames, "gender": gender, "dateOfBirth": dateOfBirth, "identityType": identityType, "identityNumber": identityNumber, "passExpiryDate": passExpiryDate, "taxNumber": taxNumber, "taxReturn": taxReturn, "educationLevel": educationLevel, "ethnicGroup": ethnicGroup, "singleHouse": singleHouse, "maritalStatus": maritalStatus, "countryMarriage": countryMarriage, "spouseIncome": spouseIncome, "aNC": aNC, "numDependents": numDependents, "mainResidence": mainResidence, "firstTimeHomeBuyer": firstTimeHomeBuyer, "socialGrant": socialGrant, "publicOfficial": publicOfficial, "relatedOfficial": relatedOfficial])
     }
     
     // MARK: - body
     var body: some View {
-        Form() {
+        Form {
             Section(header: Text("PERSONAL DETAILS")) {
-                Group() {
+                Group {
                     FormPicker(iD: "title",
                                question: formQuestions[1][0] ?? "MISSING",
                                selectionOptions: titles,
@@ -141,7 +141,7 @@ struct PersonalDetailsEditing: View {
                 
             }
             
-            Section() {
+            Section {
                 FormTextField(iD: "taxNumber",
                               question: formQuestions[1][11] ?? "MISSING",
                               placeholder: formTextFieldPlaceholders[1][11] ?? "MISSING",
@@ -224,7 +224,7 @@ struct PersonalDetailsEditing: View {
                           selected: $relatedOfficial)
             }
             
-            Section() {
+            Section {
                 Button(action: {
                     handleSaving()
                 }) {
@@ -293,12 +293,12 @@ struct PersonalDetailsEditing: View {
     
     // MARK: - hasChanged
     private func hasChanged() -> Bool {
-        self.savingValues = ["title": self.title, "surname": self.surname, "firstNames": self.firstNames, "gender": self.gender, "dateOfBirth": self.dateOfBirth, "identityType": self.identityType, "identityNumber": self.identityNumber, "passExpiryDate": self.passExpiryDate, "taxNumber": self.taxNumber, "taxReturn": self.taxReturn, "educationLevel": self.educationLevel, "ethnicGroup": self.ethnicGroup, "singleHouse": self.singleHouse, "maritalStatus": self.maritalStatus, "countryMarriage": self.countryMarriage, "spouseIncome": self.spouseIncome, "aNC": self.aNC, "numDependents": self.numDependents, "mainResidence": self.mainResidence, "firstTimeHomeBuyer": self.firstTimeHomeBuyer, "socialGrant": self.socialGrant, "publicOfficial": self.publicOfficial, "relatedOfficial": self.relatedOfficial]
+        self.savingValues = ["title": title, "surname": surname, "firstNames": firstNames, "gender": gender, "dateOfBirth": dateOfBirth, "identityType": identityType, "identityNumber": identityNumber, "passExpiryDate": passExpiryDate, "taxNumber": taxNumber, "taxReturn": taxReturn, "educationLevel": educationLevel, "ethnicGroup": ethnicGroup, "singleHouse": singleHouse, "maritalStatus": maritalStatus, "countryMarriage": countryMarriage, "spouseIncome": spouseIncome, "aNC": aNC, "numDependents": numDependents, "mainResidence": mainResidence, "firstTimeHomeBuyer": firstTimeHomeBuyer, "socialGrant": socialGrant, "publicOfficial": publicOfficial, "relatedOfficial": relatedOfficial]
         
         if savingValues != initValues {
-            let initidentityType = initValues["identityType"]
-            if initidentityType != savingValues["identityType"] {
-                deleteScans(initIdentityType: initidentityType)
+            let initIdentityType = initValues["identityType"]
+            if initIdentityType != savingValues["identityType"] {
+                deleteScans(initIdentityType: initIdentityType)
             }
             
             return true
@@ -337,7 +337,7 @@ struct PersonalDetailsEditing: View {
     
     // MARK: - deleteScans
     private func deleteScans(initIdentityType: AnyHashable?) {
-        let loanID: String = self.application.loanID?.uuidString ?? ""
+        let loanID: String = application.loanID?.uuidString ?? ""
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         
         let identityType: String? = initIdentityType?.description
@@ -359,7 +359,7 @@ struct PersonalDetailsEditing: View {
                 }
             }
             
-            self.application.identityScanned = false
+            application.identityScanned = false
         } else if (identityType == "1" || identityType == "2" || identityType == "3" || identityType == "4") && !loanID.isEmpty { // Deletes the scans for Passport or ID Book scans
             let fileName = "identity_scan_\(loanID)_0.png"
             let fileURL = documentsDirectory.appendingPathComponent(fileName)
@@ -375,7 +375,7 @@ struct PersonalDetailsEditing: View {
 
             }
             
-            self.application.identityScanned = false
+            application.identityScanned = false
         }
     }
     

@@ -23,12 +23,12 @@ struct MailView: UIViewControllerRepresentable {
         
         @Binding var isShowing: Bool
         @Binding var result: Result<MFMailComposeResult, Error>?
-        @Binding var submiited: Bool
+        @Binding var submitted: Bool
 
         init(isShowing: Binding<Bool>, result: Binding<Result<MFMailComposeResult, Error>?>, submitted: Binding<Bool>) {
             self._isShowing = isShowing
             self._result = result
-            self._submiited = submitted
+            self._submitted = submitted
         }
 
         func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
@@ -43,13 +43,13 @@ struct MailView: UIViewControllerRepresentable {
             
             self.result = .success(result)
             if result == .sent {
-                self.submiited = true
+                submitted = true
             }
         }
     }
 
     func makeCoordinator() -> Coordinator {
-        return Coordinator(isShowing: $isShowing, result: $result, submitted: $submitted)
+        Coordinator(isShowing: $isShowing, result: $result, submitted: $submitted)
     }
 
     func makeUIViewController(context: UIViewControllerRepresentableContext<MailView>) -> MFMailComposeViewController {

@@ -12,8 +12,8 @@ import CoreData
 
 extension Application {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<Application> {
-        return NSFetchRequest<Application>(entityName: "Application")
+    public class func fetchRequest() -> NSFetchRequest<Application> {
+        NSFetchRequest<Application>(entityName: "Application")
     }
 
     // MARK: - General
@@ -68,7 +68,7 @@ extension Application {
     @NSManaged public var permanentResident: String?
     @NSManaged public var countryOfPermanentResidence: String?
     @NSManaged public var homeLanguage: String?
-    @NSManaged public var corresLanguage: String?
+    @NSManaged public var correspondenceLanguage: String?
     @NSManaged public var cellNumber: String?
     @NSManaged public var emailAddress: String?
     @NSManaged public var resCountry: String?

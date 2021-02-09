@@ -61,10 +61,10 @@ struct ChoosePageEditing: View {
     
     // MARK: - body
     var body: some View {
-        Form() {
-            Group() {
+        Form {
+            Group {
                 NavigationLink(destination: GeneralDetailsEditing(isDone: $generalDetailsDone, application: application, sender: .editor), tag: 0, selection: $selection) {
-                    HStack() {
+                    HStack {
                         Text("General Details")
                             .font(.headline)
                         
@@ -76,7 +76,7 @@ struct ChoosePageEditing: View {
                 }
                 
                 NavigationLink(destination: PersonalDetailsEditing(isDone: $personalDetailsDone, identityDoneBinding: $identityDone, application: application, sender: .editor), tag: 1, selection: $selection) {
-                    HStack() {
+                    HStack {
                         Text("Personal Details")
                             .font(.headline)
                         
@@ -89,7 +89,7 @@ struct ChoosePageEditing: View {
                 .disabled(!generalDetailsDone)
                 
                 NavigationLink(destination: ResidencyContactEditing(isDone: $residencyContactDone, application: application, sender: .editor), tag: 2, selection: $selection) {
-                    HStack() {
+                    HStack {
                         Text("Residency & Contact")
                             .font(.headline)
                         
@@ -102,7 +102,7 @@ struct ChoosePageEditing: View {
                 .disabled(!generalDetailsDone)
                 
                 NavigationLink(destination: SubsidyCreditEditing(isDone: $subsidyCreditDone, application: application, sender: .editor), tag: 3, selection: $selection) {
-                    HStack() {
+                    HStack {
                         Text("Subsidy & Credit")
                             .font(.headline)
                         
@@ -115,7 +115,7 @@ struct ChoosePageEditing: View {
                 .disabled(!generalDetailsDone)
                 
                 NavigationLink(destination: EmploymentEditing(isDone: $employmentDone, application: application, sender: .editor), tag: 4, selection: $selection) {
-                    HStack() {
+                    HStack {
                         Text("Employment")
                             .font(.headline)
                         
@@ -128,9 +128,9 @@ struct ChoosePageEditing: View {
                 .disabled(!generalDetailsDone)
             }
             
-            Group() {
+            Group {
                 NavigationLink(destination: IncomeDeductionsEditing(isDone: $incomeDeductionsDone, application: application, sender: .editor), tag: 5, selection: $selection) {
-                    HStack() {
+                    HStack {
                         Text("Income & Deductions")
                             .font(.headline)
                         
@@ -143,7 +143,7 @@ struct ChoosePageEditing: View {
                 .disabled(!generalDetailsDone)
                 
                 NavigationLink(destination: ExpensesEditing(isDone: $expensesDone, application: application, sender: .editor), tag: 6, selection: $selection) {
-                    HStack() {
+                    HStack {
                         Text("Expenses")
                             .font(.headline)
                         
@@ -156,7 +156,7 @@ struct ChoosePageEditing: View {
                 .disabled(!generalDetailsDone)
                 
                 NavigationLink(destination: AssetsLiabilitiesEditing(isDone: $assetsLiabilitiesDone, application: application, sender: .editor), tag: 7, selection: $selection) {
-                    HStack() {
+                    HStack {
                         Text("Assets & Liabilities")
                             .font(.headline)
                         
@@ -169,7 +169,7 @@ struct ChoosePageEditing: View {
                 .disabled(!generalDetailsDone)
                 
                 NavigationLink(destination: DocumentScansEditing(application: application, isDone: $documentScansDone, scanGroup: $scanGroup, sender: .editor), tag: 8, selection: $selection) {
-                    HStack() {
+                    HStack {
                         Text("Supporting Documents")
                             .font(.headline)
                         
@@ -183,7 +183,7 @@ struct ChoosePageEditing: View {
             }
             
             NavigationLink(destination: NotificationView(application: application, signatureDone: $signatureDone, notificationCheck: $notificationCheck, isDone: $notificationDone, sender: .editor), tag: 9, selection: $selection) {
-                HStack() {
+                HStack {
                     Text("Notification")
                         .font(.headline)
                     
@@ -196,11 +196,11 @@ struct ChoosePageEditing: View {
             .disabled(!canSubmit())
             
             // Submit Application
-            Section() {
+            Section {
                 if application.loanStatus == Status.submitted.rawValue {
                     Text("You have submitted this application.")
                 } else if !canSendMail { // Mail app is not installed
-                    HStack() {
+                    HStack {
                         Text("Please download the Mail app to submit your application.")
                         
                         Spacer()
@@ -249,7 +249,7 @@ struct ChoosePageEditing: View {
             }
         }
         .sheet(isPresented: $isShowingMailView) {
-            let clientName = "\(self.application.surname ?? "NIL"), \(self.application.firstNames ?? "NIL")"
+            let clientName = "\(application.surname ?? "NIL"), \(application.firstNames ?? "NIL")"
             let recipients = [salesConsultantEmails[salesConsultant] ?? ""]
             MailView(clientName: clientName, emailBody: makeEmailBody(application: application), recipients: recipients, attachments: [:], isShowing: self.$isShowingMailView, result: self.$result, submitted: $submitted)
         }

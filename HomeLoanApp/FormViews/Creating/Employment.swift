@@ -53,7 +53,7 @@ struct Employment: View {
     
     // MARK: - body
     var body: some View {
-        Form() {
+        Form {
             Section(header: Text("OCCUPATION")) {
                 FormPicker(iD: "occupationalStatus",
                            question: formQuestions[4][0] ?? "MISSING",
@@ -85,7 +85,7 @@ struct Employment: View {
                            selectionOptions: employmentSectors,
                            selection: $employmentSector)
                 
-                Group() {
+                Group {
                     FormTextField(iD: "natureOfBusiness", infoButton: true,
                                   question: formQuestions[4][6] ?? "MISSING",
                                   placeholder: formTextFieldPlaceholders[4][6] ?? "MISSING",
@@ -190,7 +190,7 @@ struct Employment: View {
                 }
             }
             
-            Section() {
+            Section {
                 Button(action: {
                     handleSaving()
                 }) {
@@ -206,10 +206,10 @@ struct Employment: View {
                 handleSaving()
             }
         }
-        .onDisappear() {
+        .onDisappear {
             isActive = false
         }
-        .onAppear() {
+        .onAppear {
             isActive = true
         }
         .onChange(of: previouslyEmployed) { _ in

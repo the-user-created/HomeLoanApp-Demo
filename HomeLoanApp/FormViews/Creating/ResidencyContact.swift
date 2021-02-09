@@ -24,7 +24,7 @@ struct ResidencyContact: View {
     @State var permanentResident = ""
     @State var countryOfPermanentResidence = 0
     @State var homeLanguage = 0
-    @State var corresLanguage = 0
+    @State var correspondenceLanguage = 0
     @State var cellNumber = ""
     @State var emailAddress = ""
     @State var resCountry = 0
@@ -104,10 +104,10 @@ struct ResidencyContact: View {
                            selectionOptions: languages,
                            selection: $homeLanguage)
                 
-                FormPicker(iD: "corresLanguage",
+                FormPicker(iD: "correspondenceLanguage",
                            question: formQuestions[2][8] ?? "MISSING",
-                           selectionOptions: correslanguages,
-                           selection: $corresLanguage)
+                           selectionOptions: correspondenceLanguages,
+                           selection: $correspondenceLanguage)
                 
                 FormTextField(iD: "cellNumber",
                               question: formQuestions[2][9] ?? "MISSING",
@@ -270,7 +270,7 @@ struct ResidencyContact: View {
         var isComplete: Bool = false
         
         // Handle the non-optional questions
-        if !sACitizen.isEmpty && countryBirth != 0 && !cityOfBirth.isEmpty && homeLanguage != 0 && corresLanguage != 0 && !cellNumber.isEmpty && !emailAddress.isEmpty && resCountry != 0 && !resLine1.isEmpty && !resSuburb.isEmpty && !resCity.isEmpty && !resProvince.isEmpty && !resStreetCode.isEmpty && (!lengthAtAddressYears.isEmpty || !lengthAtAddressMonths.isEmpty) && !resIsPostal.isEmpty {
+        if !sACitizen.isEmpty && countryBirth != 0 && !cityOfBirth.isEmpty && homeLanguage != 0 && correspondenceLanguage != 0 && !cellNumber.isEmpty && !emailAddress.isEmpty && resCountry != 0 && !resLine1.isEmpty && !resSuburb.isEmpty && !resCity.isEmpty && !resProvince.isEmpty && !resStreetCode.isEmpty && (!lengthAtAddressYears.isEmpty || !lengthAtAddressMonths.isEmpty) && !resIsPostal.isEmpty {
             
             if sACitizen == "No" && resIsPostal == "No" {
                 if nationality != 0 && countryPassport != 0 && postalCountry != 0 && !postalLine1.isEmpty && !postalSuburb.isEmpty && !postalCity.isEmpty && !postalProvince.isEmpty && !postalStreetCode.isEmpty && ((permanentResident == "No" && countryOfPermanentResidence != 0) || permanentResident == "Yes") {

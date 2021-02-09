@@ -53,7 +53,7 @@ struct Expenses: View {
     
     // MARK: - body
     var body: some View {
-        Form() {
+        Form {
             Section(header: Text("EXPENSES")) {
                 Section(header: Text("Total Expenses").font(.headline)) {
                     Text("R\(calculatedExpenses)")
@@ -175,7 +175,7 @@ struct Expenses: View {
                 }
             }
             
-            Section() {
+            Section {
                 Button(action: {
                     handleSaving()
                 }) {
@@ -191,10 +191,10 @@ struct Expenses: View {
                 handleSaving()
             }
         }
-        .onDisappear() {
+        .onDisappear {
             isActive = false
         }
-        .onAppear() {
+        .onAppear {
             isActive = true
         }
         .onChange(of: [rental, expensesInvestments, ratesTaxes, waterLights, homeMain, petrolCar, insurance, assurance, timeshare, groceries, clothing, levies, domesticWages, education, expensesEntertainment, security, propertyRentExp, medical, donations, cellphone, mNetDSTV, telephoneISP, expensesMaintenanceAlimony, installmentExp, otherExpenses]) { _ in

@@ -60,7 +60,7 @@ struct ProfileView: View {
                 
                 user?.delete { error in
                     if let error = error {
-                        print("print - Error occured while deleting account \(error)")
+                        print("print - Error occurred while deleting account \(error)")
                         return
                     }
                     

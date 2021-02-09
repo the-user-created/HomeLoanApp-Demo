@@ -25,7 +25,7 @@ struct NotificationView: View {
     
     // MARK: - body
     var body: some View {
-        Form() {
+        Form {
             Section(header: Text("Notification")) {
                 Text("Applicant/s are aware that:")
                     .font(.subheadline)
@@ -39,10 +39,10 @@ struct NotificationView: View {
                 RichText("c) Communications (including the quotation) from the bank(s) pertaining to such application will be received by *evo* on the applicants behalf. Applicants are further aware that, where appropriate, the estate agent concerned may be issued by *evo* with a copy of the final outcome.")
                     .font(.subheadline)
                 
-                RichText("d) *evo* and third parties, including banks, may make enquiries to third parties to confirm any information submitted as part of the application, and may obtain information from credit bureaux when assessing this home loan application for finance.")
+                RichText("d) *evo* and third parties, including banks, may make enquiries to third parties to confirm any information submitted as part of the application, and may obtain information from credit bureau when assessing this home loan application for finance.")
                     .font(.subheadline)
                 
-                RichText("e) I/we hold no other citizenships and residencies for local and international tax purposes, other than those disclosed in this application form and will inform the lender in writing of any change of this status within 30 days of the change of status.")
+                RichText("e) I/we hold no other citizenship and residencies for local and international tax purposes, other than those disclosed in this application form and will inform the lender in writing of any change of this status within 30 days of the change of status.")
                     .font(.subheadline)
                 
                 FormYesNo(iD: "notificationsCheck",
@@ -56,7 +56,7 @@ struct NotificationView: View {
                     .frame(height: 300)
             }
             
-            Section() {
+            Section {
                 Button(action: {
                     handleSaving()
                 }) {

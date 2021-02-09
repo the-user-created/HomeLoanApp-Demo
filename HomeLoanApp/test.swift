@@ -50,7 +50,7 @@
  permanentResident
  countryOfPermanentResidence
  homeLanguage
- corresLanguage
+ correspondenceLanguage
  cellNumber
  emailAddress
  resCountry

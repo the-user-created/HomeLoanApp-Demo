@@ -96,18 +96,18 @@ struct IncomeDeductionsEditing: View {
             }
         }
         
-        self._initValues = State(wrappedValue: ["basicSalary": self.basicSalary, "wages": self.wages, "averageComm": self.averageComm, "investments": self.investments, "rentIncome": self.rentIncome, "futureRentIncome": self.futureRentIncome, "housingSub": self.housingSub, "averageOvertime": self.averageOvertime, "monthCarAllowance": self.monthCarAllowance, "interestIncome": self.interestIncome, "travelAllowance": self.travelAllowance, "entertainment": self.entertainment, "incomeFromSureties": self.incomeFromSureties, "maintenanceAlimony": self.maintenanceAlimony, "other": "[\(otherIncome)][\(otherIncomeText)]", "tax": self.tax, "pension": self.pension, "uIF": self.uIF, "medicalAid": self.medicalAid, "otherDeductions": "[\(self.otherDeduction)][\(self.otherDeductionText)]"])
+        self._initValues = State(wrappedValue: ["basicSalary": basicSalary, "wages": wages, "averageComm": averageComm, "investments": investments, "rentIncome": rentIncome, "futureRentIncome": futureRentIncome, "housingSub": housingSub, "averageOvertime": averageOvertime, "monthCarAllowance": monthCarAllowance, "interestIncome": interestIncome, "travelAllowance": travelAllowance, "entertainment": entertainment, "incomeFromSureties": incomeFromSureties, "maintenanceAlimony": maintenanceAlimony, "other": "[\(otherIncome)][\(otherIncomeText)]", "tax": tax, "pension": pension, "uIF": uIF, "medicalAid": medicalAid, "otherDeductions": "[\(otherDeduction)][\(otherDeductionText)]"])
         
         self._calculatedIncome = State(wrappedValue: calculateIncome())
         self._calculatedDeductions = State(wrappedValue: calculateDeductions())
-        self._netSalary = State(wrappedValue: String(format: "%.2f", (Float(self.calculatedIncome) ?? 0.0) - (Float(self.calculatedDeductions) ?? 0.0)))
+        self._netSalary = State(wrappedValue: String(format: "%.2f", (Float(calculatedIncome) ?? 0.0) - (Float(calculatedDeductions) ?? 0.0)))
     }
     
     // MARK: - body
     var body: some View {
-        Form() {
+        Form {
             Section(header: Text("INCOME")) {
-                Group() {
+                Group {
                     FormRandTextField(iD: "basicSalary",
                                       question: formQuestions[5][0] ?? "MISSING",
                                       text: $basicSalary)
@@ -145,7 +145,7 @@ struct IncomeDeductionsEditing: View {
                                       text: $monthCarAllowance)
                 }
                 
-                Group() {
+                Group {
                     FormRandTextField(iD: "interestIncome",
                                       question: formQuestions[5][9] ?? "MISSING",
                                       text: $interestIncome)
@@ -211,7 +211,7 @@ struct IncomeDeductionsEditing: View {
                     .font(.headline)
             }
             
-            Section() {
+            Section {
                 Button(action: {
                     handleSaving()
                 }) {
@@ -225,16 +225,16 @@ struct IncomeDeductionsEditing: View {
         .onReceive(resignPub) { _ in
             handleSaving()
         }
-        .onDisappear() {
+        .onDisappear {
             UIApplication.shared.endEditing()
         }
         .onChange(of: [basicSalary, wages, averageComm, investments, rentIncome, futureRentIncome, housingSub, averageOvertime, monthCarAllowance, interestIncome, travelAllowance, entertainment, incomeFromSureties, maintenanceAlimony, otherIncome]) { _ in
             calculatedIncome = calculateIncome()
-            netSalary = String(format: "%.2f", (Float(self.calculatedIncome) ?? 0.0) - (Float(self.calculatedDeductions) ?? 0.0))
+            netSalary = String(format: "%.2f", (Float(calculatedIncome) ?? 0.0) - (Float(calculatedDeductions) ?? 0.0))
         }
         .onChange(of: [tax, pension, uIF, medicalAid, otherDeduction]) { _ in
             calculatedDeductions = calculateDeductions()
-            netSalary = String(format: "%.2f", (Float(self.calculatedIncome) ?? 0.0) - (Float(self.calculatedDeductions) ?? 0.0))
+            netSalary = String(format: "%.2f", (Float(calculatedIncome) ?? 0.0) - (Float(calculatedDeductions) ?? 0.0))
         }
         .alert(isPresented: $showingAlert) {
             Alert(title: Text(""), message: Text(alertMessage), dismissButton: .default(Text("OK")))
@@ -264,9 +264,9 @@ struct IncomeDeductionsEditing: View {
     
     // MARK: - hasChanged
     private func hasChanged() -> Bool {
-        self.savingValues = ["basicSalary": self.basicSalary, "wages": self.wages, "averageComm": self.averageComm, "investments": self.investments, "rentIncome": self.rentIncome, "futureRentIncome": self.futureRentIncome, "housingSub": self.housingSub, "averageOvertime": self.averageOvertime, "monthCarAllowance": self.monthCarAllowance, "interestIncome": self.interestIncome, "travelAllowance": self.travelAllowance, "entertainment": self.entertainment, "incomeFromSureties": self.incomeFromSureties, "maintenanceAlimony": self.maintenanceAlimony, "other": "[\(otherIncome)][\(otherIncomeText)]", "tax": self.tax, "pension": self.pension, "uIF": self.uIF, "medicalAid": self.medicalAid, "otherDeductions": "[\(self.otherDeduction)][\(self.otherDeductionText)]"]
+        self.savingValues = ["basicSalary": basicSalary, "wages": wages, "averageComm": averageComm, "investments": investments, "rentIncome": rentIncome, "futureRentIncome": futureRentIncome, "housingSub": housingSub, "averageOvertime": averageOvertime, "monthCarAllowance": monthCarAllowance, "interestIncome": interestIncome, "travelAllowance": travelAllowance, "entertainment": entertainment, "incomeFromSureties": incomeFromSureties, "maintenanceAlimony": maintenanceAlimony, "other": "[\(otherIncome)][\(otherIncomeText)]", "tax": tax, "pension": pension, "uIF": uIF, "medicalAid": medicalAid, "otherDeductions": "[\(otherDeduction)][\(otherDeductionText)]"]
         
-        if self.savingValues != self.initValues {
+        if savingValues != initValues {
             return true
         }
         

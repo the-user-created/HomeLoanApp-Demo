@@ -37,7 +37,7 @@ struct LoginView: View {
                     .resizable()
                     .ignoresSafeArea(.all)
                 
-                VStack() {
+                VStack {
                     Image("LSLogo")
                         .resizable()
                         .frame(width: 350, height: 190)
@@ -150,7 +150,7 @@ struct LoginView: View {
             ForgotPassword(email: $email)
         }
         .alert(isPresented: $signInUnsuccessful, content: {
-            Alert(title: Text("Login Unsuccesful"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+            Alert(title: Text("Login Unsuccessful"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         })
     }
     
@@ -173,7 +173,7 @@ struct LoginView: View {
     }*/
     
     // MARK: - textFieldTextBG
-    // Returns the same color as the system setting for the text in the textfield
+    // Returns the same color as the system setting for the text in the text field
     func textFieldTextBG() -> Color {
         if colorScheme == .dark {
             return Color(.black)

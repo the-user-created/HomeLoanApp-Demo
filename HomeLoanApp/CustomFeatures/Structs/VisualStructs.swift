@@ -23,12 +23,12 @@ struct TextFieldAlert<Presenting>: View where Presenting: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                self.presenting
+                presenting
                     .disabled(isShowing)
-                    .blur(radius: self.isShowing ? 3 : 0)
+                    .blur(radius: isShowing ? 3 : 0)
                 
                 VStack {
-                    Text(self.title)
+                    Text(title)
                         .font(.title2)
                     
                     Divider()
@@ -45,7 +45,7 @@ struct TextFieldAlert<Presenting>: View where Presenting: View {
                     
                     Divider()
                     
-                    HStack() {
+                    HStack {
                         Spacer()
                         
                         Button(action: {
@@ -62,7 +62,7 @@ struct TextFieldAlert<Presenting>: View where Presenting: View {
                 }
                 .padding()
                 .background(colorScheme == .dark ? Color.black : Color.white)
-                .opacity(self.isShowing ? 1 : 0)
+                .opacity(isShowing ? 1 : 0)
                 .frame(width: geometry.size.width*0.9)
                 .foregroundColor(Color.primary)
                 .cornerRadius(20)
@@ -81,7 +81,7 @@ struct ActivityIndicator: UIViewRepresentable {
     let style: UIActivityIndicatorView.Style
 
     func makeUIView(context: UIViewRepresentableContext<ActivityIndicator>) -> UIActivityIndicatorView {
-        return UIActivityIndicatorView(style: style)
+        UIActivityIndicatorView(style: style)
     }
 
     func updateUIView(_ uiView: UIActivityIndicatorView, context: UIViewRepresentableContext<ActivityIndicator>) {
@@ -100,9 +100,9 @@ struct LoadingView<Content>: View where Content: View {
         GeometryReader { geometry in
             ZStack(alignment: .center) {
                 
-                self.content()
-                    .disabled(self.isShowing)
-                    .blur(radius: self.isShowing ? 3 : 0)
+                content()
+                    .disabled(isShowing)
+                    .blur(radius: isShowing ? 3 : 0)
 
                 VStack {
                     Text("Loading...")
@@ -113,7 +113,7 @@ struct LoadingView<Content>: View where Content: View {
                 .background(Color.secondary.colorInvert())
                 .foregroundColor(Color.primary)
                 .cornerRadius(20)
-                .opacity(self.isShowing ? 1 : 0)
+                .opacity(isShowing ? 1 : 0)
             }
         }
     }
@@ -174,7 +174,7 @@ struct RichText: View {
     var body: some View {
         var content = text(for: elements.first!)
         elements.dropFirst().forEach { (element) in
-            content = content + self.text(for: element)
+            content = content + text(for: element)
         }
         return content
     }
@@ -190,7 +190,7 @@ struct RichText: View {
     }
 
     private func shouldAddSpace(for element: Element) -> Bool {
-        return element.id != elements.last?.id
+        element.id != elements.last?.id
     }
 }
 

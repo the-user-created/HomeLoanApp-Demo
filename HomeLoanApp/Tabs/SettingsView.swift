@@ -32,7 +32,7 @@ struct SettingsView: View {
     
     // MARK: - State Variables
     @State var profileViewShowing: Bool = false
-    @State var notifViewShowing: Bool = false
+    @State var notificationViewShowing: Bool = false
     @State var tellAFriendViewShowing: Bool = false
     @State var helpViewShowing: Bool = false
     @State var aboutViewShowing: Bool = false
@@ -50,13 +50,13 @@ struct SettingsView: View {
     
     // MARK: - body
     var body: some View {
-        NavigationView() {
-            List() {
+        NavigationView {
+            List {
                 /*NavigationLink(destination: ProfileView(userDetails: userDetails), isActive: $profileViewShowing) {
                     SettingRow(setting: settingsItems[0])
                 }
                 
-                NavigationLink(destination: NotificationsScene(), isActive: $notifViewShowing) {
+                NavigationLink(destination: NotificationsScene(), isActive: $notificationViewShowing) {
                     SettingRow(setting: settingsItems[1])
                 }
                 

@@ -103,12 +103,12 @@ struct EmploymentEditing: View {
             }
         }
         
-        self._initValues = State(wrappedValue: ["occupationalStatus": self.occupationalStatus, "payingScheme": self.payingScheme, "incomeSource": self.incomeSource, "natureOfOccupation": self.natureOfOccupation, "occupationLevel": self.occupationLevel, "employmentSector": self.employmentSector, "natureOfBusiness": self.natureOfBusiness, "employer": self.employer, "companyRegNum": self.companyRegNum, "employeeNum": self.employeeNum, "employmentPeriod": "[\(self.employmentPeriodYears)][\(self.employmentPeriodMonths)]", "employerCountry": self.employerCountry, "employerLine1": self.employerLine1, "employerLine2": self.employerLine2, "employerSuburb": self.employerSuburb, "employerCity": self.employerCity, "employerProvince": self.employerProvince, "employerStreetCode": self.employerStreetCode, "workPhoneNum": self.workPhoneNum, "purchaseJobChange": self.purchaseJobChange, "workInZA": self.workInZA, "previouslyEmployed": self.previouslyEmployed, "previousEmployer": self.previousEmployer, "pEContact": self.pEContact, "pEDuration": "[\(self.pEDurationYears)][\(self.pEDurationMonths)]"])
+        self._initValues = State(wrappedValue: ["occupationalStatus": occupationalStatus, "payingScheme": payingScheme, "incomeSource": incomeSource, "natureOfOccupation": natureOfOccupation, "occupationLevel": occupationLevel, "employmentSector": employmentSector, "natureOfBusiness": natureOfBusiness, "employer": employer, "companyRegNum": companyRegNum, "employeeNum": employeeNum, "employmentPeriod": "[\(employmentPeriodYears)][\(employmentPeriodMonths)]", "employerCountry": employerCountry, "employerLine1": employerLine1, "employerLine2": employerLine2, "employerSuburb": employerSuburb, "employerCity": employerCity, "employerProvince": employerProvince, "employerStreetCode": employerStreetCode, "workPhoneNum": workPhoneNum, "purchaseJobChange": purchaseJobChange, "workInZA": workInZA, "previouslyEmployed": previouslyEmployed, "previousEmployer": previousEmployer, "pEContact": pEContact, "pEDuration": "[\(pEDurationYears)][\(pEDurationMonths)]"])
     }
     
     // MARK: - body
     var body: some View {
-        Form() {
+        Form {
             Section(header: Text("OCCUPATION")) {
                 FormPicker(iD: "occupationalStatus",
                            question: formQuestions[4][0] ?? "MISSING",
@@ -140,7 +140,7 @@ struct EmploymentEditing: View {
                            selectionOptions: employmentSectors,
                            selection: $employmentSector)
                 
-                Group() {
+                Group {
                     FormTextField(iD: "natureOfBusiness", infoButton: true,
                                   question: formQuestions[4][6] ?? "MISSING",
                                   placeholder: formTextFieldPlaceholders[4][6] ?? "MISSING",
@@ -245,7 +245,7 @@ struct EmploymentEditing: View {
                 }
             }
             
-            Section() {
+            Section {
                 Button(action: {
                     handleSaving()
                 }) {
@@ -291,9 +291,9 @@ struct EmploymentEditing: View {
     
     // MARK: - hasChanged
     private func hasChanged() -> Bool {
-        self.savingValues = ["occupationalStatus": self.occupationalStatus, "payingScheme": self.payingScheme, "incomeSource": self.incomeSource, "natureOfOccupation": self.natureOfOccupation, "occupationLevel": self.occupationLevel, "employmentSector": self.employmentSector, "natureOfBusiness": self.natureOfBusiness, "employer": self.employer, "companyRegNum": self.companyRegNum, "employeeNum": self.employeeNum, "employmentPeriod": "[\(self.employmentPeriodYears)][\(self.employmentPeriodMonths)]", "employerCountry": self.employerCountry, "employerLine1": self.employerLine1, "employerLine2": self.employerLine2, "employerSuburb": self.employerSuburb, "employerCity": self.employerCity, "employerProvince": self.employerProvince, "employerStreetCode": self.employerStreetCode, "workPhoneNum": self.workPhoneNum, "purchaseJobChange": self.purchaseJobChange, "workInZA": self.workInZA, "previouslyEmployed": self.previouslyEmployed, "previousEmployer": self.previousEmployer, "pEContact": self.pEContact, "pEDuration": "[\(self.pEDurationYears)][\(self.pEDurationMonths)]"]
+        self.savingValues = ["occupationalStatus": occupationalStatus, "payingScheme": payingScheme, "incomeSource": incomeSource, "natureOfOccupation": natureOfOccupation, "occupationLevel": occupationLevel, "employmentSector": employmentSector, "natureOfBusiness": natureOfBusiness, "employer": employer, "companyRegNum": companyRegNum, "employeeNum": employeeNum, "employmentPeriod": "[\(employmentPeriodYears)][\(employmentPeriodMonths)]", "employerCountry": employerCountry, "employerLine1": employerLine1, "employerLine2": employerLine2, "employerSuburb": employerSuburb, "employerCity": employerCity, "employerProvince": employerProvince, "employerStreetCode": employerStreetCode, "workPhoneNum": workPhoneNum, "purchaseJobChange": purchaseJobChange, "workInZA": workInZA, "previouslyEmployed": previouslyEmployed, "previousEmployer": previousEmployer, "pEContact": pEContact, "pEDuration": "[\(pEDurationYears)][\(pEDurationMonths)]"]
         
-        if self.savingValues != self.initValues {
+        if savingValues != initValues {
             return true
         }
         

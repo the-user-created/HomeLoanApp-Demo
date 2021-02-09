@@ -43,9 +43,9 @@ struct AssetsLiabilities: View {
     let resignPub = NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
     
     var body: some View {
-        Form() {
+        Form {
             Section(header: AssetLiabilityInfo(whichInfo: "assets")) {
-                Group() {
+                Group {
                     FormRandTextField(iD: "fixedProperty",
                                       question: formQuestions[7][0] ?? "MISSING",
                                       text: $fixedProperty)
@@ -117,7 +117,7 @@ struct AssetsLiabilities: View {
                 }
             }
             
-            Section() {
+            Section {
                 Button(action: {
                     handleSaving()
                 }) {
@@ -133,10 +133,10 @@ struct AssetsLiabilities: View {
                 handleSaving()
             }
         }
-        .onDisappear() {
+        .onDisappear {
             isActive = false
         }
-        .onAppear() {
+        .onAppear {
             isActive = true
         }
         .alert(isPresented: $showingAlert) {

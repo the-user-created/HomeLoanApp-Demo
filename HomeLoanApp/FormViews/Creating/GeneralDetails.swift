@@ -38,7 +38,7 @@ struct GeneralDetails: View {
     
     // MARK: - body
     var body: some View {
-        Form() {
+        Form {
             Section(header: Text("GENERAL")) {
                 FormPicker(iD: "salesConsultant",
                            question: formQuestions[0][0] ?? "MISSING",
@@ -66,7 +66,7 @@ struct GeneralDetails: View {
                            selection: $propertyTypeIndex)
             }
             
-            Section() {
+            Section {
                 FormTextField(iD: "numberOfApplicants",
                               question: formQuestions[0][5] ?? "MISSING",
                               placeholder: formTextFieldPlaceholders[0][5] ?? "MISSING",
@@ -76,7 +76,7 @@ struct GeneralDetails: View {
             
             if numberOfApplicants != "" && numberOfApplicants != "1" {
                 Section(header: Text("CO-APPLICANTS")) {
-                    VStack() {
+                    VStack {
                         switch numberOfApplicants {
                             case "2":
                                 FormTextField(iD: "coApplicantOneName",
@@ -121,7 +121,7 @@ struct GeneralDetails: View {
                 }
             }
             
-            Section() {
+            Section {
                 Button(action: {
                     handleSaving()
                 }) {
@@ -158,10 +158,10 @@ struct GeneralDetails: View {
         .alert(isPresented: $showingAlert) {
             Alert(title: Text(""), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         }
-        .onDisappear() {
+        .onDisappear {
             isActive = false
         }
-        .onAppear() {
+        .onAppear {
             isActive = true
         }
     }
@@ -191,35 +191,35 @@ struct GeneralDetails: View {
     // MARK: - determineValidNumOfApplicants
     private func determineValidNumOfApplicants() -> Bool {
         var result: Bool = false
-        switch Int(self.numberOfApplicants) {
+        switch Int(numberOfApplicants) {
             case 1:
                 result = true
             case 2:
-                if !self.coApplicantOneName.isEmpty {
+                if !coApplicantOneName.isEmpty {
                     result = true
                 } else {
                     alertMessage = "Please add the name of co-applicant #1."
                 }
             case 3:
-                if !self.coApplicantOneName.isEmpty && !self.coApplicantTwoName.isEmpty {
+                if !coApplicantOneName.isEmpty && !coApplicantTwoName.isEmpty {
                     result = true
                 } else {
                     alertMessage = !coApplicantOneName.isEmpty ? "Please add the name of co-applicant #2." : (!coApplicantTwoName.isEmpty ? "Please add the name of co-applicant #1." : "Please add the names of co-applicant #1 and co-applicant #2.")
                 }
             case 4:
-                if !self.coApplicantOneName.isEmpty && !self.coApplicantTwoName.isEmpty && !self.coApplicantThreeName.isEmpty {
+                if !coApplicantOneName.isEmpty && !coApplicantTwoName.isEmpty && !coApplicantThreeName.isEmpty {
                     result = true
-                } else if !self.coApplicantOneName.isEmpty && self.coApplicantTwoName.isEmpty && self.coApplicantThreeName.isEmpty {
+                } else if !coApplicantOneName.isEmpty && coApplicantTwoName.isEmpty && coApplicantThreeName.isEmpty {
                     alertMessage = "Please add the names of co-applicant #2 and co-applicant #3."
-                } else if self.coApplicantOneName.isEmpty && !self.coApplicantTwoName.isEmpty && self.coApplicantThreeName.isEmpty {
+                } else if coApplicantOneName.isEmpty && !coApplicantTwoName.isEmpty && coApplicantThreeName.isEmpty {
                     alertMessage = "Please add the names of co-applicant #1 and co-applicant #3."
-                } else if self.coApplicantOneName.isEmpty && self.coApplicantTwoName.isEmpty && !self.coApplicantThreeName.isEmpty {
+                } else if coApplicantOneName.isEmpty && coApplicantTwoName.isEmpty && !coApplicantThreeName.isEmpty {
                     alertMessage = "Please add the names of co-applicant #1 and co-applicant #2."
-                } else if !self.coApplicantOneName.isEmpty && !self.coApplicantTwoName.isEmpty && self.coApplicantThreeName.isEmpty {
+                } else if !coApplicantOneName.isEmpty && !coApplicantTwoName.isEmpty && coApplicantThreeName.isEmpty {
                     alertMessage = "Please add the name of co-applicant #3."
-                } else if !self.coApplicantOneName.isEmpty && self.coApplicantTwoName.isEmpty && !self.coApplicantThreeName.isEmpty {
+                } else if !coApplicantOneName.isEmpty && coApplicantTwoName.isEmpty && !coApplicantThreeName.isEmpty {
                     alertMessage = "Please add the name of co-applicant #2."
-                } else if self.coApplicantOneName.isEmpty && !self.coApplicantTwoName.isEmpty && !self.coApplicantThreeName.isEmpty {
+                } else if coApplicantOneName.isEmpty && !coApplicantTwoName.isEmpty && !coApplicantThreeName.isEmpty {
                     alertMessage = "Please add the name of co-applicant #1."
                 } else {
                     alertMessage = "Please add the names of the co-applicants"

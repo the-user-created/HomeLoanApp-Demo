@@ -63,7 +63,7 @@ struct ForgotPassword: View {
             .edgesIgnoringSafeArea(.all)
         }
         .alert(isPresented: $showAlert, content: {
-            Alert(title: Text("Forgot Password Unsuccesful"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+            Alert(title: Text("Forgot Password Unsuccessful"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         })
     }
     

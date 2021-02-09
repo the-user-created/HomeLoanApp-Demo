@@ -71,7 +71,7 @@ extension Application {
     @NSManaged public var contractExpiryDate: Date?
     @NSManaged public var workPermitNumber: String?
     @NSManaged public var homeLanguage: String?
-    @NSManaged public var corresLanguage: String?
+    @NSManaged public var correspondenceLanguage: String?
     @NSManaged public var cellNumber: String?
     @NSManaged public var emailAddress: String?
     @NSManaged public var resCountry: String?

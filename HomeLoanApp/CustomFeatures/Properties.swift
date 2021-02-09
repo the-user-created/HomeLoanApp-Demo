@@ -20,7 +20,7 @@ let formQuestions: [[Int: String]] = [
      13: "What is your highest level of education?", 14: "What is your ethnic group?", 15: "Do you live in a single household?", 16: "What is your current residential status?", 17: "What is your marital status?", 18: "Country of marriage?", 19: "Including spouses income?", 20: "If ANC, register both names?", 21: "Number of dependents:", 22: "Will this property be your main residence?", 23: "Are you a first time home buyer?", 24: "Do you receive a social grant?", 25: "Are you a public official in a position of authority?", 26: "Are you related to or associated to a public official in a position of authority?"],
     // RESIDENCY & CONTACT
     [0: "Are you a South African Citizen?", 1: "What is your nationality?", 2: "Which country issued your passport?",
-     3: "What is your country of birth?", 4: "What is your city of birth?", 5: "Are you a permanent South African resident?", 6: "What is your country of permanent residence?", 7: "What is your home language?", 8: "What is your preffered language of correspondence?", 9: "What is your cell number?", 10: "What is your email address?",
+     3: "What is your country of birth?", 4: "What is your city of birth?", 5: "Are you a permanent South African resident?", 6: "What is your country of permanent residence?", 7: "What is your home language?", 8: "What is your preferred language of correspondence?", 9: "What is your cell number?", 10: "What is your email address?",
      11: "Country:", 12: "Line 1:", 13: "Line 2:", 14: "Suburb:", 15: "City/Town:", 16: "Province:", 17: "Street Code:", 18: "Length at current address:", 19: "Are your postal and residential addresses identical?"],
     // SUBSIDY & CREDIT HISTORY
     [0: "Have your every applied for a subsidy to buy a home?", 1: "Are you applying for a subsidy now?", 2: "Do you belong to a housing scheme?",
@@ -59,7 +59,7 @@ let formIDs: [[Int: String]] = [
      13: "educationLevel", 14: "ethnicGroup", 15: "singleHouse", 16: "currentResStatus", 17: "maritalStatus", 18: "countryMarriage", 19: "spouseIncome", 20: "aNC", 21: "numDependents", 22: "mainResidence", 23: "firstTimeHomeBuyer", 24: "socialGrant", 25: "publicOfficial", 26: "relatedOfficial"],
     // RESIDENCY & CONTACT
     [0: "sACitizen", 1: "nationality", 2: "countryPassport",
-     3: "countryBirth", 4: "cityOfBirth", 5: "permanentResident", 6: "countryOfPermanentResidence", 7: "homeLanguage", 8: "corresLanguage", 9: "cellNumber",
+     3: "countryBirth", 4: "cityOfBirth", 5: "permanentResident", 6: "countryOfPermanentResidence", 7: "homeLanguage", 8: "correspondenceLanguage", 9: "cellNumber",
      10: "emailAddress", 11: "resCountry", 12: "resLine1", 13: "resLine2", 14: "resSuburb", 15: "resCity", 16: "resProvince", 17: "resStreetCode", 18: "lengthAtAddress", 19: "resIsPostal"],
     // SUBSIDY & CREDIT HISTORY
     [0: "subsidyForHome", 1: "applyingSubsidy", 2: "housingScheme", 3: "currentAdmin", 4: "previousAdmin", 5: "judgement", 6: "debtReview", 7: "debtReArrange", 8: "insolvent",
@@ -85,8 +85,8 @@ let formIDs: [[Int: String]] = [
      7: "installmentSales", 8: "creditCards", 9: "currentAcc", 10: "personalLoans", 11: "retailAcc", 12: "otherDebt", 13: "otherAcc", 14: "otherLiabilities"]
 ]
 
-let uppercasingIDs: [String] = ["salesConsultant", "applicationType", "applicantType", "loanPurpose", "propertyType", "title", "gender", "identityType", "taxReturn", "educationLevel", "ethnicGroup", "singleHouse", "currentResStatus", "maritalStatus", "countryMarriage", "spouseIncome", "aNC", "mainResidence", "firstTimeHomeBuyer", "socialGrant", "publicOfficial", "relatedOfficial", "sACitizen", "nationality", "countryPassport", "countryBirth", "permanentResident", "countryOfPermanentResidence", "homeLanguage", "corresLanguage", "resCountry", "resIsPostal", "postalCountry", "subsidyForHome", "applyingSubsidy", "housingScheme", "currentAdmin", "previousAdmin", "judgement", "debtReview", "debtReArrange", "insolvent", "creditBureau", "creditListings", "suretyAgreements", "occupationalStatus", "payingScheme", "incomeSource", "occupationLevel", "employmentSector", "employerCountry", "purchaseJobChange", "workInZA",
-                                "previouslyEmployed"]
+let uppercaseIDs: [String] = ["salesConsultant", "applicationType", "applicantType", "loanPurpose", "propertyType", "title", "gender", "identityType", "taxReturn", "educationLevel", "ethnicGroup", "singleHouse", "currentResStatus", "maritalStatus", "countryMarriage", "spouseIncome", "aNC", "mainResidence", "firstTimeHomeBuyer", "socialGrant", "publicOfficial", "relatedOfficial", "sACitizen", "nationality", "countryPassport", "countryBirth", "permanentResident", "countryOfPermanentResidence", "homeLanguage", "correspondenceLanguage", "resCountry", "resIsPostal", "postalCountry", "subsidyForHome", "applyingSubsidy", "housingScheme", "currentAdmin", "previousAdmin", "judgement", "debtReview", "debtReArrange", "insolvent", "creditBureau", "creditListings", "suretyAgreements", "occupationalStatus", "payingScheme", "incomeSource", "occupationLevel", "employmentSector", "employerCountry", "purchaseJobChange", "workInZA",
+                              "previouslyEmployed"]
 
 let formTextFieldPlaceholders: [[Int: String]] = [
     [5: "1"],

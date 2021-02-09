@@ -29,10 +29,10 @@ struct LoanView: View {
     
     // MARK: - body
     var body: some View {
-        NavigationView() {
-            List() {
+        NavigationView {
+            List {
                 NavigationLink(destination: ChoosePageCreating(), isActive: self.$makingApplication) {
-                    HStack() {
+                    HStack {
                         Image(systemName: "plus.circle")
                             .imageScale(.large)
                             .foregroundColor(.blue)
@@ -44,7 +44,7 @@ struct LoanView: View {
                 
                 ForEach(applications) { application in
                     NavigationLink(destination: ChoosePageEditing(application: application)) {
-                        HStack() {
+                        HStack {
                             VStack(alignment: .leading) {
                                 Text("Application created on \(application.loanCreatedDate ?? Date(), formatter: dateFormatter)")
                                     .font(.headline)
@@ -92,10 +92,10 @@ struct LoanView: View {
       // 1.
       offsets.forEach { index in
         // 2.
-        let application = self.applications[index]
+        let application = applications[index]
 
         // 3.
-        self.viewContext.delete(application)
+        viewContext.delete(application)
       }
 
       // 4.

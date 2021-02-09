@@ -53,9 +53,9 @@ struct PersonalDetails: View {
     
     // MARK: - body
     var body: some View {
-        Form() {
+        Form {
             Section(header: Text("PERSONAL DETAILS")) {
-                Group() {
+                Group {
                     FormPicker(iD: "title",
                                question: formQuestions[1][0] ?? "MISSING",
                                selectionOptions: titles,
@@ -104,7 +104,7 @@ struct PersonalDetails: View {
                 
             }
             
-            Section() {
+            Section {
                 FormTextField(iD: "taxNumber",
                               question: formQuestions[1][11] ?? "MISSING",
                               placeholder: formTextFieldPlaceholders[1][11] ?? "MISSING",
@@ -187,7 +187,7 @@ struct PersonalDetails: View {
                           selected: $relatedOfficial)
             }
             
-            Section() {
+            Section {
                 Button(action: {
                     handleSaving()
                 }) {
@@ -218,10 +218,10 @@ struct PersonalDetails: View {
                 changedValues.updateKeyValue("passExpiryDate", value: Date())
             }
         }
-        .onDisappear() {
+        .onDisappear {
             isActive = false
         }
-        .onAppear() {
+        .onAppear {
             isActive = true
         }
         .alert(isPresented: $showingAlert) {

@@ -14,7 +14,7 @@ struct AssetLiabilityInfo: View {
     @State var infoShowing: Bool = false
     
     var body: some View {
-        HStack() {
+        HStack {
             Text(whichInfo == "assets" ? "ASSETS" : "LIABILITIES")
             
             Button(action: {
@@ -43,7 +43,7 @@ struct FormLabel: View {
     @State var infoShowing: Bool = false
     
     var body: some View {
-        HStack() {
+        HStack {
             Text(question)
                 .foregroundColor(textColor)
                 .multilineTextAlignment(.leading)
@@ -104,7 +104,7 @@ struct FormDatePicker: View {
                 
                 FormLabel(iD: iD, question: question, infoButton: infoButton)
             }
-            .onChange(of: self.dateSelection, perform: { _ in
+            .onChange(of: dateSelection, perform: { _ in
                 changedValues.updateKeyValue(iD, value: dateSelection)
             })
         } else if dateRangeOption == 1 { // Using: from current date to infinity
@@ -114,7 +114,7 @@ struct FormDatePicker: View {
                 
                 FormLabel(iD: iD, question: question, infoButton: infoButton)
             }
-            .onChange(of: self.dateSelection, perform: { _ in
+            .onChange(of: dateSelection, perform: { _ in
                 changedValues.updateKeyValue(iD, value: dateSelection)
             })
         }
@@ -134,12 +134,12 @@ struct FormPicker: View {
     @Binding var selection: Int
     
     var body: some View {
-        HStack() {
+        HStack {
             Picker(selection: $selection,
                    label: FormLabel(iD: iD, question: question, infoButton: infoButton)) {
                 ForEach(0 ..< selectionOptions.count) {
-                    Text($0 == 0 ? self.selectionOptions[$0] : self.selectionOptions[$0])
-                        .foregroundColor(self.selectionOptions[$0] == "--select--" ? .secondary: .blue)
+                    Text($0 == 0 ? selectionOptions[$0] : selectionOptions[$0])
+                        .foregroundColor(selectionOptions[$0] == "--select--" ? .secondary: .blue)
                 }
             }
             .onChange(of: selection) { value in
@@ -167,12 +167,12 @@ struct FormTextField: View {
     
     var body: some View {
         let binding = Binding<String>(get: {
-            self.text
+            text
         }, set: {
             self.text = $0.uppercased()
         })
         
-        HStack() {
+        HStack {
             if question != "" {
                 FormLabel(iD: iD, question: question, infoButton: infoButton)
             }
@@ -205,15 +205,15 @@ struct FormRandTextField: View {
     
     var body: some View {
         let binding = Binding<String>(get: {
-            self.text
+            text
         }, set: {
             self.text = $0.contains("R") ? $0 : "R" + $0
-            if self.text.contains(",") {
-                self.text = self.text.replacingOccurrences(of: ",", with: "")
+            if text.contains(",") {
+                self.text = text.replacingOccurrences(of: ",", with: "")
             }
         })
         
-        HStack() {
+        HStack {
             FormLabel(iD: iD, question: question, infoButton: infoButton)
             
             TextField("R",
@@ -246,22 +246,22 @@ struct FormOtherRand: View {
     
     var body: some View {
         let binding = Binding<String>(get: {
-            self.otherText
+            otherText
         }, set: {
             self.otherText = $0.uppercased()
         })
         
         let randBinding = Binding<String>(get: {
-            self.other
+            other
         }, set: {
             self.other = $0.contains("R") ? $0 : "R" + $0
-            if self.other.contains(",") {
-                self.other = self.other.replacingOccurrences(of: ",", with: "")
+            if other.contains(",") {
+                self.other = other.replacingOccurrences(of: ",", with: "")
             }
         })
         
-        VStack() {
-            HStack() {
+        VStack {
+            HStack {
                 FormLabel(iD: iD, question: question, infoButton: infoButton)
                 
                 TextField("R",
@@ -303,10 +303,10 @@ struct FormLenAt: View {
     var commit: ()->() = { }
     
     var body: some View {
-        VStack() {
+        VStack {
             FormLabel(iD: iD, question: question, infoButton: infoButton)
             
-            HStack() {
+            HStack {
                 TextField("",
                           text: $yearsText,
                           onEditingChanged: { _ in addToChangedValues()},
@@ -319,7 +319,7 @@ struct FormLenAt: View {
                 Text("Years")
             }
             
-            HStack() {
+            HStack {
                 TextField("",
                           text: $monthsText,
                           onEditingChanged: { _ in addToChangedValues()},
@@ -375,7 +375,7 @@ struct FormYesNo: View {
         }
         
         if self.iD == "notificationsCheck" {
-            self.padding = 4
+            padding = 4
         }
     }
     
@@ -384,7 +384,7 @@ struct FormYesNo: View {
             Text(question)
                 .multilineTextAlignment(.center)
             
-            HStack() {
+            HStack {
                 Spacer()
                 
                 Button(action: {

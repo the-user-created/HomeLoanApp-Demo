@@ -14,43 +14,6 @@ struct PersistenceController {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
         
-        /*let newApplication = Application(context: viewContext)
-        newApplication.applicantType = "Individual"
-        newApplication.applicationType = "New loan"
-        newApplication.coApplicantOneName = "David Young"
-        //newApplication.coApplicantTwoName = ""
-        //newApplication.coApplicantThreeName = ""
-        newApplication.loanPurpose = "Buy an existing home"
-        newApplication.loanStatus = Status.unsubmitted.rawValue
-        newApplication.numberOfApplicants = "2"
-        newApplication.propertyType = "Normal residential"
-        newApplication.salesConsultant = "Gavin Young"
-        newApplication.loanID = UUID.init()
-        newApplication.loanCreatedDate = Date()
-        newApplication.title = "Mr"
-        newApplication.surname = "Young"
-        newApplication.firstNames = "David Samuel"
-        newApplication.gender = "Male"
-        newApplication.dateOfBirth = Date()
-        newApplication.identityType = "Smart ID Card"
-        newApplication.identityNumber = "982868624224"
-        newApplication.iDPassExpiryDate = Date()
-        newApplication.taxNumber = "38728626825"
-        newApplication.taxReturn = "No"
-        newApplication.educationLevel = "Bachelor degree"
-        newApplication.ethnicGroup = "Caucasian"
-        newApplication.singleHouse = "Yes"
-        newApplication.maritalStatus = "Single"
-        //newApplication.countryMarriage = ""
-        newApplication.spouseIncome = "No"
-        newApplication.aNC = "No"
-        newApplication.numDependents = 0
-        newApplication.mainResidence = "Yes"
-        newApplication.firstTimeHomeBuyer = "Yes"
-        newApplication.socialGrant = "No"
-        newApplication.publicOfficial = "No"
-        newApplication.relatedOfficial = "No"*/
-        
         do {
             try viewContext.save()
         } catch {

@@ -35,9 +35,15 @@ struct DocumentScans: View {
     
     // MARK: - body
     var body: some View {
-        Form() {
+        Form {
+            Section(header: Text("INFO")) {
+                RichText("Here you have the option to scan your identity document/card and/or scan your payslips and/or bank statements.")
+                
+                /*RichText("If you would prefer not to scan these documents in-app you can take a photo of the corresponding documents and email them to *\(salesConsultantEmails[salesConsultant] ?? "your sales consultant")*")*/
+            }
+            
             Section(header: Text("IDENTITY DOCUMENT")) {
-                HStack() {
+                HStack {
                     Button(action: {
                         sheetID = .identityScan
                         isShowingSheet = true
@@ -67,7 +73,7 @@ struct DocumentScans: View {
                 .buttonStyle(BorderlessButtonStyle())
                 
                 if identityScanned {
-                    HStack() {
+                    HStack {
                         Button(action: {
                             sheetID = .identityScanView
                             isShowingSheet = true
@@ -83,9 +89,9 @@ struct DocumentScans: View {
                 
                 if !incomeStructure.isEmpty {
                     // Salary / Pay
-                    Group() {
+                    Group {
                         // Section header
-                        HStack() {
+                        HStack {
                             Spacer()
                             
                             Text("Salary/Pay Scans")
@@ -95,8 +101,8 @@ struct DocumentScans: View {
                         }
                         
                         // Salary / Pay scan
-                        VStack() {
-                            HStack() {
+                        VStack {
+                            HStack {
                                 Text(incomeStructure == "Salaried" ? "Latest 3 months payslips.": "Latest 6 months consecutive salary slips.")
                                     .padding([.top, .bottom], 5)
                                     .padding(.leading, 15)
@@ -104,7 +110,7 @@ struct DocumentScans: View {
                                 Spacer()
                             }
                             
-                            HStack() {
+                            HStack {
                                 // Open scanner
                                 Button(action: {
                                     sheetID = .salaryPayScan
@@ -139,7 +145,7 @@ struct DocumentScans: View {
                         
                         // View Scan
                         if salaryPaySlipsScanned {
-                            HStack() {
+                            HStack {
                                 Button(action: {
                                     sheetID = .salaryPayScanView
                                     isShowingSheet = true
@@ -155,9 +161,9 @@ struct DocumentScans: View {
                     }
                     
                     // Bank Statements
-                    Group() {
+                    Group {
                         // Section header
-                        HStack() {
+                        HStack {
                             Spacer()
                             
                             Text("Bank Statement Scans")
@@ -167,8 +173,8 @@ struct DocumentScans: View {
                         }
                         
                         // Bank statements scan
-                        VStack() {
-                            HStack() {
+                        VStack {
+                            HStack {
                                 Text(incomeStructure == "Salaried" ? "The latest 3 months bank statements.": "Latest 6 months bank statements which reflect your salary deposits.")
                                     .padding([.top, .bottom], 5)
                                     .padding(.leading, 15)
@@ -176,7 +182,7 @@ struct DocumentScans: View {
                                 Spacer()
                             }
                             
-                            HStack() {
+                            HStack {
                                 // Open scanner
                                 Button(action: {
                                     sheetID = .bankStatementsScan
@@ -210,7 +216,7 @@ struct DocumentScans: View {
                         
                         // View Scan
                         if bankStatementsScanned {
-                            HStack() {
+                            HStack {
                                 Button(action: {
                                     sheetID = .bankStatementsScanView
                                     infoSheetType = "bankStatements"
@@ -228,7 +234,7 @@ struct DocumentScans: View {
                 }
             }
             
-            Section() {
+            Section {
                 Button(action: {
                     handleSaving()
                 }) {
@@ -244,10 +250,10 @@ struct DocumentScans: View {
                 handleSaving()
             }
         }
-        .onDisappear() {
+        .onDisappear {
             isActive = false
         }
-        .onAppear() {
+        .onAppear {
             isActive = true
         }
         .onChange(of: isShowingSheet) { _ in

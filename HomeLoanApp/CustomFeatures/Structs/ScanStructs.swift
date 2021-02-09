@@ -20,7 +20,7 @@ struct ScannerView: UIViewControllerRepresentable {
     init(scanName: String, applicationID: UUID, completion: @escaping ([String]?) -> Void) {
         self.scanName = scanName
         self.applicationID = applicationID
-        self.completionHandler = completion
+        completionHandler = completion
     }
     
     typealias UIViewControllerType = VNDocumentCameraViewController
@@ -36,7 +36,7 @@ struct ScannerView: UIViewControllerRepresentable {
     }
     
     func makeCoordinator() -> Coordinator {
-        return Coordinator(scanName: self.scanName, applicationID: self.applicationID, completion: completionHandler)
+        Coordinator(scanName: scanName, applicationID: applicationID, completion: completionHandler)
     }
     
     final class Coordinator: NSObject, VNDocumentCameraViewControllerDelegate {
@@ -47,7 +47,7 @@ struct ScannerView: UIViewControllerRepresentable {
         init(scanName: String, applicationID: UUID, completion: @escaping ([String]?) -> Void) {
             self.scanName = scanName
             self.applicationID = applicationID
-            self.completionHandler = completion
+            completionHandler = completion
         }
          
         func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFinishWith scan: VNDocumentCameraScan) {
@@ -57,13 +57,13 @@ struct ScannerView: UIViewControllerRepresentable {
             for scanIndex in 0..<scan.pageCount {
                 let image = scan.imageOfPage(at: scanIndex)
                 if let cgImage = image.cgImage {
-                    saveImage("\(self.scanName)_scan_\(self.applicationID)_\(scanIndex).png", image: UIImage(cgImage: cgImage))
+                    saveImage("\(scanName)_scan_\(applicationID)_\(scanIndex).png", image: UIImage(cgImage: cgImage))
                 }
             }
             
             // Checks if the user is scanning bank/pay documents
             if scanName == "salary_pay" {
-                let url = "\(self.scanName)_scan_\(self.applicationID)_"
+                let url = "\(scanName)_scan_\(applicationID)_"
                 var i: Int = scan.pageCount
                 while true {
                     let newURL = url + "\(i).png"
@@ -85,7 +85,7 @@ struct ScannerView: UIViewControllerRepresentable {
                     }
                 }
             } else if scanName == "bank_statement" {
-                let url = "\(self.scanName)_scan_\(self.applicationID)_"
+                let url = "\(scanName)_scan_\(applicationID)_"
                 var i: Int = scan.pageCount
                 while true {
                     let newURL = url + "\(i).png"
@@ -162,7 +162,7 @@ struct ScannedView: View {
     @State var scanType: String
     
     var documentsURL: URL {
-        return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
     }
     
     init(url: String, scanType: String) {
@@ -177,9 +177,9 @@ struct ScannedView: View {
     }
 
     var body: some View {
-        ScrollView() {
-            Group() {
-                HStack() {
+        ScrollView {
+            Group {
+                HStack {
                     Spacer()
                     
                     Button(action: {
@@ -199,7 +199,7 @@ struct ScannedView: View {
                 
                 Divider()
                 
-                Image(uiImage: self.image ?? UIImage())
+                Image(uiImage: image ?? UIImage())
                     .resizable()
                     .scaledToFit()
                     .clipped()
@@ -213,7 +213,7 @@ struct ScannedView: View {
                     
                     Divider()
                     
-                    Image(uiImage: self.image2 ?? UIImage())
+                    Image(uiImage: image2 ?? UIImage())
                         .resizable()
                         .scaledToFit()
                         .clipped()
@@ -255,9 +255,9 @@ struct ScannedIncomeView: View {
     }
 
     var body: some View {
-        ScrollView() {
-            Group() {
-                HStack() {
+        ScrollView {
+            Group {
+                HStack {
                     Spacer()
                     
                     Button(action: {
@@ -329,11 +329,11 @@ struct ScanTipsView: View {
     
     init(infoType: String?, completion: @escaping ([String]?) -> Void) {
         self._infoType = State(wrappedValue: infoType)
-        self.completionHandler = completion
+        completionHandler = completion
     }
     
     var body: some View {
-        VStack() {
+        VStack {
             Image(systemName: "chevron.compact.down")
                 .resizable()
                 .frame(width: 60, height: 13)
@@ -342,9 +342,9 @@ struct ScanTipsView: View {
             
             Divider()
             
-            List() {
+            List {
                 // Title
-                HStack() {
+                HStack {
                     Spacer()
                     
                     Text("How to take a good scan")
@@ -367,7 +367,7 @@ struct ScanTipsView: View {
                     .font(.title3)
                 
                 // Steps
-                Group() {
+                Group {
                     Text("1. Place your document in a well-lit area.")
                     
                     Text("2. Tap \"Scan your \(infoType ?? "").\"")

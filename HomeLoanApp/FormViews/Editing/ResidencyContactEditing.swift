@@ -25,7 +25,7 @@ struct ResidencyContactEditing: View {
     @State var permanentResident = ""
     @State var countryOfPermanentResidence = 0
     @State var homeLanguage = 0
-    @State var corresLanguage = 0
+    @State var correspondenceLanguage = 0
     @State var cellNumber = ""
     @State var emailAddress = ""
     @State var resCountry = 0
@@ -69,7 +69,7 @@ struct ResidencyContactEditing: View {
         self._permanentResident = State(wrappedValue: self.application.permanentResident ?? "")
         self._countryOfPermanentResidence = State(wrappedValue: countries.firstIndex(of: self.application.countryOfPermanentResidence ?? "--select--") ?? 0)
         self._homeLanguage = State(wrappedValue: languages.firstIndex(of: self.application.homeLanguage ?? "--select--") ?? 0)
-        self._corresLanguage = State(wrappedValue: correslanguages.firstIndex(of: self.application.corresLanguage ?? "--select--") ?? 0)
+        self._correspondenceLanguage = State(wrappedValue: correspondenceLanguages.firstIndex(of: self.application.correspondenceLanguage ?? "--select--") ?? 0)
         self._cellNumber = State(wrappedValue: self.application.cellNumber ?? "")
         self._emailAddress = State(wrappedValue: self.application.emailAddress ?? "")
         self._resCountry = State(wrappedValue: countries.firstIndex(of: self.application.resCountry ?? "--select--") ?? 0)
@@ -98,12 +98,12 @@ struct ResidencyContactEditing: View {
             }
         }
         
-        self._initValues = State(wrappedValue: ["sACitizen": self.sACitizen, "nationality": self.nationality, "countryPassport": self.countryPassport, "countryBirth": self.countryBirth, "cityOfBirth": self.cityOfBirth, "permanentResident": self.permanentResident, "countryOfPermanentResidence": self.countryOfPermanentResidence, "homeLanguage": self.homeLanguage, "corresLanguage": self.corresLanguage, "cellNumber": self.cellNumber, "emailAddress": self.emailAddress, "resCountry": self.resCountry, "resLine1": self.resLine1, "resLine2": self.resLine2, "resSuburb": self.resSuburb, "resCity": self.resCity, "resProvince": self.resProvince, "resStreetCode": self.resStreetCode, "lengthAtAddress": "[\(lengthAtAddressYears)][\(lengthAtAddressMonths)]", "resIsPostal": self.resIsPostal, "postalCountry": self.postalCountry, "postalLine1": self.postalLine1, "postalLine2": self.postalLine2, "postalSuburb": self.postalSuburb, "postalCity": self.postalCity, "postalProvince": self.postalProvince, "postalStreetCode": self.postalStreetCode])
+        self._initValues = State(wrappedValue: ["sACitizen": sACitizen, "nationality": nationality, "countryPassport": countryPassport, "countryBirth": countryBirth, "cityOfBirth": cityOfBirth, "permanentResident": permanentResident, "countryOfPermanentResidence": countryOfPermanentResidence, "homeLanguage": homeLanguage, "correspondenceLanguage": correspondenceLanguage, "cellNumber": cellNumber, "emailAddress": emailAddress, "resCountry": resCountry, "resLine1": resLine1, "resLine2": resLine2, "resSuburb": resSuburb, "resCity": resCity, "resProvince": resProvince, "resStreetCode": resStreetCode, "lengthAtAddress": "[\(lengthAtAddressYears)][\(lengthAtAddressMonths)]", "resIsPostal": resIsPostal, "postalCountry": postalCountry, "postalLine1": postalLine1, "postalLine2": postalLine2, "postalSuburb": postalSuburb, "postalCity": postalCity, "postalProvince": postalProvince, "postalStreetCode": postalStreetCode])
     }
     
     // MARK: - body
     var body: some View {
-        Form() {
+        Form {
             Section(header: Text("RESIDENCY")) {
                 FormYesNo(iD: "sACitizen",
                           question: formQuestions[2][0] ?? "MISSING",
@@ -152,10 +152,10 @@ struct ResidencyContactEditing: View {
                            selectionOptions: languages,
                            selection: $homeLanguage)
                 
-                FormPicker(iD: "corresLanguage",
+                FormPicker(iD: "correspondenceLanguage",
                            question: formQuestions[2][8] ?? "MISSING",
-                           selectionOptions: correslanguages,
-                           selection: $corresLanguage)
+                           selectionOptions: correspondenceLanguages,
+                           selection: $correspondenceLanguage)
                 
                 FormTextField(iD: "cellNumber",
                               question: formQuestions[2][9] ?? "MISSING",
@@ -259,7 +259,7 @@ struct ResidencyContactEditing: View {
                 }
             }
             
-            Section() {
+            Section {
                 Button(action: {
                     handleSaving()
                 }) {
@@ -310,7 +310,7 @@ struct ResidencyContactEditing: View {
         var isComplete: Bool = false
         
         // Handle the non-optional questions
-        if !sACitizen.isEmpty && countryBirth != 0 && !cityOfBirth.isEmpty && homeLanguage != 0 && corresLanguage != 0 && !cellNumber.isEmpty && !emailAddress.isEmpty && resCountry != 0 && !resLine1.isEmpty && !resSuburb.isEmpty && !resCity.isEmpty && !resProvince.isEmpty && !resStreetCode.isEmpty && (!lengthAtAddressYears.isEmpty || !lengthAtAddressMonths.isEmpty) && !resIsPostal.isEmpty {
+        if !sACitizen.isEmpty && countryBirth != 0 && !cityOfBirth.isEmpty && homeLanguage != 0 && correspondenceLanguage != 0 && !cellNumber.isEmpty && !emailAddress.isEmpty && resCountry != 0 && !resLine1.isEmpty && !resSuburb.isEmpty && !resCity.isEmpty && !resProvince.isEmpty && !resStreetCode.isEmpty && (!lengthAtAddressYears.isEmpty || !lengthAtAddressMonths.isEmpty) && !resIsPostal.isEmpty {
             
             if sACitizen == "No" && resIsPostal == "No" {
                 if nationality != 0 && countryPassport != 0 && postalCountry != 0 && !postalLine1.isEmpty && !postalSuburb.isEmpty && !postalCity.isEmpty && !postalProvince.isEmpty && !postalStreetCode.isEmpty && ((permanentResident == "No" && countryOfPermanentResidence != 0) || permanentResident == "Yes") {
@@ -340,9 +340,9 @@ struct ResidencyContactEditing: View {
     
     // MARK: - hasChanged
     private func hasChanged() -> Bool {
-        self.savingValues = ["sACitizen": self.sACitizen, "nationality": self.nationality, "countryPassport": self.countryPassport, "countryBirth": self.countryBirth, "cityOfBirth": self.cityOfBirth, "permanentResident": self.permanentResident, "countryOfPermanentResidence": self.countryOfPermanentResidence, "homeLanguage": self.homeLanguage, "corresLanguage": self.corresLanguage, "cellNumber": self.cellNumber, "emailAddress": self.emailAddress, "resCountry": self.resCountry, "resLine1": self.resLine1, "resLine2": self.resLine2, "resSuburb": self.resSuburb, "resCity": self.resCity, "resProvince": self.resProvince, "resStreetCode": self.resStreetCode, "lengthAtAddress": "[\(lengthAtAddressYears)][\(lengthAtAddressMonths)]", "resIsPostal": self.resIsPostal, "postalCountry": self.postalCountry, "postalLine1": self.postalLine1, "postalLine2": self.postalLine2, "postalSuburb": self.postalSuburb, "postalCity": self.postalCity, "postalProvince": self.postalProvince, "postalStreetCode": self.postalStreetCode]
+        self.savingValues = ["sACitizen": sACitizen, "nationality": nationality, "countryPassport": countryPassport, "countryBirth": countryBirth, "cityOfBirth": cityOfBirth, "permanentResident": permanentResident, "countryOfPermanentResidence": countryOfPermanentResidence, "homeLanguage": homeLanguage, "correspondenceLanguage": correspondenceLanguage, "cellNumber": cellNumber, "emailAddress": emailAddress, "resCountry": resCountry, "resLine1": resLine1, "resLine2": resLine2, "resSuburb": resSuburb, "resCity": resCity, "resProvince": resProvince, "resStreetCode": resStreetCode, "lengthAtAddress": "[\(lengthAtAddressYears)][\(lengthAtAddressMonths)]", "resIsPostal": resIsPostal, "postalCountry": postalCountry, "postalLine1": postalLine1, "postalLine2": postalLine2, "postalSuburb": postalSuburb, "postalCity": postalCity, "postalProvince": postalProvince, "postalStreetCode": postalStreetCode]
         
-        if self.savingValues != self.initValues {
+        if savingValues != initValues {
             return true
         }
         

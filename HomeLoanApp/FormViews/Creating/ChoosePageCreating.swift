@@ -42,10 +42,10 @@ struct ChoosePageCreating: View {
     
     // MARK: - body
     var body: some View {
-        Form() {
+        Form {
             // General Details
             NavigationLink(destination: applicationCreation.generalDetailsSaved ? AnyView(GeneralDetailsEditing(isDone: $generalDetailsDone, application: applicationCreation.application, sender: .creator)) : AnyView(GeneralDetails(isDone: $generalDetailsDone))) {
-                HStack() {
+                HStack {
                     Text("General Details")
                         .font(.headline)
                     
@@ -58,7 +58,7 @@ struct ChoosePageCreating: View {
             
             // Personal Details
             NavigationLink(destination: applicationCreation.personalDetailsSaved ? AnyView(PersonalDetailsEditing(isDone: $personalDetailsDone, identityDoneBinding: $identityDone, application: applicationCreation.application, sender: .creator)) : AnyView(PersonalDetails(isDone: $personalDetailsDone, identityDoneBinding: $identityDone))) {
-                HStack() {
+                HStack {
                     Text("Personal Details")
                         .font(.headline)
                     
@@ -72,7 +72,7 @@ struct ChoosePageCreating: View {
             
             // Residency & Contact
             NavigationLink(destination: applicationCreation.residencyContactSaved ? AnyView(ResidencyContactEditing(isDone: $residencyContactDone, application: applicationCreation.application, sender: .creator)) : AnyView(ResidencyContact(isDone: $residencyContactDone))) {
-                HStack() {
+                HStack {
                     Text("Residency & Contact")
                         .font(.headline)
                     
@@ -86,7 +86,7 @@ struct ChoosePageCreating: View {
             
             // Subsidy & Credit
             NavigationLink(destination: applicationCreation.subsidyCreditSaved ? AnyView(SubsidyCreditEditing(isDone: $subsidyCreditDone, application: applicationCreation.application, sender: .creator)) : AnyView(SubsidyCredit(isDone: $subsidyCreditDone))) {
-                HStack() {
+                HStack {
                     Text("Subsidy & Credit")
                         .font(.headline)
                     
@@ -100,7 +100,7 @@ struct ChoosePageCreating: View {
             
             // Employment
             NavigationLink(destination: applicationCreation.employmentSaved ? AnyView(EmploymentEditing(isDone: $employmentDone, application: applicationCreation.application, sender: .creator)) : AnyView(Employment(isDone: $employmentDone))) {
-                HStack() {
+                HStack {
                     Text("Employment")
                         .font(.headline)
                     
@@ -114,7 +114,7 @@ struct ChoosePageCreating: View {
             
             // Income & Deductions
             NavigationLink(destination: applicationCreation.incomeSaved ? AnyView(IncomeDeductionsEditing(isDone: $incomeDeductionsDone, application: applicationCreation.application, sender: .creator)) : AnyView(IncomeDeductions(isDone: $incomeDeductionsDone))) {
-                HStack() {
+                HStack {
                     Text("Income & Deductions")
                         .font(.headline)
                     
@@ -128,7 +128,7 @@ struct ChoosePageCreating: View {
             
             // Expenses
             NavigationLink(destination: applicationCreation.expensesSaved ? AnyView(ExpensesEditing(isDone: $expensesDone, application: applicationCreation.application, sender: .creator)) : AnyView(Expenses(isDone: $expensesDone))) {
-                HStack() {
+                HStack {
                     Text("Expenses")
                         .font(.headline)
                     
@@ -142,7 +142,7 @@ struct ChoosePageCreating: View {
             
             // Assets & Liabilities
             NavigationLink(destination: applicationCreation.assetsLiabilitiesSaved ? AnyView(AssetsLiabilitiesEditing(isDone: $assetsLiabilitiesDone, application: applicationCreation.application, sender: .creator)) : AnyView(AssetsLiabilities(isDone: $assetsLiabilitiesDone))) {
-                HStack() {
+                HStack {
                     Text("Assets & Liabilities")
                         .font(.headline)
                     
@@ -155,10 +155,10 @@ struct ChoosePageCreating: View {
             .disabled(!generalDetailsDone)
             
             // Document Scans, Notification & Warranty
-            Group() {
+            Group {
                 // Document Scans
                 NavigationLink(destination: applicationCreation.documentScansSaved ? AnyView(DocumentScansEditing(application: applicationCreation.application, isDone: $documentScansDone, scanGroup: $scanGroup, sender: .creator)) : AnyView(DocumentScans(isDone: $documentScansDone, scanGroup: $scanGroup))) {
-                    HStack() {
+                    HStack {
                         Text("Supporting Documents")
                             .font(.headline)
                         
@@ -172,7 +172,7 @@ struct ChoosePageCreating: View {
                 
                 // Notification & Warranty
                 NavigationLink(destination: NotificationView(application: applicationCreation.application, signatureDone: $signatureDone, notificationCheck: $notificationCheck, isDone: $notificationDone, sender: .creator), tag: 18, selection: $selection) {
-                    HStack() {
+                    HStack {
                         Text("Notification")
                             .font(.headline)
                         
@@ -186,11 +186,11 @@ struct ChoosePageCreating: View {
             }
             
             // Submit Application
-            Section() {
+            Section {
                 if submitted {
                     Text("You have submitted this application.")
                 } else if !canSendMail { // Mail app is not installed
-                    HStack() {
+                    HStack {
                         Text("Please download the Mail app to submit your application.")
                         
                         Spacer()

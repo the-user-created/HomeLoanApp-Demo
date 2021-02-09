@@ -21,7 +21,7 @@ struct SignatureView: View {
     
     var body: some View {
         VStack(alignment: .center) {
-            HStack() {
+            HStack {
                 Text("Sign below")
                     .font(.title)
                 
@@ -62,10 +62,10 @@ struct DrawingControls: View {
     @State var loanID: String
     
     var body: some View {
-        VStack() {
-            HStack() {
+        VStack {
+            HStack {
                 Button("Undo") {
-                    if self.drawings.count > 0 {
+                    if drawings.count > 0 {
                         self.drawings.removeLast()
                     }
                 }
@@ -80,7 +80,7 @@ struct DrawingControls: View {
                 Spacer()
                 
                 Button(action: {
-                    self.saveImage("signature_\(loanID)_image.png") // Saves the signature png
+                    saveImage("signature_\(loanID)_image.png") // Saves the signature png
                     //self.drawings = [Drawing]() // Clears the drawing pad
                 }) {
                     Text("Save")
@@ -95,7 +95,7 @@ struct DrawingControls: View {
     }
     
     func saveImage(_ signatureName: String) {
-        if let signature = UIApplication.shared.windows[0].rootViewController?.view.asImage(rect: self.rect) {
+        if let signature = UIApplication.shared.windows[0].rootViewController?.view.asImage(rect: rect) {
             guard let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
 
             let fileURL = documentsDirectory.appendingPathComponent(signatureName)
@@ -137,12 +137,12 @@ struct DrawingPad: View {
     var body: some View {
         GeometryReader { geometry in
             Path { path in
-                for drawing in self.drawings {
-                    self.add(drawing: drawing, toPath: &path)
+                for drawing in drawings {
+                    add(drawing: drawing, toPath: &path)
                 }
-                self.add(drawing: self.currentDrawing, toPath: &path)
+                add(drawing: currentDrawing, toPath: &path)
             }
-            .stroke(self.color, lineWidth: self.lineWidth)
+            .stroke(color, lineWidth: lineWidth)
                 .background(Color(white: 0.95))
                 .gesture(
                     DragGesture(minimumDistance: 0.1)
@@ -153,7 +153,7 @@ struct DrawingPad: View {
                             }
                         })
                         .onEnded({ (value) in
-                            self.drawings.append(self.currentDrawing)
+                            self.drawings.append(currentDrawing)
                             self.currentDrawing = Drawing()
                         })
             )
@@ -180,7 +180,7 @@ struct RectGetter: View {
 
     var body: some View {
         GeometryReader { proxy in
-            self.createView(proxy: proxy)
+            createView(proxy: proxy)
         }
     }
 

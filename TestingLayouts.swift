@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TestingLayouts: View {
     var body: some View {
-        VStack() {
+        VStack {
             Image(systemName: "chevron.compact.down")
                 .resizable()
                 .frame(width: 60, height: 13)
@@ -17,9 +17,9 @@ struct TestingLayouts: View {
             
             Divider()
             
-            List() {
+            List {
                 // Title
-                HStack() {
+                HStack {
                     Spacer()
                     
                     Text("How to take a good scan")
@@ -36,7 +36,7 @@ struct TestingLayouts: View {
                     .font(.title3)
                 
                 // Steps
-                Group() {
+                Group {
                     Text("1. Place your document in a well-lit area.")
                     
                     Text("2. Tap \"Scan your (something)\".")

@@ -21,7 +21,7 @@
         <attribute name="coApplicantThreeName" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="coApplicantTwoName" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="companyRegNum" optional="YES" attributeType="String" defaultValueString=""/>
-        <attribute name="corresLanguage" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="correspondenceLanguage" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="countryBirth" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="countryMarriage" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="countryOfPermanentResidence" optional="YES" attributeType="String" defaultValueString=""/>

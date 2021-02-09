@@ -36,7 +36,7 @@ struct SignUpView: View {
         LoadingView(isShowing: $isSigningUp) {
             VStack(spacing: 15) {
                 // Clients name
-                HStack() {
+                HStack {
                     HStack {
                         CustomTextField(placeholder: "First Names...",
                                         textColor: .black,
@@ -78,7 +78,7 @@ struct SignUpView: View {
                 }
                 
                 // Email
-                HStack() {
+                HStack {
                     Image(systemName: "person")
                         .foregroundColor(.gray)
                     CustomTextField(
@@ -102,7 +102,7 @@ struct SignUpView: View {
                 .modifier(ShakeEffect(animatableData: CGFloat(invalidEmailAttempts)))
                 
                 // Email confirmation
-                HStack() {
+                HStack {
                     Image(systemName: "person")
                         .foregroundColor(.gray)
                     CustomTextField(

@@ -38,7 +38,7 @@ struct SubsidyCredit: View {
     
     // MARK: - body
     var body: some View {
-        Form() {
+        Form {
             Section(header: Text("SUBSIDY")) {
                 FormYesNo(iD: "subsidyForHome",
                           question: formQuestions[3][0] ?? "MISSING",
@@ -91,7 +91,7 @@ struct SubsidyCredit: View {
                           selected: $suretyAgreements)
             }
             
-            Section() {
+            Section {
                 Button(action: {
                     handleSaving()
                 }) {
@@ -107,10 +107,10 @@ struct SubsidyCredit: View {
                 handleSaving()
             }
         }
-        .onDisappear() {
+        .onDisappear {
             isActive = false
         }
-        .onAppear() {
+        .onAppear {
             isActive = true
         }
         .alert(isPresented: $showingAlert) {

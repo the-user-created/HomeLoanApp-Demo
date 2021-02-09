@@ -57,12 +57,12 @@ struct SubsidyCreditEditing: View {
         self._creditListings = State(wrappedValue: self.application.creditListings ?? "")
         self._suretyAgreements = State(wrappedValue: self.application.suretyAgreements ?? "")
         
-        self._initValues = State(wrappedValue: ["subsidyForHome": self.subsidyForHome, "applyingSubsidy": self.applyingSubsidy, "housingScheme": self.housingScheme, "currentAdmin": self.currentAdmin, "previousAdmin": self.previousAdmin, "judgement": self.judgement, "debtReview": self.debtReview, "debtReArrange": self.debtReArrange, "insolvent": self.insolvent, "creditBureau": self.creditBureau, "creditListings": self.creditListings, "suretyAgreements": self.suretyAgreements])
+        self._initValues = State(wrappedValue: ["subsidyForHome": subsidyForHome, "applyingSubsidy": applyingSubsidy, "housingScheme": housingScheme, "currentAdmin": currentAdmin, "previousAdmin": previousAdmin, "judgement": judgement, "debtReview": debtReview, "debtReArrange": debtReArrange, "insolvent": insolvent, "creditBureau": creditBureau, "creditListings": creditListings, "suretyAgreements": suretyAgreements])
     }
     
     // MARK: - body
     var body: some View {
-        Form() {
+        Form {
             Section(header: Text("SUBSIDY")) {
                 FormYesNo(iD: "subsidyForHome",
                           question: formQuestions[3][0] ?? "MISSING",
@@ -115,7 +115,7 @@ struct SubsidyCreditEditing: View {
                           selected: $suretyAgreements)
             }
             
-            Section() {
+            Section {
                 Button(action: {
                     handleSaving()
                 }) {
@@ -147,9 +147,9 @@ struct SubsidyCreditEditing: View {
     
     // MARK: - hasChanged
     private func hasChanged() -> Bool {
-        self.savingValues = ["subsidyForHome": self.subsidyForHome, "applyingSubsidy": self.applyingSubsidy, "housingScheme": self.housingScheme, "currentAdmin": self.currentAdmin, "previousAdmin": self.previousAdmin, "judgement": self.judgement, "debtReview": self.debtReview, "debtReArrange": self.debtReArrange, "insolvent": self.insolvent, "creditBureau": self.creditBureau, "creditListings": self.creditListings, "suretyAgreements": self.suretyAgreements]
+        self.savingValues = ["subsidyForHome": subsidyForHome, "applyingSubsidy": applyingSubsidy, "housingScheme": housingScheme, "currentAdmin": currentAdmin, "previousAdmin": previousAdmin, "judgement": judgement, "debtReview": debtReview, "debtReArrange": debtReArrange, "insolvent": insolvent, "creditBureau": creditBureau, "creditListings": creditListings, "suretyAgreements": suretyAgreements]
         
-        if self.savingValues != self.initValues {
+        if savingValues != initValues {
             return true
         }
         

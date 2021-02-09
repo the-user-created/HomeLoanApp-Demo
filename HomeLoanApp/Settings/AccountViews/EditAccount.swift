@@ -22,7 +22,7 @@ struct EmailTextField: View {
     // MARK: - body
     var body: some View {
         let binding = Binding<String>(get: {
-            self.text
+            text
         }, set: {
             self.text = $0.lowercased()
         })
@@ -65,7 +65,7 @@ struct EditAccount: View {
     @State var password: String = ""
     @State var emailChangeSuccess: Bool? = nil
     @State var nameChangeSuccess: Bool? = nil
-    @State var reauthenticationSuccess: Bool? = nil
+    @State var reauthenticateSuccess: Bool? = nil
     
     @State private var alertIsShowing: Bool = false
     @State private var userAuthSignIn: Bool = false
@@ -85,7 +85,7 @@ struct EditAccount: View {
     
     // MARK: - body
     var body: some View {
-        Form() {
+        Form {
             Section(header: Text("Full Name")) {
                 NameTextField(text: $firstNames, placeholder: "First names...")
                     .onChange(of: firstNames) { _ in
@@ -105,8 +105,8 @@ struct EditAccount: View {
                     }
             }
             
-            Section() {
-                HStack() {
+            Section {
+                HStack {
                     Spacer()
                     
                     Button(action: {
@@ -190,7 +190,7 @@ struct EditAccount: View {
                 // Authentication failed
                 print(error)
                 print("print - Error during re-authentication")
-                reauthenticationSuccess = false
+                reauthenticateSuccess = false
                 emailChangeSuccess = false
             } else {
                 // User re-authenticated

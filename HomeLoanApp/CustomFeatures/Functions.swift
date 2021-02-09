@@ -22,12 +22,12 @@ func findNth(_ query: String, text: String) -> [String.Index] {
 
 func otherQuestionCheck(other: String, otherText: String) -> OtherQuestionCheck {
     var result: OtherQuestionCheck = .neither
-    if !other.dropFirst().isEmpty && !otherText.isEmpty { // Both textfields have a input
+    if !other.dropFirst().isEmpty && !otherText.isEmpty { // Both text fields have a input
         result = .both
-    } else if other.dropFirst().isEmpty != otherText.isEmpty { // One textfield has a input
+    } else if other.dropFirst().isEmpty != otherText.isEmpty { // One text field has a input
         result = .one
     }
-    // If both textfields are empty the result is nil
+    // If both text fields are empty the result is nil
     
     return result
 }
@@ -40,7 +40,7 @@ func makeEmailBody(application: Application) -> String {
     for i in 0..<6 {
         let formID: String = formIDs[0][i] ?? ""
         let value = application.value(forKey: formID) ?? ""
-        generalDetails += "\(formQuestions[0][i] ?? "")  =  \(uppercasingIDs.contains(formID) ? (value as! String).uppercased() : value)\n"
+        generalDetails += "\(formQuestions[0][i] ?? "")  =  \(uppercaseIDs.contains(formID) ? (value as! String).uppercased() : value)\n"
     }
 
     let numberOfApplicants: Int = Int(application.numberOfApplicants ?? "1") ?? 1
@@ -72,7 +72,7 @@ func makeEmailBody(application: Application) -> String {
                 while j < 22 {
                     let jFormID = formIDs[1][j] ?? ""
                     let value = application.value(forKey: jFormID) ?? ""
-                    personalDetails += "\(formQuestions[1][j] ?? "")  =  \(uppercasingIDs.contains(jFormID) ? (value as! String).uppercased() : value)\n"
+                    personalDetails += "\(formQuestions[1][j] ?? "")  =  \(uppercaseIDs.contains(jFormID) ? (value as! String).uppercased() : value)\n"
                     j += 1
                 }
             }
@@ -82,7 +82,7 @@ func makeEmailBody(application: Application) -> String {
             if formID == "dateOfBirth" {
                 personalDetails += "\(formQuestions[1][i] ?? "")  =  \(dateFormatter.string(from: application.dateOfBirth ?? Date()))\n"
             } else {
-                personalDetails += "\(formQuestions[1][i] ?? "")  =  \(uppercasingIDs.contains(formID) ? (value as! String).uppercased() : value)\n"
+                personalDetails += "\(formQuestions[1][i] ?? "")  =  \(uppercaseIDs.contains(formID) ? (value as! String).uppercased() : value)\n"
             }
             i += 1
         }
@@ -107,8 +107,8 @@ func makeEmailBody(application: Application) -> String {
             if application.sACitizen == "No" {
                 residencyContact += "\(formQuestions[2][i] ?? "")  =  \((value as! String).uppercased())\n"
                 if (value as! String) == "No" {
-                    let countryPermaRes = ((application.value(forKey: formIDs[2][6] ?? "") ?? "") as! String).uppercased()
-                    residencyContact += "\(formQuestions[2][6] ?? "")  =  \(countryPermaRes)\n"
+                    let countryPermanentRes = ((application.value(forKey: formIDs[2][6] ?? "") ?? "") as! String).uppercased()
+                    residencyContact += "\(formQuestions[2][6] ?? "")  =  \(countryPermanentRes)\n"
                 }
             }
             
@@ -129,7 +129,7 @@ func makeEmailBody(application: Application) -> String {
             residencyContact += "\(formQuestions[2][i] ?? "")  =  \(handleLenAtText(years: lengthAtAddressYears, months: lengthAtAddressMonths))\n"
             i += 1
         } else {
-            residencyContact += "\(formQuestions[2][i] ?? "")  =  \(uppercasingIDs.contains(formID) ? (value as! String).uppercased() : value)\n"
+            residencyContact += "\(formQuestions[2][i] ?? "")  =  \(uppercaseIDs.contains(formID) ? (value as! String).uppercased() : value)\n"
             i += 1
         }
     }
@@ -187,7 +187,7 @@ func makeEmailBody(application: Application) -> String {
             
             employment += "\(formQuestions[4][i] ?? "")  =  \(handleLenAtText(years: pEDurationYears, months: pEDurationMonths))\n"
         } else {
-            employment += "\(formQuestions[4][i] ?? "")  =  \(uppercasingIDs.contains(formID) ? (value as! String).uppercased() : value)\n"
+            employment += "\(formQuestions[4][i] ?? "")  =  \(uppercaseIDs.contains(formID) ? (value as! String).uppercased() : value)\n"
         }
     }
 

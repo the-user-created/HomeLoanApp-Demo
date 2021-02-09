@@ -28,7 +28,7 @@ struct HomeView: View {
     
     var body: some View {
         ZStack {
-            Group() {
+            Group {
                 Image("LSImage")
                     .resizable()
                     .ignoresSafeArea(.all)
@@ -58,7 +58,7 @@ struct HomeView: View {
             .animation(.timingCurve(0.65, 0.0, 0.25, 0.75, duration: 2.0))
             .padding(.bottom, viewLoaded ? 10 : -150)
         }
-        .onAppear() {
+        .onAppear {
             self.viewLoaded = true
         }
         .onReceive(orientationPub) { _ in

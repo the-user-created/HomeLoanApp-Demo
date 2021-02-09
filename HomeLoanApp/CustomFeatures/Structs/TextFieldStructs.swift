@@ -43,7 +43,7 @@ struct PasswordTextField: View {
     var commit: ()->() = { }
     
     var body: some View {
-        HStack() {
+        HStack {
             Image(systemName: "lock")
                 .foregroundColor(.gray)
                 .padding(.leading, 3)

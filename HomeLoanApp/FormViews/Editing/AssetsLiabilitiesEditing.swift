@@ -93,14 +93,20 @@ struct AssetsLiabilitiesEditing: View {
             }
         }
         
-        self._initValues = State(wrappedValue: ["fixedProperty": self.fixedProperty, "vehicles": self.vehicles, "furnitureFittings": self.furnitureFittings, "assetLiabilityInvestments": self.assetLiabilityInvestments, "cashOnHand": self.cashOnHand, "otherAsset": "[\(self.otherAsset)][\(self.otherAssetText)]", "mortgageBonds": self.mortgageBonds, "installmentSales": self.installmentSales, "creditCards": self.creditCards, "currentAcc": self.currentAcc, "personalLoans": self.personalLoans, "retailAcc": self.retailAcc, "otherDebt": self.otherDebt, "otherAcc": "[\(self.otherAcc)][\(self.otherAccText)]", "otherLiabilities": "[\(self.otherLiabilities)][\(self.otherLiabilitiesText)]"])
+        self._initValues = State(wrappedValue: ["fixedProperty": fixedProperty, "vehicles": vehicles, "furnitureFittings": furnitureFittings,
+                                                "assetLiabilityInvestments": assetLiabilityInvestments, "cashOnHand": cashOnHand,
+                                                "otherAsset": "[\(otherAsset)][\(otherAssetText)]", "mortgageBonds": mortgageBonds,
+                                                "installmentSales": installmentSales, "creditCards": creditCards, "currentAcc": currentAcc,
+                                                "personalLoans": personalLoans, "retailAcc": retailAcc, "otherDebt": otherDebt,
+                                                "otherAcc": "[\(otherAcc)][\(otherAccText)]",
+                                                "otherLiabilities": "[\(otherLiabilities)][\(otherLiabilitiesText)]"])
     }
     
     // MARK: - body
     var body: some View {
-        Form() {
+        Form {
             Section(header: AssetLiabilityInfo(whichInfo: "assets")) {
-                Group() {
+                Group {
                     FormRandTextField(iD: "fixedProperty",
                                       question: formQuestions[7][0] ?? "MISSING",
                                       text: $fixedProperty)
@@ -172,7 +178,7 @@ struct AssetsLiabilitiesEditing: View {
                 }
             }
             
-            Section() {
+            Section {
                 Button(action: {
                     handleSaving()
                 }) {
@@ -186,7 +192,7 @@ struct AssetsLiabilitiesEditing: View {
         .onReceive(resignPub) { _ in
             handleSaving()
         }
-        .onDisappear() {
+        .onDisappear {
             UIApplication.shared.endEditing()
         }
         .alert(isPresented: $showingAlert) {
@@ -219,9 +225,9 @@ struct AssetsLiabilitiesEditing: View {
     
     // MARK: - hasChanged
     private func hasChanged() -> Bool {
-        self.savingValues = ["fixedProperty": self.fixedProperty, "vehicles": self.vehicles, "furnitureFittings": self.furnitureFittings, "assetLiabilityInvestments": self.assetLiabilityInvestments, "cashOnHand": self.cashOnHand, "otherAsset": "[\(self.otherAsset)][\(self.otherAssetText)]", "mortgageBonds": self.mortgageBonds, "installmentSales": self.installmentSales, "creditCards": self.creditCards, "currentAcc": self.currentAcc, "personalLoans": self.personalLoans, "retailAcc": self.retailAcc, "otherDebt": self.otherDebt, "otherAcc": "[\(self.otherAcc)][\(self.otherAccText)]", "otherLiabilities": "[\(self.otherLiabilities)][\(self.otherLiabilitiesText)]"]
+        self.savingValues = ["fixedProperty": fixedProperty, "vehicles": vehicles, "furnitureFittings": furnitureFittings, "assetLiabilityInvestments": assetLiabilityInvestments, "cashOnHand": cashOnHand, "otherAsset": "[\(otherAsset)][\(otherAssetText)]", "mortgageBonds": mortgageBonds, "installmentSales": installmentSales, "creditCards": creditCards, "currentAcc": currentAcc, "personalLoans": personalLoans, "retailAcc": retailAcc, "otherDebt": otherDebt, "otherAcc": "[\(otherAcc)][\(otherAccText)]", "otherLiabilities": "[\(otherLiabilities)][\(otherLiabilitiesText)]"]
         
-        if self.savingValues != self.initValues {
+        if savingValues != initValues {
             return true
         }
         

@@ -53,19 +53,19 @@ class ApplicationCreation: ObservableObject {
     @Published var incomeSaved: Bool = false
     
     func makeApplication() {
-        self.application = Application(context: PersistenceController.shared.container.viewContext)
+        application = Application(context: PersistenceController.shared.container.viewContext)
     }
     
     func removeApplicationFromMemory() {
-        self.application = Application()
-        self.generalDetailsSaved = false
-        self.assetsLiabilitiesSaved = false
-        self.residencyContactSaved = false
-        self.personalDetailsSaved = false
-        self.subsidyCreditSaved = false
-        self.notificationSaved = false
-        self.employmentSaved = false
-        self.expensesSaved = false
-        self.incomeSaved = false
+        application = Application()
+        generalDetailsSaved = false
+        assetsLiabilitiesSaved = false
+        residencyContactSaved = false
+        personalDetailsSaved = false
+        subsidyCreditSaved = false
+        notificationSaved = false
+        employmentSaved = false
+        expensesSaved = false
+        incomeSaved = false
     }
 }

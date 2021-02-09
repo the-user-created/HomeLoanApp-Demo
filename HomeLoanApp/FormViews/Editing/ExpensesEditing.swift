@@ -96,12 +96,12 @@ struct ExpensesEditing: View {
         
         self._calculatedExpenses = State(wrappedValue: calculateExpenses())
         
-        self._initValues = State(wrappedValue: ["rental": self.rental, "expensesInvestments": self.expensesInvestments, "ratesTaxes": self.ratesTaxes, "waterLights": self.waterLights, "homeMain": self.homeMain, "petrolCar": self.petrolCar, "insurance": self.insurance, "assurance": self.assurance, "timeshare": self.timeshare, "groceries": self.groceries, "clothing": self.clothing, "levies": self.levies, "domesticWages": self.domesticWages, "education": self.education, "expensesEntertainment": self.expensesEntertainment, "security": self.security, "propertyRentExp": self.propertyRentExp, "medical": self.medical, "donations": self.donations, "cellphone": self.cellphone, "mNetDSTV": self.mNetDSTV, "telephoneISP": self.telephoneISP, "expensesMaintenanceAlimony": self.expensesMaintenanceAlimony, "installmentExp": self.installmentExp, "otherExpenses": "[\(self.otherExpenses)][\(self.otherExpensesText)]"])
+        self._initValues = State(wrappedValue: ["rental": rental, "expensesInvestments": expensesInvestments, "ratesTaxes": ratesTaxes, "waterLights": waterLights, "homeMain": homeMain, "petrolCar": petrolCar, "insurance": insurance, "assurance": assurance, "timeshare": timeshare, "groceries": groceries, "clothing": clothing, "levies": levies, "domesticWages": domesticWages, "education": education, "expensesEntertainment": expensesEntertainment, "security": security, "propertyRentExp": propertyRentExp, "medical": medical, "donations": donations, "cellphone": cellphone, "mNetDSTV": mNetDSTV, "telephoneISP": telephoneISP, "expensesMaintenanceAlimony": expensesMaintenanceAlimony, "installmentExp": installmentExp, "otherExpenses": "[\(otherExpenses)][\(otherExpensesText)]"])
     }
     
     // MARK: - body
     var body: some View {
-        Form() {
+        Form {
             Section(header: Text("EXPENSES")) {
                 Section(header: Text("Total Expenses").font(.headline)) {
                     Text("R\(calculatedExpenses)")
@@ -223,7 +223,7 @@ struct ExpensesEditing: View {
                 }
             }
             
-            Section() {
+            Section {
                 Button(action: {
                     handleSaving()
                 }) {
@@ -237,7 +237,7 @@ struct ExpensesEditing: View {
         .onReceive(resignPub) { _ in
             handleSaving()
         }
-        .onDisappear() {
+        .onDisappear {
             UIApplication.shared.endEditing()
         }
         .onChange(of: [rental, expensesInvestments, ratesTaxes, waterLights, homeMain, petrolCar, insurance, assurance, timeshare, groceries, clothing, levies, domesticWages, education, expensesEntertainment, security, propertyRentExp, medical, donations, cellphone, mNetDSTV, telephoneISP, expensesMaintenanceAlimony, installmentExp, otherExpenses]) { _ in
@@ -268,9 +268,9 @@ struct ExpensesEditing: View {
     
     // MARK: - hasChanged
     private func hasChanged() -> Bool {
-        self.savingValues = ["rental": self.rental, "expensesInvestments": self.expensesInvestments, "ratesTaxes": self.ratesTaxes, "waterLights": self.waterLights, "homeMain": self.homeMain, "petrolCar": self.petrolCar, "insurance": self.insurance, "assurance": self.assurance, "timeshare": self.timeshare, "groceries": self.groceries, "clothing": self.clothing, "levies": self.levies, "domesticWages": self.domesticWages, "education": self.education, "expensesEntertainment": self.expensesEntertainment, "security": self.security, "propertyRentExp": self.propertyRentExp, "medical": self.medical, "donations": self.donations, "cellphone": self.cellphone, "mNetDSTV": self.mNetDSTV, "telephoneISP": self.telephoneISP, "expensesMaintenanceAlimony": self.expensesMaintenanceAlimony, "installmentExp": self.installmentExp, "otherExpenses": "[\(self.otherExpenses)][\(self.otherExpensesText)]"]
+        self.savingValues = ["rental": rental, "expensesInvestments": expensesInvestments, "ratesTaxes": ratesTaxes, "waterLights": waterLights, "homeMain": homeMain, "petrolCar": petrolCar, "insurance": insurance, "assurance": assurance, "timeshare": timeshare, "groceries": groceries, "clothing": clothing, "levies": levies, "domesticWages": domesticWages, "education": education, "expensesEntertainment": expensesEntertainment, "security": security, "propertyRentExp": propertyRentExp, "medical": medical, "donations": donations, "cellphone": cellphone, "mNetDSTV": mNetDSTV, "telephoneISP": telephoneISP, "expensesMaintenanceAlimony": expensesMaintenanceAlimony, "installmentExp": installmentExp, "otherExpenses": "[\(otherExpenses)][\(otherExpensesText)]"]
         
-        if self.savingValues != self.initValues {
+        if savingValues != initValues {
             return true
         }
         

@@ -59,9 +59,9 @@ struct IncomeDeductions: View {
     
     // MARK: - body
     var body: some View {
-        Form() {
+        Form {
             Section(header: Text("INCOME")) {
-                Group() {
+                Group {
                     FormRandTextField(iD: "basicSalary",
                                       question: formQuestions[5][0] ?? "MISSING",
                                       text: $basicSalary)
@@ -99,7 +99,7 @@ struct IncomeDeductions: View {
                                       text: $monthCarAllowance)
                 }
                 
-                Group() {
+                Group {
                     FormRandTextField(iD: "interestIncome",
                                       question: formQuestions[5][9] ?? "MISSING",
                                       text: $interestIncome)
@@ -165,7 +165,7 @@ struct IncomeDeductions: View {
                     .font(.headline)
             }
             
-            Section() {
+            Section {
                 Button(action: {
                     handleSaving()
                 }) {
@@ -181,19 +181,19 @@ struct IncomeDeductions: View {
                 handleSaving()
             }
         }
-        .onDisappear() {
+        .onDisappear {
             isActive = false
         }
-        .onAppear() {
+        .onAppear {
             isActive = true
         }
         .onChange(of: [basicSalary, wages, averageComm, investments, rentIncome, futureRentIncome, housingSub, averageOvertime, monthCarAllowance, interestIncome, travelAllowance, entertainment, incomeFromSureties, maintenanceAlimony, otherIncome]) { _ in
             calculatedIncome = calculateIncome()
-            netSalary = String(format: "%.2f", (Float(self.calculatedIncome) ?? 0.0) - (Float(self.calculatedDeductions) ?? 0.0))
+            netSalary = String(format: "%.2f", (Float(calculatedIncome) ?? 0.0) - (Float(calculatedDeductions) ?? 0.0))
         }
         .onChange(of: [tax, pension, uIF, medicalAid, otherDeduction]) { _ in
             calculatedDeductions = calculateDeductions()
-            netSalary = String(format: "%.2f", (Float(self.calculatedIncome) ?? 0.0) - (Float(self.calculatedDeductions) ?? 0.0))
+            netSalary = String(format: "%.2f", (Float(calculatedIncome) ?? 0.0) - (Float(calculatedDeductions) ?? 0.0))
         }
         .alert(isPresented: $showingAlert) {
             Alert(title: Text(""), message: Text(alertMessage), dismissButton: .default(Text("OK")))

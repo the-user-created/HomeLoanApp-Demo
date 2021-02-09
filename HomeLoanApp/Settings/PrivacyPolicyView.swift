@@ -24,8 +24,8 @@ struct PrivacyPolicyView: View {
     }
     
     var body: some View {
-        NavigationView() {
-            List() {
+        NavigationView {
+            List {
                 //Text("Last Updated \(dateTime.string(from: Date()))")
                 
                 Text("Last Updated 08 February 2021 at 09:48")

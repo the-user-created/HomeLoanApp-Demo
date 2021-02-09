@@ -18,14 +18,15 @@ let propertyType = ["--select--", "Duets - Sectional Title", "Normal residential
 let titles = ["--select--", "Dr", "Me", "Mej", "Mev", "Miss", "Mnr", "Mr", "Mrs", "Ms", "Prof"]
 let identityTypes = ["--select--", "ID Book", "Passport", "Recognised Refugee in SA (Section 24)", "SA Refugee Identity (Maroon ID)", "Smart ID Card"]
 let genderSelection = ["--select--", "Male", "Female"]
-let educationLevels = ["--select--", "Cretificate 24 Months", "Degree", "Diploma 1 Years", "Diploma 2 Years", "Diploma 3 Years", "Doctorate", "Honours", "Masters", "Matric", "No Matric", "Post Graduate Diploma"]
+let educationLevels = ["--select--", "Certificate 24 Months", "Degree", "Diploma 1 Years", "Diploma 2 Years", "Diploma 3 Years", "Doctorate", "Honours",
+                       "Masters", "Matric", "No Matric", "Post Graduate Diploma"]
 let ethnicGroups = ["--select--", "Asian", "Black", "Coloured", "White"]
 let maritalStatuses = ["--select--", "Divorced", "Married Antenuptial Contract", "Married in Community of Property", "Other (Including Common Law)", "Single"]
 let currentResStatuses = ["--select--", "Other", "Owner", "Tenant"]
 
 // MARK: - RESIDENCY & CONTACT
 let languages = ["--select--", "English", "Afrikaans", "IsiNdebele", "IsiXhosa", "IsiZulu", "Other", "Sepedi", "Sesotho", "Setswana", "SiSwati", "Tshivenda", "Xitsonga"]
-let correslanguages = ["--select--", "English", "Afrikaans", "IsiZulu", "Sesotho", "Xitsonga"]
+let correspondenceLanguages = ["--select--", "English", "Afrikaans", "IsiZulu", "Sesotho", "Xitsonga"]
 
 // MARK: - SUBSIDY & CREDIT
 /// None
