@@ -19,7 +19,7 @@ struct AssetLiabilityInfo: View {
             
             Button(action: {
                 self.infoShowing = true
-                infoString = whichInfo == "assets" ? "An asset is something which you own." : "A liability is something which you owe."
+                infoString = whichInfo == "assets" ? "An asset is something which you own. Estimate its value." : "A liability is something which you owe. Estimate what you owe."
             }) {
                 Image(systemName: "info.circle")
                     .resizable()
@@ -165,6 +165,8 @@ struct FormTextField: View {
     var editingChanged: (Bool)->() = { _ in }
     var commit: ()->() = { }
     
+    var ignoredExampleIDs: [String] = ["companyRegNum", "employeeNum", "employerLine1", "employerLine2", "employerSuburb", "employerCity", "employerProvince", "employerStreetCode", "workPhoneNum", "previousEmployer", "pEContact"]
+    
     var body: some View {
         let binding = Binding<String>(get: {
             text
@@ -177,7 +179,7 @@ struct FormTextField: View {
                 FormLabel(iD: iD, question: question, infoButton: infoButton)
             }
             
-            TextField("e.g. " + placeholder.uppercased(),
+            TextField(ignoredExampleIDs.contains(iD) ? "" : "e.g. " + placeholder.uppercased(),
                       text: binding,
                       onEditingChanged: { _ in
                         changedValues.updateKeyValue(iD, value: binding.wrappedValue)
@@ -261,25 +263,23 @@ struct FormOtherRand: View {
         })
         
         VStack {
-            HStack {
-                FormLabel(iD: iD, question: question, infoButton: infoButton)
-                
-                TextField("R",
-                          text: randBinding, onEditingChanged: { _ in updateChangedValues() },
-                          onCommit: commit)
-                    .foregroundColor(.primary)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .multilineTextAlignment(.trailing)
-                    .keyboardType(.decimalPad)
-                }
+            FormLabel(iD: iD, question: question, infoButton: infoButton)
             
-                TextField("specify...",
-                          text: binding, onEditingChanged: { _ in updateChangedValues() },
-                          onCommit: commit)
-                    .foregroundColor(.primary)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .multilineTextAlignment(.trailing)
-                    .keyboardType(.alphabet)
+            TextField("R",
+                      text: randBinding, onEditingChanged: { _ in updateChangedValues() },
+                      onCommit: commit)
+                .foregroundColor(.primary)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .multilineTextAlignment(.trailing)
+                .keyboardType(.decimalPad)
+            
+            TextField("specify...",
+                      text: binding, onEditingChanged: { _ in updateChangedValues() },
+                      onCommit: commit)
+                .foregroundColor(.primary)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .multilineTextAlignment(.trailing)
+                .keyboardType(.alphabet)
         }
     }
     

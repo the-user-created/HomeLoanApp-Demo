@@ -106,14 +106,14 @@ struct AssetsLiabilities: View {
                                       text: $otherDebt)
                     
                     FormOtherRand(iD: "otherAcc",
-                                      question: formQuestions[7][13] ?? "MISSING",
-                                      other: $otherAcc,
-                                      otherText: $otherAccText)
+                                  question: formQuestions[7][13] ?? "MISSING",
+                                  other: $otherAcc,
+                                  otherText: $otherAccText)
                     
                     FormOtherRand(iD: "otherLiabilities",
-                                      question: formQuestions[7][14] ?? "MISSING",
-                                      other: $otherLiabilities,
-                                      otherText: $otherLiabilitiesText)
+                                  question: formQuestions[7][14] ?? "MISSING",
+                                  other: $otherLiabilities,
+                                  otherText: $otherLiabilitiesText)
                 }
             }
             

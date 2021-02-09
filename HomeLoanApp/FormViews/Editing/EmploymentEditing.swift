@@ -156,7 +156,7 @@ struct EmploymentEditing: View {
                                   placeholder: formTextFieldPlaceholders[4][8] ?? "MISSING",
                                   text: $companyRegNum, sender: .editor)
                     
-                    FormTextField(iD: "employeeNum",
+                    FormTextField(iD: "employeeNum", infoButton: true,
                                   question: formQuestions[4][9] ?? "MISSING",
                                   placeholder: formTextFieldPlaceholders[4][9] ?? "MISSING",
                                   text: $employeeNum, sender: .editor)

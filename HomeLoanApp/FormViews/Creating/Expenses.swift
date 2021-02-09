@@ -235,10 +235,10 @@ struct Expenses: View {
         }
     }
     
-    // MARK: - calculateIncome
+    // MARK: - calculateExpenses
     private func calculateExpenses() -> String {
         var totalIncome: Float = 0.0
-        let incomeList: [String] = [String(rental.dropFirst()), String(expensesInvestments.dropFirst()), String(ratesTaxes.dropFirst()), String(waterLights.dropFirst()), String(homeMain.dropFirst()), String(petrolCar.dropFirst()), String(insurance.dropFirst()), String(assurance.dropFirst()), String(domesticWages.dropFirst()), String(education.dropFirst()), String(expensesEntertainment.dropFirst()), String(security.dropFirst()), String(propertyRentExp.dropFirst()), String(medical.dropFirst()), String(donations.dropFirst()), String(cellphone.dropFirst()), String(mNetDSTV.dropFirst()), String(telephoneISP.dropFirst()), String(expensesMaintenanceAlimony.dropFirst()), String(installmentExp.dropFirst()), String(otherExpenses.dropFirst())]
+        let incomeList: [String] = [String(rental.dropFirst()), String(expensesInvestments.dropFirst()), String(ratesTaxes.dropFirst()), String(waterLights.dropFirst()), String(homeMain.dropFirst()), String(petrolCar.dropFirst()), String(insurance.dropFirst()), String(assurance.dropFirst()), String(timeshare.dropFirst()), String(groceries.dropFirst()), String(clothing.dropFirst()), String(levies.dropFirst()), String(domesticWages.dropFirst()), String(education.dropFirst()), String(expensesEntertainment.dropFirst()), String(security.dropFirst()), String(propertyRentExp.dropFirst()), String(medical.dropFirst()), String(donations.dropFirst()), String(cellphone.dropFirst()), String(mNetDSTV.dropFirst()), String(telephoneISP.dropFirst()), String(expensesMaintenanceAlimony.dropFirst()), String(installmentExp.dropFirst()), String(otherExpenses.dropFirst())]
         
         for income in incomeList {
             totalIncome = totalIncome.advanced(by: Float(income.replacingOccurrences(of: ",", with: ".")) ?? 0.0)

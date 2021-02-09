@@ -267,7 +267,7 @@ struct ChoosePageEditing: View {
             if sheetType == .mailView {
                 let clientName = "\(application.surname ?? "NIL"), \(application.firstNames ?? "NIL")"
                 let recipients = [salesConsultantEmails[salesConsultant] ?? ""]
-                MailView(clientName: clientName, emailBody: makeEmailBody(application: application), recipients: recipients, attachments: [:],
+                MailView(clientName: clientName, emailBody: makeEmailBody(application: application), recipients: recipients, attachments: getAttachments(),
                          isShowing: self.$sheetShowing, result: self.$result, submitted: $submitted)
             } /*else if sheetType == .whatsNext {
                 WhatsNext()

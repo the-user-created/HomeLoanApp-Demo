@@ -36,7 +36,7 @@ let formQuestions: [[Int: String]] = [
     // INCOME & DEDUCTIONS
     [0: "Basic Salary:", 1: "Wages", 2: "Average Commissions", 3: "Investments", 4: "Rental Income", 5: "Future Rental Income", 6: "Housing Subsidy",
      7: "Average Overtime", 8: "Monthly Car Allowance", 9: "Interest Income", 10: "Travel Allowance", 11: "Entertainment", 12: "Income from Sureties",
-     13: "Maintenance/Alimony", 14: "Other (specify)", 15: "Tax - PAYE/SITE", 16: "Pension", 17: "UIF", 18: "Medical Aid", 19: "Other (specify)"],
+     13: "Maintenance/Alimony", 14: "Other Income (specify)", 15: "Tax - PAYE/SITE", 16: "Pension", 17: "UIF", 18: "Medical Aid", 19: "Other Deductions (specify)"],
     // EXPENSES
     [0: "Rental", 1: "Investments", 2: "Rates & Taxes", 3: "Water & Lights", 4: "Home Maintenance / Garden Services", 5: "Petrol & Car Maintenance",
      6: "Insurance & Funeral Policies", 7: "Assurance", 8: "Timeshare", 9: "Groceries", 10: "Clothing", 11: "Levies",
@@ -90,7 +90,7 @@ let uppercaseIDs: [String] = ["salesConsultant", "applicationType", "applicantTy
 
 let formTextFieldPlaceholders: [[Int: String]] = [
     [5: "1"],
-    [1: "Appleseed", 2: "Johnny", 6: "1234567891012", 7: "1234567891012", 8: "123456789", 9: "", 11: "1110502222", 21: "2"],
+    [1: "Appleseed", 2: "Johnny", 6: "1234567891012", 7: "1234567891012", 8: "123456789", 9: "1234567891012", 11: "1110502222", 21: "2"],
     [4: "Cape Town", 9: "082 345 6789", 10: "homeloans@ooba.co.za", 12: "33 Bree Street", 13: "8th Floor, ooba House", 14: "City Centre", 15: "Cape Town", 16: "Western Cape", 17: "8000"],
     [:],
     [3: "Technician", 6: "Other Service Activities", 7: "Jobs", 8: "", 9: "", 12: "", 13: "", 14: "", 15: "", 16: "", 17: "", 18: "", 22: "", 23: ""]
@@ -101,6 +101,7 @@ let countries = ["--select--", "South Africa", "Afghanistan", "Albania", "Algeri
 
 let infos: [String: [String]] = [
     "companyRegNum": ["If you do not know what your company registration number is, leave this blank."],
+    "employeeNum": ["If you do not have a employee number, leave this blank."],
     "natureOfBusiness": ["What does your employer do?"],
     "natureOfOccupation": ["What is your job title?"]
 ]

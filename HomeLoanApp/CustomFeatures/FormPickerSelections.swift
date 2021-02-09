@@ -29,7 +29,7 @@ let languages = ["--select--", "English", "Afrikaans", "IsiNdebele", "IsiXhosa",
 let correspondenceLanguages = ["--select--", "English", "Afrikaans", "IsiZulu", "Sesotho", "Xitsonga"]
 
 // MARK: - SUBSIDY & CREDIT
-/// None
+/// NONE
 
 
 // MARK: - EMPLOYMENT

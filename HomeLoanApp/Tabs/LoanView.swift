@@ -27,6 +27,14 @@ struct LoanView: View {
     @State private var alertText: String = ""
     @State private var alertURL: String = ""
     
+    // MARK: - Properties
+    var date: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.locale = Locale(identifier: "en_ZA")
+        return formatter
+    }
+    
     // MARK: - body
     var body: some View {
         NavigationView {
@@ -46,7 +54,7 @@ struct LoanView: View {
                     NavigationLink(destination: ChoosePageEditing(application: application)) {
                         HStack {
                             VStack(alignment: .leading) {
-                                Text("Application created on \(application.loanCreatedDate ?? Date(), formatter: dateFormatter)")
+                                Text("Application created on \(date.string(from: application.loanCreatedDate ?? Date()))")
                                     .font(.headline)
                                 
                                 Text("Status: \(application.loanStatus ?? "")")

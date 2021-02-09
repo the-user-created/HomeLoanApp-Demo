@@ -221,7 +221,7 @@ struct IncomeDeductionsEditing: View {
                 }
             }
         }
-        .navigationBarTitle("Income")
+        .navigationBarTitle("Income & Deductions")
         .onReceive(resignPub) { _ in
             handleSaving()
         }

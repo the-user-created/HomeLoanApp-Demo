@@ -33,7 +33,7 @@ func otherQuestionCheck(other: String, otherText: String) -> OtherQuestionCheck 
 }
 
 // MARK: - makeEmailBody
-func makeEmailBody(application: Application) -> String {
+func makeEmailBody(application: Application) -> String{
     // GENERAL
     var generalDetails = "General Details:\n\n"
 
@@ -128,6 +128,10 @@ func makeEmailBody(application: Application) -> String {
             
             residencyContact += "\(formQuestions[2][i] ?? "")  =  \(handleLenAtText(years: lengthAtAddressYears, months: lengthAtAddressMonths))\n"
             i += 1
+        } else if i == 10 {
+            residencyContact += "\(formQuestions[2][i] ?? "")  =  \(uppercaseIDs.contains(formID) ? (value as! String).uppercased() : value)\n"
+            residencyContact += "Residential Address:\n"
+            i += 1
         } else {
             residencyContact += "\(formQuestions[2][i] ?? "")  =  \(uppercaseIDs.contains(formID) ? (value as! String).uppercased() : value)\n"
             i += 1
@@ -135,6 +139,7 @@ func makeEmailBody(application: Application) -> String {
     }
 
     if application.resIsPostal == "No" {
+        residencyContact += "Postal Address:\n"
         residencyContact += "\(formQuestions[2][11] ?? "")  =  \(application.postalCountry ?? "")\n"
         residencyContact += "\(formQuestions[2][12] ?? "")  =  \(application.postalLine1 ?? "")\n"
         residencyContact += "\(formQuestions[2][13] ?? "")  =  \(application.postalLine2 ?? "")\n"
