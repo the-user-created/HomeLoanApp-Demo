@@ -23,7 +23,7 @@ let formQuestions: [[Int: String]] = [
      3: "What is your country of birth?", 4: "What is your city of birth?", 5: "Are you a permanent South African resident?", 6: "What is your country of permanent residence?", 7: "What is your home language?", 8: "What is your preferred language of correspondence?", 9: "What is your cell number?", 10: "What is your email address?",
      11: "Country:", 12: "Line 1:", 13: "Line 2:", 14: "Suburb:", 15: "City/Town:", 16: "Province:", 17: "Street Code:", 18: "Length at current address:", 19: "Are your postal and residential addresses identical?"],
     // SUBSIDY & CREDIT HISTORY
-    [0: "Have your every applied for a subsidy to buy a home?", 1: "Are you applying for a subsidy now?", 2: "Do you belong to a housing scheme?",
+    [0: "Have you ever applied for a subsidy to buy a home?", 1: "Are you applying for a subsidy now?", 2: "Do you belong to a housing scheme?",
      3: "Are you currently under Administration?", 4: "Were you ever under Administration?", 5: "Have you ever had a judgement?",
      6: "Are you currently under Debt Review?", 7: "Are you currently under any debt re-arrangement?", 8: "Have you ever been declared insolvent?",
      9: "Are you currently in a Credit Bureau Dispute?", 10: "Are you aware if any adverse credit listings?", 11: "Are you bound by any surety agreements?"],
@@ -106,7 +106,7 @@ let infos: [String: [String]] = [
     "natureOfOccupation": ["What is your job title?"]
 ]
 
-let salesConsultantEmails: [String: String] = ["Gavin Young": "davidsamuelyoung@protonmail.com"]//"gavinyoung@mweb.co.za"]
+let salesConsultantEmails: [String: String] = ["Gavin Young": "davidsamuelyoung@protonmail.com", "Example": "someone@somewhere.something"]
 
 var reverseDateFormatter: DateFormatter {
     let formatter = DateFormatter()
