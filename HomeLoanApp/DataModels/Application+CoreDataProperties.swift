@@ -211,6 +211,10 @@ extension Application {
     // MARK: - Notification/Warranty
     @NSManaged public var notificationsCheck: String?
     
+    
+    // MARK: - IDX Consent
+    
+    
     var status: Status {
         set {
             loanStatus = newValue.rawValue

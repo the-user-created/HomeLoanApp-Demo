@@ -27,11 +27,11 @@ struct ChoosePageEditing: View {
     @State var notificationDone: Bool = false
     @State var employmentDone: Bool = false
     @State var expensesDone: Bool = false
+    @State var iDXDone: Bool = false
     
     @State var selection: Int?
     
     @State var notificationCheck: String = ""
-    @State var signatureDone: Bool = false
     @State var identityDone: Bool?
     @State var salesConsultant: String = ""
     @State var scanGroup: [String] = []
@@ -193,7 +193,7 @@ struct ChoosePageEditing: View {
                 .disabled(generalDetailsDone ? !identityDone! : true)
             }
             
-            NavigationLink(destination: NotificationView(application: application, signatureDone: $signatureDone, notificationCheck: $notificationCheck,
+            NavigationLink(destination: NotificationView(application: application, notificationCheck: $notificationCheck,
                     isDone: $notificationDone, sender: .editor), tag: 9, selection: $selection) {
                 HStack {
                     Text("Notification")
@@ -207,11 +207,31 @@ struct ChoosePageEditing: View {
             }
             .disabled(!canSubmit())
             
+            NavigationLink(destination: IDXConsent(application: application, isDone: $iDXDone, sender: .editor), tag: 10, selection: $selection) {
+                HStack {
+                    Text("IDX")
+                        .font(.headline)
+                    
+                    Spacer()
+                    
+                    Image(systemName: iDXDone ? "checkmark.circle.fill": "checkmark.circle")
+                        .foregroundColor(iDXDone ? .green : .red)
+                }
+            }
+            
             // Submit Application
             Section {
-                if application.loanStatus == Status.submitted.rawValue {
+                Button(action: {
+                    sheetType = .mailView
+                    self.sheetShowing = true
+                }) {
+                    Text("Submit Application")
+                        .font(.title3)
+                        .bold()
+                }
+                /*if application.loanStatus == Status.submitted.rawValue {
                     Text("You have submitted this application.")
-                } else if !canSendMail { // Mail app is not installed
+                } else *//*if !canSendMail { // Mail app is not installed
                     HStack {
                         Text("Please download the Mail app to submit your application.")
                         
@@ -237,7 +257,7 @@ struct ChoosePageEditing: View {
                     Text("Please accept the notification above to submit your application.")
                 } else if !canSubmit() { // Mail installed, sections incomplete
                     Text("Please complete the form sections above to submit your application")
-                }
+                }*/
             }
             .buttonStyle(BorderlessButtonStyle())
         }
@@ -267,7 +287,7 @@ struct ChoosePageEditing: View {
             if sheetType == .mailView {
                 let clientName = "\(application.surname ?? "NIL"), \(application.firstNames ?? "NIL")"
                 let recipients = [salesConsultantEmails[salesConsultant] ?? ""]
-                MailView(clientName: clientName, emailBody: makeEmailBody(application: application), recipients: recipients, attachments: getAttachments(),
+                MailView(clientName: clientName, emailBody: makeEmailBody(application: application), recipients: recipients, attachments: getAttachments(application: application, scanGroup: scanGroup),
                          isShowing: self.$sheetShowing, result: self.$result, submitted: $submitted)
             } /*else if sheetType == .whatsNext {
                 WhatsNext()
@@ -282,110 +302,5 @@ struct ChoosePageEditing: View {
         }
         
         return false
-    }
-    
-    // MARK: - getAttachments
-    private func getAttachments() -> [String: Data] {
-        var attachments: [String: Data] = [:]
-        let loanID: String = application.loanID?.uuidString ?? ""
-        
-        if let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-            // Signature Image
-            let signatureURL = documentsDirectory.appendingPathComponent("signature_\(loanID)_image.png")
-            
-            if FileManager.default.fileExists(atPath: signatureURL.path) {
-                do {
-                    let signatureData = try Data(contentsOf: signatureURL)
-                    attachments.updateValue(signatureData, forKey: "Client_Signature.png")
-                    print("print - Loaded signature")
-                } catch {
-                    print("print - Error loading signature: \(error)")
-                }
-            }
-            
-            // Identity Scan(s)
-            if scanGroup.contains("identity") { // Checking if client did scan a identity document
-                let identityType: String = application.identityType ?? ""
-                let identityURL = documentsDirectory.appendingPathComponent("identity_scan_\(loanID)_0.png")
-                
-                if FileManager.default.fileExists(atPath: identityURL.path) {
-                    do {
-                        let identityData = try Data(contentsOf: identityURL)
-                        attachments.updateValue(identityData, forKey: "Identity_Scan\(identityType != "Smart ID Card" ? "" : "_1").png")
-                        print("print - Loaded identity image #1")
-                    } catch {
-                        print("print - Error loading identity image #1: \(error)")
-                    }
-                }
-                
-                if identityType == "Smart ID Card" {
-                    let identityURL = documentsDirectory.appendingPathComponent("identity_scan_\(loanID)_1.png")
-                    
-                    if FileManager.default.fileExists(atPath: identityURL.path) {
-                        do {
-                            let identityData = try Data(contentsOf: identityURL)
-                            attachments.updateValue(identityData, forKey: "Identity_Scan_2.png")
-                            print("print - Loaded identity image #2")
-                        } catch {
-                            print("print - Error loading identity image #2: \(error)")
-                        }
-                    }
-                }
-            }
-            
-            // Salary / Pay Scan(s)
-            if scanGroup.contains("salaryPay") {
-                let url = "salary_pay_scan_\(loanID)_"
-                var i: Int = 0
-                while true {
-                    let newURL = url + "\(i).png"
-                    let fileURL = documentsDirectory.appendingPathComponent(newURL)
-                    
-                    if FileManager.default.fileExists(atPath: fileURL.path) {
-                        // File exists
-                        do {
-                            let imageData = try Data(contentsOf: fileURL)
-                            print("print - Loaded image")
-                            attachments.updateValue(imageData, forKey: "Salary_Pay_Scan_#\(i + 1).png")
-                        } catch {
-                            print("print - Error loading image: \(error)")
-                        }
-                        
-                        i += 1
-                    } else {
-                        // File doesn't exist
-                        break
-                    }
-                }
-            }
-            
-            // Bank Statement Scan(s)
-            if scanGroup.contains("bankStatements") {
-                let url = "bank_statement_scan_\(loanID)_"
-                var i: Int = 0
-                while true {
-                    let newURL = url + "\(i).png"
-                    let fileURL = documentsDirectory.appendingPathComponent(newURL)
-                    
-                    if FileManager.default.fileExists(atPath: fileURL.path) {
-                        // File exists
-                        do {
-                            let imageData = try Data(contentsOf: fileURL)
-                            print("print - Loaded image")
-                            attachments.updateValue(imageData, forKey: "Bank_Statement_Scan_#\(i + 1).png")
-                        } catch {
-                            print("print - Error loading image: \(error)")
-                        }
-                        
-                        i += 1
-                    } else {
-                        // File doesn't exist
-                        break
-                    }
-                }
-            }
-        }
-        
-        return attachments
     }
 }

@@ -165,7 +165,7 @@ struct FormTextField: View {
     var editingChanged: (Bool)->() = { _ in }
     var commit: ()->() = { }
     
-    var ignoredExampleIDs: [String] = ["companyRegNum", "employeeNum", "employerLine1", "employerLine2", "employerSuburb", "employerCity", "employerProvince", "employerStreetCode", "workPhoneNum", "previousEmployer", "pEContact"]
+    var ignoredExampleIDs: [String] = ["companyRegNum", "employeeNum", "employerLine1", "employerLine2", "employerSuburb", "employerCity", "employerProvince", "employerStreetCode", "workPhoneNum", "previousEmployer", "pEContact", "idxName", "idxIdentityNumber", "accOneName", "accOneType", "accOneBranchName", "accOneBranchNum", "accOneNum", "accTwoName", "accTwoType", "accTwoBranchName", "accTwoBranchNum", "accTwoNum"]
     
     var body: some View {
         let binding = Binding<String>(get: {

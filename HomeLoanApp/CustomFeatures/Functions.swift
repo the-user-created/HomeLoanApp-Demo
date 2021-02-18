@@ -20,6 +20,8 @@ func findNth(_ query: String, text: String) -> [String.Index] {
     return indices
 }
 
+
+// MARK: - otherQuestionCheck
 func otherQuestionCheck(other: String, otherText: String) -> OtherQuestionCheck {
     var result: OtherQuestionCheck = .neither
     if !other.dropFirst().isEmpty && !otherText.isEmpty { // Both text fields have a input
@@ -31,6 +33,7 @@ func otherQuestionCheck(other: String, otherText: String) -> OtherQuestionCheck 
     
     return result
 }
+
 
 // MARK: - makeEmailBody
 func makeEmailBody(application: Application) -> String{
@@ -288,6 +291,125 @@ func makeEmailBody(application: Application) -> String{
     return emailBody
 }
 
+
+// MARK: - getAttachments
+func getAttachments(application: Application, scanGroup: [String]) -> [String: Data] {
+    var attachments: [String: Data] = [:]
+    let loanID: String = application.loanID?.uuidString ?? ""
+    
+    if let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+        // Notification signature Image
+        let notificationSignURL = documentsDirectory.appendingPathComponent("notification_signature_\(loanID)_image.png")
+        
+        if FileManager.default.fileExists(atPath: notificationSignURL.path) {
+            do {
+                let signatureData = try Data(contentsOf: notificationSignURL)
+                attachments.updateValue(signatureData, forKey: "Client_Signature.png")
+                print("print - Loaded signature")
+            } catch {
+                print("print - Error loading signature: \(error)")
+            }
+        }
+        
+        // Identity Scan(s)
+        if scanGroup.contains("identity") { // Checking if client did scan a identity document
+            let identityType: String = application.identityType ?? ""
+            let identityURL = documentsDirectory.appendingPathComponent("identity_scan_\(loanID)_0.png")
+            
+            if FileManager.default.fileExists(atPath: identityURL.path) {
+                do {
+                    let identityData = try Data(contentsOf: identityURL)
+                    attachments.updateValue(identityData, forKey: "Identity_Scan\(identityType != "Smart ID Card" ? "" : "_1").png")
+                    print("print - Loaded identity image #1")
+                } catch {
+                    print("print - Error loading identity image #1: \(error)")
+                }
+            }
+            
+            if identityType == "Smart ID Card" {
+                let identityURL = documentsDirectory.appendingPathComponent("identity_scan_\(loanID)_1.png")
+                
+                if FileManager.default.fileExists(atPath: identityURL.path) {
+                    do {
+                        let identityData = try Data(contentsOf: identityURL)
+                        attachments.updateValue(identityData, forKey: "Identity_Scan_2.png")
+                        print("print - Loaded identity image #2")
+                    } catch {
+                        print("print - Error loading identity image #2: \(error)")
+                    }
+                }
+            }
+        }
+        
+        // Salary / Pay Scan(s)
+        if scanGroup.contains("salaryPay") {
+            let url = "salary_pay_scan_\(loanID)_"
+            var i: Int = 0
+            while true {
+                let newURL = url + "\(i).png"
+                let fileURL = documentsDirectory.appendingPathComponent(newURL)
+                
+                if FileManager.default.fileExists(atPath: fileURL.path) {
+                    // File exists
+                    do {
+                        let imageData = try Data(contentsOf: fileURL)
+                        print("print - Loaded image")
+                        attachments.updateValue(imageData, forKey: "Salary_Pay_Scan_#\(i + 1).png")
+                    } catch {
+                        print("print - Error loading image: \(error)")
+                    }
+                    
+                    i += 1
+                } else {
+                    // File doesn't exist
+                    break
+                }
+            }
+        }
+        
+        // Bank Statement Scan(s)
+        if scanGroup.contains("bankStatements") {
+            let url = "bank_statement_scan_\(loanID)_"
+            var i: Int = 0
+            while true {
+                let newURL = url + "\(i).png"
+                let fileURL = documentsDirectory.appendingPathComponent(newURL)
+                
+                if FileManager.default.fileExists(atPath: fileURL.path) {
+                    // File exists
+                    do {
+                        let imageData = try Data(contentsOf: fileURL)
+                        print("print - Loaded image")
+                        attachments.updateValue(imageData, forKey: "Bank_Statement_Scan_#\(i + 1).png")
+                    } catch {
+                        print("print - Error loading image: \(error)")
+                    }
+                    
+                    i += 1
+                } else {
+                    // File doesn't exist
+                    break
+                }
+            }
+        }
+        
+        let pdfURL = documentsDirectory.appendingPathComponent("test.pdf")
+        
+        if FileManager.default.fileExists(atPath: pdfURL.path) {
+            do {
+                let pdfData = try Data(contentsOf: pdfURL)
+                attachments.updateValue(pdfData, forKey: "test.pdf")
+                print("print - Loaded test pdf")
+            } catch {
+                print("print - Error loading test pdf: \(error)")
+            }
+        }
+    }
+    
+    return attachments
+}
+
+
 // MARK: - handleOtherRand
 func handleOtherRand(value: String, open: [String.Index], close: [String.Index], j: Int, i: Int) -> String {
     var text: String = ""
@@ -300,6 +422,7 @@ func handleOtherRand(value: String, open: [String.Index], close: [String.Index],
     
     return "\(formQuestions[j][i] ?? "")  =  R\(Int(randValue.dropFirst())?.formattedWithSeparator ?? "") for \(text)\n"
 }
+
 
 // MARK: - handleLenAtText
 func handleLenAtText(years: String, months: String) -> String {

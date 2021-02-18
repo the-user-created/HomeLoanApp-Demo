@@ -174,7 +174,7 @@ struct ChoosePageCreating: View {
                 .disabled(generalDetailsDone ? !(identityDone ?? false) : true)
                 
                 // Notification & Warranty
-                NavigationLink(destination: NotificationView(application: applicationCreation.application, signatureDone: $signatureDone,
+                NavigationLink(destination: NotificationView(application: applicationCreation.application,
                         notificationCheck: $notificationCheck, isDone: $notificationDone, sender: .creator), tag: 18, selection: $selection) {
                     HStack {
                         Text("Notification")
@@ -238,7 +238,7 @@ struct ChoosePageCreating: View {
         .sheet(isPresented: $isShowingMailView) {
             let clientName: String = "\(applicationCreation.application.surname ?? "NIL"), \(applicationCreation.application.firstNames ?? "NIL")"
             let recipients = [salesConsultantEmails[applicationCreation.application.salesConsultant ?? ""] ?? ""]
-            MailView(clientName: clientName, emailBody: makeEmailBody(application: applicationCreation.application), recipients: recipients, attachments: getAttachments(), isShowing: self.$isShowingMailView, result: self.$result, submitted: $submitted)
+            MailView(clientName: clientName, emailBody: makeEmailBody(application: applicationCreation.application), recipients: recipients, attachments: getAttachments(application: applicationCreation.application, scanGroup: scanGroup), isShowing: self.$isShowingMailView, result: self.$result, submitted: $submitted)
         }
     }
     
@@ -249,110 +249,5 @@ struct ChoosePageCreating: View {
         }
         
         return false
-    }
-    
-    // MARK: - getAttachments
-    private func getAttachments() -> [String: Data] {
-        var attachments: [String: Data] = [:]
-        let loanID: String = applicationCreation.application.loanID?.uuidString ?? ""
-        
-        if let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-            // Signature Image
-            let signatureURL = documentsDirectory.appendingPathComponent("signature_\(loanID)_image.png")
-            
-            if FileManager.default.fileExists(atPath: signatureURL.path) {
-                do {
-                    let signatureData = try Data(contentsOf: signatureURL)
-                    attachments.updateValue(signatureData, forKey: "Client_Signature.png")
-                    print("print - Loaded signature")
-                } catch {
-                    print("print - Error loading signature: \(error)")
-                }
-            }
-            
-            // Identity Scan(s)
-            if scanGroup.contains("identity") { // Checking if client did scan a identity document
-                let identityType: String = applicationCreation.application.identityType ?? ""
-                let identityURL = documentsDirectory.appendingPathComponent("identity_scan_\(loanID)_0.png")
-                
-                if FileManager.default.fileExists(atPath: identityURL.path) {
-                    do {
-                        let identityData = try Data(contentsOf: identityURL)
-                        attachments.updateValue(identityData, forKey: "Identity_Scan\(identityType != "Smart ID Card" ? "" : "_1").png")
-                        print("print - Loaded identity image #1")
-                    } catch {
-                        print("print - Error loading identity image #1: \(error)")
-                    }
-                }
-                
-                if identityType == "Smart ID Card" {
-                    let identityURL = documentsDirectory.appendingPathComponent("identity_scan_\(loanID)_1.png")
-                    
-                    if FileManager.default.fileExists(atPath: identityURL.path) {
-                        do {
-                            let identityData = try Data(contentsOf: identityURL)
-                            attachments.updateValue(identityData, forKey: "Identity_Scan_2.png")
-                            print("print - Loaded identity image #2")
-                        } catch {
-                            print("print - Error loading identity image #2: \(error)")
-                        }
-                    }
-                }
-            }
-            
-            // Salary / Pay Scan(s)
-            if scanGroup.contains("salaryPay") {
-                let url = "salary_pay_scan_\(loanID)_"
-                var i: Int = 0
-                while true {
-                    let newURL = url + "\(i).png"
-                    let fileURL = documentsDirectory.appendingPathComponent(newURL)
-                    
-                    if FileManager.default.fileExists(atPath: fileURL.path) {
-                        // File exists
-                        do {
-                            let imageData = try Data(contentsOf: fileURL)
-                            print("print - Loaded image")
-                            attachments.updateValue(imageData, forKey: "Salary_Pay_Scan_#\(i + 1).png")
-                        } catch {
-                            print("print - Error loading image: \(error)")
-                        }
-                        
-                        i += 1
-                    } else {
-                        // File doesn't exist
-                        break
-                    }
-                }
-            }
-            
-            // Bank Statement Scan(s)
-            if scanGroup.contains("bankStatements") {
-                let url = "bank_statement_scan_\(loanID)_"
-                var i: Int = 0
-                while true {
-                    let newURL = url + "\(i).png"
-                    let fileURL = documentsDirectory.appendingPathComponent(newURL)
-                    
-                    if FileManager.default.fileExists(atPath: fileURL.path) {
-                        // File exists
-                        do {
-                            let imageData = try Data(contentsOf: fileURL)
-                            print("print - Loaded image")
-                            attachments.updateValue(imageData, forKey: "Bank_Statement_Scan_#\(i + 1).png")
-                        } catch {
-                            print("print - Error loading image: \(error)")
-                        }
-                        
-                        i += 1
-                    } else {
-                        // File doesn't exist
-                        break
-                    }
-                }
-            }
-        }
-        
-        return attachments
     }
 }

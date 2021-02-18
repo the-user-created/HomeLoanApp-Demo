@@ -17,6 +17,7 @@ struct SignatureView: View {
     @State private var rect: CGRect = .zero
     @State var signatureSaved: Bool = false
     @State var loanID: String? = ""
+    @State var signatureType: String
     @Binding var signatureDone: Bool
     @Binding var alertMessage: String
     @Binding var showingAlert: Bool
@@ -33,7 +34,7 @@ struct SignatureView: View {
             }
             
             DrawingControls(color: $color, drawings: $drawings, lineWidth: $lineWidth, rect: $rect, signatureSaved: $signatureSaved,
-                    alertMessage: $alertMessage, showingAlert: $showingAlert, loanID: loanID ?? "")
+                            alertMessage: $alertMessage, showingAlert: $showingAlert, loanID: loanID ?? "", signatureType: signatureType)
             
             DrawingPad(currentDrawing: $currentDrawing, drawings: $drawings, color: $color, lineWidth: $lineWidth)
                 .background(RectGetter(rect: $rect))
@@ -57,6 +58,7 @@ struct DrawingControls: View {
     @Binding var alertMessage: String
     @Binding var showingAlert: Bool
     @State var loanID: String
+    @State var signatureType: String
     
     var body: some View {
         VStack {
@@ -77,7 +79,7 @@ struct DrawingControls: View {
                 Spacer()
                 
                 Button(action: {
-                    saveImage("signature_\(loanID)_image.png") // Saves the signature png
+                    saveImage("\(signatureType)_signature_\(loanID)_image.png") // Saves the signature png
                     //self.drawings = [Drawing]() // Clears the drawing pad
                 }) {
                     Text("Save")

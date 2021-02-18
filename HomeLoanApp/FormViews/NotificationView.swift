@@ -18,7 +18,7 @@ struct NotificationView: View {
     // MARK: - State Variables
     @State var showingAlert: Bool = false
     @State var alertMessage: String = ""
-    @Binding var signatureDone: Bool
+    @State var signatureDone: Bool = false
     @Binding var notificationCheck: String
     @Binding var isDone: Bool
     @State var sender: Sender
@@ -53,7 +53,7 @@ struct NotificationView: View {
             
             Section(header: Text("Signature")) {
                 SignatureView(loanID: sender == .creator ? applicationCreation.application.loanID?.uuidString : application.loanID?.uuidString,
-                        signatureDone: $signatureDone, alertMessage: $alertMessage, showingAlert: $showingAlert)
+                              signatureType: "notification", signatureDone: $signatureDone, alertMessage: $alertMessage, showingAlert: $showingAlert)
                     .frame(height: 300)
             }
             
