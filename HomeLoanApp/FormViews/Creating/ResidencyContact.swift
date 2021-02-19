@@ -81,7 +81,7 @@ struct ResidencyContact: View {
                 FormTextField(iD: "cityOfBirth",
                               question: formQuestions[2][4] ?? "MISSING",
                               placeholder: formTextFieldPlaceholders[2][4] ?? "MISSING",
-                              text: $cityOfBirth, sender: .editor)
+                              text: $cityOfBirth)
                 
                 if sACitizen == "No" {
                 FormYesNo(iD: "permanentResident",
@@ -112,13 +112,13 @@ struct ResidencyContact: View {
                 FormTextField(iD: "cellNumber",
                               question: formQuestions[2][9] ?? "MISSING",
                               placeholder: formTextFieldPlaceholders[2][9] ?? "MISSING",
-                              text: $cellNumber, sender: .editor)
+                              text: $cellNumber)
                     .keyboardType(.phonePad)
                 
-                FormTextField(iD: "emailAddress",
-                              question: formQuestions[2][10] ?? "MISSING",
-                              placeholder: formTextFieldPlaceholders[2][10] ?? "MISSING",
-                              text: $emailAddress, sender: .editor)
+                FormVStackTextField(iD: "emailAddress",
+                                    question: formQuestions[2][10] ?? "MISSING",
+                                    placeholder: formTextFieldPlaceholders[2][10] ?? "MISSING",
+                                    text: $emailAddress)
                     .keyboardType(.emailAddress)
                 
             }
@@ -132,32 +132,32 @@ struct ResidencyContact: View {
                 FormTextField(iD: "resLine1",
                               question: formQuestions[2][12] ?? "MISSING",
                               placeholder: formTextFieldPlaceholders[2][12] ?? "MISSING",
-                              text: $resLine1, sender: .editor)
+                              text: $resLine1)
                 
                 FormTextField(iD: "resLine2",
                               question: formQuestions[2][13] ?? "MISSING",
                               placeholder: formTextFieldPlaceholders[2][13] ?? "MISSING",
-                              text: $resLine2, sender: .editor)
+                              text: $resLine2)
                 
                 FormTextField(iD: "resSuburb",
                               question: formQuestions[2][14] ?? "MISSING",
                               placeholder: formTextFieldPlaceholders[2][14] ?? "MISSING",
-                              text: $resSuburb, sender: .editor)
+                              text: $resSuburb)
                 
                 FormTextField(iD: "resCity",
                               question: formQuestions[2][15] ?? "MISSING",
                               placeholder: formTextFieldPlaceholders[2][15] ?? "MISSING",
-                              text: $resCity, sender: .editor)
+                              text: $resCity)
                 
                 FormTextField(iD: "resProvince",
                               question: formQuestions[2][16] ?? "MISSING",
                               placeholder: formTextFieldPlaceholders[2][16] ?? "MISSING",
-                              text: $resProvince, sender: .editor)
+                              text: $resProvince)
                 
                 FormTextField(iD: "resStreetCode",
                               question: formQuestions[2][17] ?? "MISSING",
                               placeholder: formTextFieldPlaceholders[2][17] ?? "MISSING",
-                              text: $resStreetCode, sender: .editor)
+                              text: $resStreetCode)
                     //.keyboardType(.numberPad)
                 
                 FormLenAt(iD: "lengthAtAddress",
@@ -181,33 +181,32 @@ struct ResidencyContact: View {
                     FormTextField(iD: "postalLine1",
                                   question: formQuestions[2][12] ?? "MISSING",
                                   placeholder: formTextFieldPlaceholders[2][12] ?? "MISSING",
-                                  text: $postalLine1, sender: .editor)
+                                  text: $postalLine1)
                     
                     FormTextField(iD: "postalLine2",
                                   question: formQuestions[2][13] ?? "MISSING",
                                   placeholder: formTextFieldPlaceholders[2][13] ?? "MISSING",
-                                  text: $postalLine2, sender: .editor)
+                                  text: $postalLine2)
                     
                     FormTextField(iD: "postalSuburb",
                                   question: formQuestions[2][14] ?? "MISSING",
                                   placeholder: formTextFieldPlaceholders[2][14] ?? "MISSING",
-                                  text: $postalSuburb, sender: .editor)
+                                  text: $postalSuburb)
                     
                     FormTextField(iD: "postalCity",
                                   question: formQuestions[2][15] ?? "MISSING",
                                   placeholder: formTextFieldPlaceholders[2][15] ?? "MISSING",
-                                  text: $postalCity, sender: .editor)
+                                  text: $postalCity)
                     
                     FormTextField(iD: "postalProvince",
                                   question: formQuestions[2][16] ?? "MISSING",
                                   placeholder: formTextFieldPlaceholders[2][16] ?? "MISSING",
-                                  text: $postalProvince, sender: .editor)
+                                  text: $postalProvince)
                     
                     FormTextField(iD: "postalStreetCode",
                                   question: formQuestions[2][17] ?? "MISSING",
                                   placeholder: formTextFieldPlaceholders[2][17] ?? "MISSING",
-                                  text: $postalStreetCode, sender: .editor)
-                        //.keyboardType(.numberPad)
+                                  text: $postalStreetCode)
                 }
             }
             

@@ -71,8 +71,7 @@ struct ChoosePageEditing: View {
     var body: some View {
         Form {
             Group {
-                NavigationLink(destination: GeneralDetailsEditing(isDone: $generalDetailsDone, application: application, sender: .editor), tag: 0,
-                        selection: $selection) {
+                NavigationLink(destination: GeneralDetailsEditing(isDone: $generalDetailsDone, application: application, sender: .editor), tag: 0, selection: $selection) {
                     HStack {
                         Text("General Details")
                             .font(.headline)
@@ -84,8 +83,7 @@ struct ChoosePageEditing: View {
                     }
                 }
                 
-                NavigationLink(destination: PersonalDetailsEditing(isDone: $personalDetailsDone, identityDoneBinding: $identityDone, application: application,
-                        sender: .editor), tag: 1, selection: $selection) {
+                NavigationLink(destination: PersonalDetailsEditing(isDone: $personalDetailsDone, identityDoneBinding: $identityDone, application: application, sender: .editor), tag: 1, selection: $selection) {
                     HStack {
                         Text("Personal Details")
                             .font(.headline)
@@ -226,7 +224,7 @@ struct ChoosePageEditing: View {
                     }
                 }
                 
-                NavigationLink(destination: EmptyView()) {
+                NavigationLink(destination: PoAEditing(application: application, isDone: $poADone, sender: .editor), tag: 11, selection: $selection) {
                     HStack {
                         Text("Power of Attorney")
                             .font(.headline)
@@ -242,43 +240,7 @@ struct ChoosePageEditing: View {
             
             // Submit Application
             Section {
-                Button(action: {
-                    sheetType = .mailView
-                    self.sheetShowing = true
-                }) {
-                    Text("Submit Application")
-                        .font(.title3)
-                        .bold()
-                }
-                /*if application.loanStatus == Status.submitted.rawValue {
-                    Text("You have submitted this application.")
-                } else *//*if !canSendMail { // Mail app is not installed
-                    HStack {
-                        Text("Please download the Mail app to submit your application.")
-                        
-                        Spacer()
-                        
-                        Button(action: {
-                            openURL(URL(string: "https://apps.apple.com/za/app/mail/id1108187098")!)
-                        }) {
-                            Text("Get Mail")
-                                .font(.headline)
-                        }
-                    }
-                } else if notificationDone && canSubmit() { // Mail installed, notification accepted, sections completed
-                    Button(action: {
-                        sheetType = .mailView
-                        self.sheetShowing = true
-                    }) {
-                        Text("Submit Application")
-                            .font(.title3)
-                            .bold()
-                    }
-                } else if !notificationDone && canSubmit() { // Mail installed, notification not accepted, sections completed
-                    Text("Please accept the notification above to submit your application.")
-                } else if !canSubmit() { // Mail installed, sections incomplete
-                    Text("Please complete the form sections above to submit your application")
-                }*/
+                determineSubmission()
             }
             .buttonStyle(BorderlessButtonStyle())
         }
@@ -324,5 +286,44 @@ struct ChoosePageEditing: View {
         }
         
         return false
+    }
+    
+    // MARK: - determineSubmission
+    private func determineSubmission() -> AnyView {
+        let canSubmitVal = canSubmit()
+        
+        /*if application.loanStatus == Status.submitted.rawValue {
+            Text("You have submitted this application.")
+        } else */if !canSendMail {
+            return AnyView(HStack {
+                Text("Please download the Mail app to submit your application.")
+                
+                Spacer()
+                
+                Button(action: {
+                    openURL(URL(string: "https://apps.apple.com/za/app/mail/id1108187098")!)
+                }) {
+                    Text("Get Mail")
+                        .font(.headline)
+                }
+            })
+        } else if !canSubmitVal {
+            return AnyView(Text("Please complete the form sections above to submit your application"))
+        } else if !notificationDone {
+            return AnyView(Text("Please accept the notification above to submit your application."))
+        } else if !idxDone {
+            return AnyView(Text("Please complete the IDX Consent form above to submit your application."))
+        } else if !poADone {
+            return AnyView(Text("Please complete the Power of Attorney above to submit your application."))
+        } else {
+            return AnyView(Button(action: {
+                sheetType = .mailView
+                self.sheetShowing = true
+            }) {
+                Text("Submit Application")
+                    .font(.title3)
+                    .bold()
+            })
+        }
     }
 }

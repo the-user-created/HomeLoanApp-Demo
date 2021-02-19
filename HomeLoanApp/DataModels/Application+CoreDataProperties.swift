@@ -215,6 +215,7 @@ extension Application {
     // MARK: - IDX Consent
     @NSManaged public var idxName: String?
     @NSManaged public var idxIdentityNumber: String?
+    @NSManaged public var idxEntity: String?
     @NSManaged public var accOneName: String?
     @NSManaged public var accOneType: String?
     @NSManaged public var accOneBranchName: String?
@@ -229,8 +230,8 @@ extension Application {
     // MARK: - Power of Attorney
     @NSManaged public var poAName: String?
     @NSManaged public var poAIdentityNumber: String?
-    @NSManaged public var poACellNumber: String?
-    @NSManaged public var poAContactOther: String?
+    @NSManaged public var poALocation: String?
+    @NSManaged public var poAContact: String?
     
     var status: Status {
         set {

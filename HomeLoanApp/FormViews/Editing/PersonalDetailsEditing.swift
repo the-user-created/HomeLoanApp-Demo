@@ -101,13 +101,13 @@ struct PersonalDetailsEditing: View {
                     FormTextField(iD: "surname",
                                   question: formQuestions[1][1] ?? "MISSING",
                                   placeholder: formTextFieldPlaceholders[1][1] ?? "MISSING",
-                                  text: $surname, sender: .editor)
+                                  text: $surname)
                         .keyboardType(.alphabet)
                     
                     FormTextField(iD: "firstNames",
                                   question: formQuestions[1][2] ?? "MISSING",
                                   placeholder: formTextFieldPlaceholders[1][2] ?? "MISSING",
-                                  text: $firstNames, sender: .editor)
+                                  text: $firstNames)
                         .keyboardType(.alphabet)
                     
                     FormPicker(iD: "gender",
@@ -129,7 +129,7 @@ struct PersonalDetailsEditing: View {
                 FormTextField(iD: "identityNumber",
                               question: formQuestions[1][identityText(location: 6)] ?? "MISSING",
                               placeholder: formTextFieldPlaceholders[1][identityText(location: 6)] ?? "MISSING",
-                              text: $identityNumber, sender: .editor)
+                              text: $identityNumber)
                     .keyboardType(identityType == 1 || identityType == 5 ? .numberPad : .default)
                 
                 if identityType == 2 {
@@ -145,7 +145,7 @@ struct PersonalDetailsEditing: View {
                 FormTextField(iD: "taxNumber",
                               question: formQuestions[1][11] ?? "MISSING",
                               placeholder: formTextFieldPlaceholders[1][11] ?? "MISSING",
-                              text: $taxNumber, sender: .editor)
+                              text: $taxNumber)
                     .keyboardType(.numberPad)
                 
                 FormYesNo(iD: "taxReturn",
@@ -196,7 +196,7 @@ struct PersonalDetailsEditing: View {
                     FormTextField(iD: "numDependents",
                                   question: formQuestions[1][21] ?? "MISSING",
                                   placeholder: formTextFieldPlaceholders[1][21] ?? "MISSING",
-                                  text: $numDependents, sender: .editor)
+                                  text: $numDependents)
                         .keyboardType(.numberPad)
                     
                 }

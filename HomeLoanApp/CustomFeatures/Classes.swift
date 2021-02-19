@@ -52,6 +52,7 @@ class ApplicationCreation: ObservableObject {
     @Published var expensesSaved: Bool = false
     @Published var incomeSaved: Bool = false
     @Published var idxSaved: Bool = false
+    @Published var poASaved: Bool = false
     
     func makeApplication() {
         application = Application(context: PersistenceController.shared.container.viewContext)
@@ -69,5 +70,6 @@ class ApplicationCreation: ObservableObject {
         expensesSaved = false
         incomeSaved = false
         idxSaved = false
+        poASaved = false
     }
 }

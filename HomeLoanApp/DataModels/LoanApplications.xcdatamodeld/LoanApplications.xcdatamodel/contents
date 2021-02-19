@@ -85,6 +85,7 @@
         <attribute name="identityNumber" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="identityScanned" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="identityType" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="idxEntity" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="idxIdentityNumber" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="idxName" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="incomeDeductionsDone" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
@@ -136,9 +137,9 @@
         <attribute name="personalDetailsDone" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="personalLoans" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="petrolCar" optional="YES" attributeType="String" defaultValueString=""/>
-        <attribute name="poACellNumber" optional="YES" attributeType="String" defaultValueString=""/>
-        <attribute name="poAContactOther" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="poAContact" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="poAIdentityNumber" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="poALocation" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="poAName" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="postalCity" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="postalCountry" optional="YES" attributeType="String"/>
@@ -195,6 +196,6 @@
         <attribute name="workPhoneNum" optional="YES" attributeType="String" defaultValueString=""/>
     </entity>
     <elements>
-        <element name="Application" positionX="-63" positionY="-18" width="128" height="2923"/>
+        <element name="Application" positionX="-63" positionY="-18" width="128" height="2938"/>
     </elements>
 </model>

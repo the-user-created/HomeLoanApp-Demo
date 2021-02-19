@@ -61,25 +61,8 @@ struct FormLabel: View {
         }
         .buttonStyle(BorderlessButtonStyle())
         .alert(isPresented: $infoShowing) {
-            Alert(title: Text("Info"), message: Text(infos[iD]?[0] ?? "MISSING"), dismissButton: .default(Text("OK")))
+            Alert(title: Text("Info"), message: Text(infos[iD] ?? "MISSING"), dismissButton: .default(Text("OK")))
         }
-        /*.sheet(isPresented: $sheetShowing) {
-            VStack() {
-                Image(systemName: "chevron.compact.down")
-                    .resizable()
-                    .frame(width: 60, height: 13)
-                    .scaledToFit()
-                
-                Spacer()
-                
-                Text(infos[iD][0])
-                    .multilineTextAlignment(.center)
-                    .padding()
-                
-                Spacer()
-            }
-            .padding()
-        }*/
     }
 }
 
@@ -151,6 +134,49 @@ struct FormPicker: View {
 }
 
 
+// MARK: - FormVStackTextField
+struct FormVStackTextField: View {
+    @EnvironmentObject var changedValues: ChangedValues
+    
+    var iD: String
+    var infoButton: Bool = false
+    var question: String
+    var placeholder: String
+    var textColor: Color = .primary
+    @Binding var text: String
+    var editingChanged: (Bool)->() = { _ in }
+    var commit: ()->() = { }
+    
+    var notIgnoredExampleIDs: [String] = ["emailAddress"]
+    
+    var body: some View {
+        let binding = Binding<String>(get: {
+            text
+        }, set: {
+            self.text = $0.uppercased()
+        })
+        
+        VStack {
+            if question != "" {
+                FormLabel(iD: iD,
+                          question: question,
+                          infoButton: infoButton)
+            }
+            
+            TextField(notIgnoredExampleIDs.contains(iD) ? "e.g. " + placeholder.uppercased() : "",
+                      text: binding,
+                      onEditingChanged: { _ in
+                        changedValues.updateKeyValue(iD, value: binding.wrappedValue)
+                      },
+                      onCommit: commit)
+                .foregroundColor(.blue)
+                .multilineTextAlignment(.trailing)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+        }
+    }
+}
+
+
 // MARK: - FormTextField
 struct FormTextField: View {
     @EnvironmentObject var changedValues: ChangedValues
@@ -161,11 +187,11 @@ struct FormTextField: View {
     var placeholder: String
     var textColor: Color = .primary
     @Binding var text: String
-    var sender: Sender = .creator
+    //var sender: Sender = .creator
     var editingChanged: (Bool)->() = { _ in }
     var commit: ()->() = { }
     
-    var ignoredExampleIDs: [String] = ["companyRegNum", "employeeNum", "employerLine1", "employerLine2", "employerSuburb", "employerCity", "employerProvince", "employerStreetCode", "workPhoneNum", "previousEmployer", "pEContact", "idxName", "idxIdentityNumber", "accOneName", "accOneType", "accOneBranchName", "accOneBranchNum", "accOneNum", "accTwoName", "accTwoType", "accTwoBranchName", "accTwoBranchNum", "accTwoNum"]
+    var ignoredExampleIDs: [String] = ["companyRegNum", "employeeNum", "employerLine1", "employerLine2", "employerSuburb", "employerCity", "employerProvince", "employerStreetCode", "workPhoneNum", "previousEmployer", "pEContact", "idxName", "idxIdentityNumber", "idxEntity", "accOneName", "accOneType", "accOneBranchName", "accOneBranchNum", "accOneNum", "accTwoName", "accTwoType", "accTwoBranchName", "accTwoBranchNum", "accTwoNum", "poAName", "poAIdentityNumber", "poAContact"]
     
     var body: some View {
         let binding = Binding<String>(get: {
@@ -176,7 +202,9 @@ struct FormTextField: View {
         
         HStack {
             if question != "" {
-                FormLabel(iD: iD, question: question, infoButton: infoButton)
+                FormLabel(iD: iD,
+                          question: question,
+                          infoButton: infoButton)
             }
             
             TextField(ignoredExampleIDs.contains(iD) ? "" : "e.g. " + placeholder.uppercased(),

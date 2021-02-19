@@ -70,7 +70,7 @@ struct GeneralDetails: View {
                 FormTextField(iD: "numberOfApplicants",
                               question: formQuestions[0][5] ?? "MISSING",
                               placeholder: formTextFieldPlaceholders[0][5] ?? "MISSING",
-                              text: $numberOfApplicants, sender: .editor)
+                              text: $numberOfApplicants)
                     .keyboardType(.numberPad)
             }
             
@@ -82,31 +82,31 @@ struct GeneralDetails: View {
                                 FormTextField(iD: "coApplicantOneName",
                                               question: "Co-Applicant #1: ",
                                               placeholder: "Steve Jobs",
-                                              text: $coApplicantOneName, sender: .editor)
+                                              text: $coApplicantOneName)
                                 
                             case "3":
                                 FormTextField(iD: "coApplicantOneName",
                                               question: "Co-Applicant #1: ",
                                               placeholder: "Steve Jobs",
-                                              text: $coApplicantOneName, sender: .editor)
+                                              text: $coApplicantOneName)
                                 FormTextField(iD: "coApplicantTwoName",
                                               question: "Co-Applicant #2: ",
                                               placeholder: "Steve Jobs",
-                                              text: $coApplicantTwoName, sender: .editor)
+                                              text: $coApplicantTwoName)
                                 
                             case "4":
                                 FormTextField(iD: "coApplicantOneName",
                                               question: "Co-Applicant #1: ",
                                               placeholder: "Steve Jobs",
-                                              text: $coApplicantOneName, sender: .editor)
+                                              text: $coApplicantOneName)
                                 FormTextField(iD: "coApplicantTwoName",
                                               question: "Co-Applicant #2: ",
                                               placeholder: "Steve Jobs",
-                                              text: $coApplicantTwoName, sender: .editor)
+                                              text: $coApplicantTwoName)
                                 FormTextField(iD: "coApplicantThreeName",
                                               question: "Co-Applicant #3: ",
                                               placeholder: "Steve Jobs",
-                                              text: $coApplicantThreeName, sender: .editor)
+                                              text: $coApplicantThreeName)
                                 
                             case let x where Int(x) ?? 0 < 1:
                                 Text("Please enter a valid number of applicants.")

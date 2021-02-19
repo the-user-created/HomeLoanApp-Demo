@@ -10,7 +10,7 @@ import Foundation
 // MARK: - GENERAL DETAILS
 let salesConsultants = ["--select--", "Example", "Gavin Young", "--TBA--"]
 let applicationType = ["--select--", "Further Loan", "New loan"]//, "Pledge Application", "Switch from other institution"]
-let applicantType = ["--select--","Closed Corporation", "Clubs", "Estate Late Client", "Incorporated Company", "Individual", "Joint with other person", "Joint with other persons", "Joint with spouse", "Joint with spouse and other person", "Joint with spouse and other persons", "Non-Profit Organisations and Friendly Societies", "Partnerships", "Private Company", "Public Company", "Schools", "Sole Proprietor", "Trust"]
+let applicantType = ["--select--", "Closed Corporation", "Clubs", "Estate Late Client", "Incorporated Company", "Individual", "Joint with other person", "Joint with other persons", "Joint with spouse", "Joint with spouse and other person", "Joint with spouse and other persons", "Non-Profit Organisations and Friendly Societies", "Partnerships", "Private Company", "Public Company", "Schools", "Sole Proprietor", "Trust"]
 let loanPurpose = ["--select--", "Bond Existing Home/Unbonded", "Build a new home", "Buy an existing home", "Buy vacant land", "Further Advance (ordinary)", "Home improvements"]
 let propertyType = ["--select--", "Duets - Sectional Title", "Normal residential", "Sectional title", "Small Holdings Residential", "Vacant land"]
 
