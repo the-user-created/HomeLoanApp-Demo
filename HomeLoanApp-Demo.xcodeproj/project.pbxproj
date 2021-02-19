@@ -52,7 +52,6 @@
 		BDCACB6D25AE1AA400A418B1 /* LoanApplications.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BDCACB6B25AE1AA400A418B1 /* LoanApplications.xcdatamodeld */; };
 		BDCACB7025AE1ABB00A418B1 /* Application+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCACB6F25AE1ABB00A418B1 /* Application+CoreDataProperties.swift */; };
 		BDCACB7325AE1ABF00A418B1 /* Application+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCACB7225AE1ABF00A418B1 /* Application+CoreDataClass.swift */; };
-		BDCBFFE125C042BC00281E75 /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCBFFE025C042BC00281E75 /* test.swift */; };
 		BDD3036D25DE2119009E85A8 /* IDXConsentEditing.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD3036C25DE2119009E85A8 /* IDXConsentEditing.swift */; };
 		BDD3037D25DE9A77009E85A8 /* IDXCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD3037C25DE9A77009E85A8 /* IDXCreator.swift */; };
 		BDD53213252E33E900255C4F /* GeneralDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD53212252E33E900255C4F /* GeneralDetails.swift */; };
@@ -121,7 +120,6 @@
 		BDCACB6C25AE1AA400A418B1 /* LoanApplications.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LoanApplications.xcdatamodel; sourceTree = "<group>"; };
 		BDCACB6F25AE1ABB00A418B1 /* Application+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Application+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		BDCACB7225AE1ABF00A418B1 /* Application+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Application+CoreDataClass.swift"; sourceTree = "<group>"; };
-		BDCBFFE025C042BC00281E75 /* test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
 		BDD3036C25DE2119009E85A8 /* IDXConsentEditing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDXConsentEditing.swift; sourceTree = "<group>"; };
 		BDD3037C25DE9A77009E85A8 /* IDXCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDXCreator.swift; sourceTree = "<group>"; };
 		BDD53212252E33E900255C4F /* GeneralDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralDetails.swift; sourceTree = "<group>"; };
@@ -214,7 +212,6 @@
 				BD538DC92519FE5B0019AA11 /* Preview Content */,
 				BDECD31F251A2A3400382FED /* Settings */,
 				BDC9067A25AE9F9B00A67117 /* SignUpLogin */,
-				BDCBFFE025C042BC00281E75 /* test.swift */,
 			);
 			path = HomeLoanApp;
 			sourceTree = "<group>";
@@ -456,7 +453,6 @@
 				BD93497D25D25080005CE137 /* FormStructs.swift in Sources */,
 				BD823A1C25AFF00B008B54C7 /* IncomeDeductionsEditing.swift in Sources */,
 				BDF68F5325761EC30004E6CD /* NotificationView.swift in Sources */,
-				BDCBFFE125C042BC00281E75 /* test.swift in Sources */,
 				BD01DB582575008700F2B41A /* SubsidyCredit.swift in Sources */,
 				BD502B8825DFE19300D9342C /* PoA.swift in Sources */,
 				BD7C6921251DFF750001514B /* SignUpView.swift in Sources */,

@@ -170,9 +170,6 @@ struct IDXConsent: View {
                 alertMessage = result.1 ?? "Unknown error while saving PDF."
                 showingAlert = true
             }
-        } else if !signatureDone {
-            alertMessage = "Please add your signature."
-            showingAlert = true
         } else if idxName.isEmpty {
             alertMessage = "Please add your full name."
             showingAlert = true
@@ -184,6 +181,9 @@ struct IDXConsent: View {
             showingAlert = true
         } else if accOneName.isEmpty || accOneType.isEmpty || accOneBranchName.isEmpty || accOneBranchNum.isEmpty || accOneNum.isEmpty {
             alertMessage = "Please add your bank details."
+            showingAlert = true
+        } else if !signatureDone {
+            alertMessage = "Please add your signature."
             showingAlert = true
         } else {
             alertMessage = "Please complete the form before attempting to save."

@@ -45,7 +45,7 @@ struct PoA: View {
                 FormVStackTextField(iD: "poALocation",
                                     infoButton: true,
                                     question: "What is your current location",
-                                    placeholder: "e.g. CITY CENTRE",
+                                    placeholder: "e.g. current suburb",
                                     text: $poALocation)
             }
             
@@ -92,7 +92,7 @@ struct PoA: View {
     private func determineComplete() -> Bool {
         var isComplete: Bool = false
         
-        if signatureDone && !poAName.isEmpty && !poAIdentityNumber.isEmpty && !poAContact.isEmpty {
+        if signatureDone && !poAName.isEmpty && !poAIdentityNumber.isEmpty && !poAContact.isEmpty && !poALocation.isEmpty {
             isComplete = true
         }
         
@@ -106,7 +106,7 @@ struct PoA: View {
         if isDone {
             updateApplication()
             let loanID: String = applicationCreation.application.loanID?.uuidString ?? ""
-            let details: [String: String] = ["NAME": poAName, "IDENTITY_NUMBER": poAIdentityNumber, "CONTACT": poAContact, "loanID": loanID]
+            let details: [String: String] = ["NAME": poAName, "IDENTITY_NUMBER": poAIdentityNumber, "CONTACT": poAContact, "LOCATION": poALocation, "loanID": loanID]
              
             let result = PoACreator().exportToPDF(fileName: "poa_\(loanID).pdf", details: details)
              
@@ -116,17 +116,20 @@ struct PoA: View {
                 alertMessage = result.1 ?? "Unknown error while saving PDF."
                 showingAlert = true
             }
-        } else if !signatureDone {
-            alertMessage = "Please add your signature."
-            showingAlert = true
         } else if poAName.isEmpty {
             alertMessage = "Please add your full name and surname."
             showingAlert = true
         } else if poAIdentityNumber.isEmpty {
             alertMessage = "Please add your identity/passport/registration number."
             showingAlert = true
+        } else if poALocation.isEmpty {
+            alertMessage = "Please add a rough detail of your location (e.g. current suburb)."
+            showingAlert = true
         } else if poAContact.isEmpty {
             alertMessage = "Please add your contact info."
+            showingAlert = true
+        } else if !signatureDone {
+            alertMessage = "Please add your signature."
             showingAlert = true
         } else {
             alertMessage = "Please complete the form before attempting to save."

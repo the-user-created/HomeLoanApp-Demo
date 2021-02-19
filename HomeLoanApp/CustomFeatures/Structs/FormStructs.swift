@@ -163,7 +163,7 @@ struct FormVStackTextField: View {
                           infoButton: infoButton)
             }
             
-            TextField(notIgnoredExampleIDs.contains(iD) ? "e.g. " + placeholder.uppercased() : "",
+            TextField(notIgnoredExampleIDs.contains(iD) ? "e.g. " + placeholder.uppercased() : placeholder,
                       text: binding,
                       onEditingChanged: { _ in
                         changedValues.updateKeyValue(iD, value: binding.wrappedValue)

@@ -25,6 +25,17 @@ struct SignatureView: View {
     var body: some View {
         VStack(alignment: .center) {
             HStack {
+                Button(action: {
+                    alertMessage = "Before you tap \"Save\", make sure that the whole signing area is within the bounds of your screen otherwise your signature will be invalid."
+                    showingAlert = true
+                }) {
+                    Image(systemName: "info.circle")
+                        .resizable()
+                        .scaledToFit()
+                }
+                .frame(width: 22.0, height: 22.0)
+                .padding(.trailing, 10.0)
+                
                 Text("Sign below")
                     .font(.title)
                 
@@ -32,6 +43,7 @@ struct SignatureView: View {
                     .foregroundColor(signatureSaved ? .green : .red)
                     .padding(.leading, 10)
             }
+            .buttonStyle(BorderlessButtonStyle())
             
             DrawingControls(color: $color, drawings: $drawings, lineWidth: $lineWidth, rect: $rect, signatureSaved: $signatureSaved,
                             alertMessage: $alertMessage, showingAlert: $showingAlert, loanID: loanID ?? "", signatureType: signatureType)

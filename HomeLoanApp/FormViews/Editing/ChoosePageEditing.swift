@@ -45,8 +45,6 @@ struct ChoosePageEditing: View {
     @State var sheetShowing = false
     @State var canSendMail: Bool = MFMailComposeViewController.canSendMail()
     
-    public var documentData: Data?
-    
     // MARK: - init
     init(application: Application) {
         self.application = application

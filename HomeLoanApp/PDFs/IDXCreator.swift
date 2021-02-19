@@ -176,13 +176,11 @@ class IDXCreator: NSObject {
                     do {
                         let signatureData = try Data(contentsOf: signatureURL)
                         let signatureImg = UIImage(data: signatureData)
-                        let signatureFrame = CGSize(width: 100, height: 70)
+                        let signatureFrame = CGSize(width: 125, height: 87.5)
                         let widthScaleRatio = signatureFrame.width / (signatureImg?.size.width ?? 1)
                         let heightScaleRatio = signatureFrame.height / (signatureImg?.size.height ?? 1)
                         let scaleFactor = min(widthScaleRatio, heightScaleRatio)
 
-                        // Multiply the original image’s dimensions by the scale factor
-                        // to determine the scaled image size that preserves aspect ratio
                         let scaledImageSize = CGSize(
                             width: (signatureImg?.size.width ?? 1) * scaleFactor,
                             height: (signatureImg?.size.height ?? 1) * scaleFactor

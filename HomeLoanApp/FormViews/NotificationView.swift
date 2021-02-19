@@ -92,13 +92,13 @@ struct NotificationView: View {
             saveApplication()
             presentationMode.wrappedValue.dismiss()
         } else if notificationCheck != "Yes" && !signatureDone {
-            alertMessage = "Please add your signature and accept the notification to continue"
+            alertMessage = "Please add your signature and accept the notification."
             showingAlert = true
         } else if notificationCheck != "Yes" {
-            alertMessage = "Please accept the notification to continue"
+            alertMessage = "Please accept the notification."
             showingAlert = true
         } else if !signatureDone {
-            alertMessage = "Please add your signature to continue"
+            alertMessage = "Please add your signature."
             showingAlert = true
         }
     }

@@ -16,6 +16,7 @@ class PoACreator: NSObject {
     let NSStringWidth: CGFloat = 495.2
     
     var pdfFileName: String?
+    var poASignatureSize: CGSize = .zero
     
     override init() {
         super.init()
@@ -136,7 +137,7 @@ class PoACreator: NSObject {
                     do {
                         let signatureData = try Data(contentsOf: signatureURL)
                         let signatureImg = UIImage(data: signatureData)
-                        let signatureFrame = CGSize(width: 100, height: 70)
+                        let signatureFrame = CGSize(width: 125, height: 87.5)
                         let widthScaleRatio = signatureFrame.width / (signatureImg?.size.width ?? 1)
                         let heightScaleRatio = signatureFrame.height / (signatureImg?.size.height ?? 1)
                         let scaleFactor = min(widthScaleRatio, heightScaleRatio)
@@ -147,6 +148,7 @@ class PoACreator: NSObject {
                             width: (signatureImg?.size.width ?? 1) * scaleFactor,
                             height: (signatureImg?.size.height ?? 1) * scaleFactor
                         )
+                        poASignatureSize = scaledImageSize
                         
                         if let scaledImg = signatureImg?.scalePreservingAspectRatio(targetSize: scaledImageSize) {
                             signatureAttach.image = scaledImg
@@ -160,32 +162,32 @@ class PoACreator: NSObject {
             
             let signatureImgString = NSAttributedString(attachment: signatureAttach)
             signMutable.append(signatureImgString)
-            let signDateRect = CGRect(x: leftBuffer, y: 450, width: NSStringWidth, height: 70)
+            let signDateRect = CGRect(x: leftBuffer, y: poASignatureSize.height < 50 ? 490 : 450, width: NSStringWidth, height: poASignatureSize.height < 50 ? 60 : 100)
             signMutable.draw(in: signDateRect)
             
             let consumerAttr = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 10),
                                 NSAttributedString.Key.paragraphStyle: paragraphStyle]
             let consumer = "________________________________________\nConsumer"
-            let consumerRect = CGRect(x: leftBuffer, y: 520, width: NSStringWidth, height: 24)
+            let consumerRect = CGRect(x: leftBuffer, y: 560, width: NSStringWidth, height: 24)
             consumer.draw(in: consumerRect, withAttributes: consumerAttr)
             
             // Contact details
             let contactHeaderAttr = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 10),
                                      NSAttributedString.Key.paragraphStyle: paragraphStyle]
             let contactHeader = "Consumer Contact Details:"
-            let contactHeaderRect = CGRect(x: leftBuffer, y: 570, width: NSStringWidth, height: 12)
+            let contactHeaderRect = CGRect(x: leftBuffer, y: 610, width: NSStringWidth, height: 12)
             contactHeader.draw(in: contactHeaderRect, withAttributes: contactHeaderAttr)
             
             let contactHeaderTwoAttr = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 9),
                                         NSAttributedString.Key.paragraphStyle: paragraphStyle]
             let contactHeaderTwo = "Cell number / other contact number:"
-            let contactHeaderTwoRect = CGRect(x: leftBuffer, y: 585, width: NSStringWidth, height: 12)
+            let contactHeaderTwoRect = CGRect(x: leftBuffer, y: 625, width: NSStringWidth, height: 12)
             contactHeaderTwo.draw(in: contactHeaderTwoRect, withAttributes: contactHeaderTwoAttr)
             
             let contactAttr = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 10),
                                NSAttributedString.Key.paragraphStyle: paragraphStyle]
             let contact = "\(details["CONTACT"] ?? "")\n________________________________________\n\nConsumer Contact Details"
-            let contactRect = CGRect(x: leftBuffer, y: 615, width: NSStringWidth, height: 48)
+            let contactRect = CGRect(x: leftBuffer, y: 655, width: NSStringWidth, height: 48)
             contact.draw(in: contactRect, withAttributes: contactAttr)
             
             // Footer
@@ -195,7 +197,7 @@ class PoACreator: NSObject {
             /*let footer = NSMutableAttributedString(string: "evo Group (pty) Ltd \u{00b7} reg no. 2007/023685/07\n8th Floor \u{00b7} ooba House \u{00b7} 33 Bree Street \u{00b7} Cape Town \u{00b7} 8001\nP.O Box 1535  \u{00b7}  Cape Town  \u{00b7}  8000  \u{00b7}  T: +27 21 481 7300  \u{00b7}  +27 21 481 7387 Directors: RS Dyer, H Jawitz, AR Rubin\n\nwww.evogroup.co.za \u{00b7} A member of the ooba group")
             footer.addAttribute(.link, value: "www.evogroup.co.za", range: NSRange(location: 209, length: 18))
             footer.setFontFace(font: UIFont.systemFont(ofSize: 9, weight: .ultraLight))*/
-            let footerRect = CGRect(x: leftBuffer, y: 700, width: NSStringWidth, height: 56)
+            let footerRect = CGRect(x: leftBuffer, y: 740, width: NSStringWidth, height: 56)
             footer.draw(in: footerRect, withAttributes: footerAttr)
         }
         
