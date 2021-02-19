@@ -311,8 +311,20 @@ func getAttachments(application: Application, scanGroup: [String]) -> [String: D
             }
         }
         
+        /*let signURL = documentsDirectory.appendingPathComponent("idx_consent_signature_\(loanID)_image.png")
+        
+        if FileManager.default.fileExists(atPath: signURL.path) {
+            do {
+                let signatureData = try Data(contentsOf: signURL)
+                attachments.updateValue(signatureData, forKey: "idx_signature.png")
+                print("print - Loaded signature")
+            } catch {
+                print("print - Error loading signature: \(error)")
+            }
+        }*/
+        
         // Identity Scan(s)
-        if scanGroup.contains("identity") { // Checking if client did scan a identity document
+        /*if scanGroup.contains("identity") { // Checking if client did scan a identity document
             let identityType: String = application.identityType ?? ""
             let identityURL = documentsDirectory.appendingPathComponent("identity_scan_\(loanID)_0.png")
             
@@ -391,17 +403,18 @@ func getAttachments(application: Application, scanGroup: [String]) -> [String: D
                     break
                 }
             }
-        }
+        }*/
         
-        let pdfURL = documentsDirectory.appendingPathComponent("test.pdf")
+        // IDX Consent
+        let idxURL = documentsDirectory.appendingPathComponent("idx_consent_\(loanID).pdf")
         
-        if FileManager.default.fileExists(atPath: pdfURL.path) {
+        if FileManager.default.fileExists(atPath: idxURL.path) {
             do {
-                let pdfData = try Data(contentsOf: pdfURL)
-                attachments.updateValue(pdfData, forKey: "test.pdf")
-                print("print - Loaded test pdf")
+                let pdfData = try Data(contentsOf: idxURL)
+                attachments.updateValue(pdfData, forKey: "IDX_Consent.pdf")
+                print("print - Loaded IDX Consent pdf")
             } catch {
-                print("print - Error loading test pdf: \(error)")
+                print("print - Error loading IDX Consent pdf: \(error)")
             }
         }
     }

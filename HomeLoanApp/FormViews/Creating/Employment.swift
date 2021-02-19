@@ -9,7 +9,7 @@ import SwiftUI
 
 struct Employment: View {
     // MARK: - Wrapped Objects
-    @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.managedObjectContext) var viewContext
     @Environment (\.presentationMode) var presentationMode
     @EnvironmentObject var applicationCreation: ApplicationCreation
     @EnvironmentObject var changedValues: ChangedValues

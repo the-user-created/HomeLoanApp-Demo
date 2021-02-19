@@ -70,6 +70,7 @@ struct DrawingControls: View {
                 }
                 .padding([.top, .bottom], 10)
                 .padding([.leading, .trailing], 20)
+                
                 Spacer()
                 
                 Button("Clear") {
@@ -95,6 +96,7 @@ struct DrawingControls: View {
     
     func saveImage(_ signatureName: String) {
         if let signature = UIApplication.shared.windows[0].rootViewController?.view.asImage(rect: rect) {
+            
             guard let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
 
             let fileURL = documentsDirectory.appendingPathComponent(signatureName)
@@ -146,7 +148,7 @@ struct DrawingPad: View {
                 add(drawing: currentDrawing, toPath: &path)
             }
             .stroke(color, lineWidth: lineWidth)
-                .background(Color(white: 0.95))
+                .background(Color(white: 1))
                 .gesture(
                     DragGesture(minimumDistance: 0.1)
                         .onChanged({ (value) in

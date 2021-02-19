@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="19H512" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="19H524" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Application" representedClassName="Application" syncable="YES">
+        <attribute name="accOneBranchName" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="accOneBranchNum" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="accOneName" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="accOneNum" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="accOneType" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="accTwoBranchName" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="accTwoBranchNum" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="accTwoName" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="accTwoNum" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="accTwoType" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="aNC" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="applicantType" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="applicationType" optional="YES" attributeType="String" defaultValueString=""/>
@@ -75,6 +85,8 @@
         <attribute name="identityNumber" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="identityScanned" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="identityType" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="idxIdentityNumber" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="idxName" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="incomeDeductionsDone" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="incomeFromSureties" optional="YES" attributeType="String"/>
         <attribute name="incomeSource" optional="YES" attributeType="String" defaultValueString=""/>
@@ -124,6 +136,10 @@
         <attribute name="personalDetailsDone" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="personalLoans" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="petrolCar" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="poACellNumber" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="poAContactOther" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="poAIdentityNumber" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="poAName" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="postalCity" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="postalCountry" optional="YES" attributeType="String"/>
         <attribute name="postalLine1" optional="YES" attributeType="String" defaultValueString=""/>
@@ -179,6 +195,6 @@
         <attribute name="workPhoneNum" optional="YES" attributeType="String" defaultValueString=""/>
     </entity>
     <elements>
-        <element name="Application" positionX="-63" positionY="-18" width="128" height="2683"/>
+        <element name="Application" positionX="-63" positionY="-18" width="128" height="2923"/>
     </elements>
 </model>

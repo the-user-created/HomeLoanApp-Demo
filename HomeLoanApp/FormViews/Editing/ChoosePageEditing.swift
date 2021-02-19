@@ -8,6 +8,7 @@
 import SwiftUI
 import CoreData
 import MessageUI
+import PDFKit
 
 struct ChoosePageEditing: View {
     // MARK: - Wrapped Objects
@@ -27,7 +28,8 @@ struct ChoosePageEditing: View {
     @State var notificationDone: Bool = false
     @State var employmentDone: Bool = false
     @State var expensesDone: Bool = false
-    @State var iDXDone: Bool = false
+    @State var idxDone: Bool = false
+    @State var poADone: Bool = false
     
     @State var selection: Int?
     
@@ -43,6 +45,9 @@ struct ChoosePageEditing: View {
     @State var sheetShowing = false
     @State var canSendMail: Bool = MFMailComposeViewController.canSendMail()
     
+    public var documentData: Data?
+    
+    // MARK: - init
     init(application: Application) {
         self.application = application
         self._generalDetailsDone = State(wrappedValue: self.application.generalDetailsDone)
@@ -193,30 +198,46 @@ struct ChoosePageEditing: View {
                 .disabled(generalDetailsDone ? !identityDone! : true)
             }
             
-            NavigationLink(destination: NotificationView(application: application, notificationCheck: $notificationCheck,
-                    isDone: $notificationDone, sender: .editor), tag: 9, selection: $selection) {
-                HStack {
-                    Text("Notification")
-                        .font(.headline)
-                    
-                    Spacer()
-                    
-                    Image(systemName: notificationDone ? "checkmark.circle.fill": "checkmark.circle")
-                        .foregroundColor(notificationDone ? .green : .red)
+            // Legalities
+            Group {
+                NavigationLink(destination: NotificationView(application: application, notificationCheck: $notificationCheck,
+                        isDone: $notificationDone, sender: .editor), tag: 9, selection: $selection) {
+                    HStack {
+                        Text("Notification")
+                            .font(.headline)
+                        
+                        Spacer()
+                        
+                        Image(systemName: notificationDone ? "checkmark.circle.fill": "checkmark.circle")
+                            .foregroundColor(notificationDone ? .green : .red)
+                    }
                 }
-            }
-            .disabled(!canSubmit())
-            
-            NavigationLink(destination: IDXConsent(application: application, isDone: $iDXDone, sender: .editor), tag: 10, selection: $selection) {
-                HStack {
-                    Text("IDX")
-                        .font(.headline)
-                    
-                    Spacer()
-                    
-                    Image(systemName: iDXDone ? "checkmark.circle.fill": "checkmark.circle")
-                        .foregroundColor(iDXDone ? .green : .red)
+                .disabled(!canSubmit())
+                
+                NavigationLink(destination: IDXConsentEditing(application: application, isDone: $idxDone, sender: .editor), tag: 10, selection: $selection) {
+                    HStack {
+                        Text("IDX Consent")
+                            .font(.headline)
+                        
+                        Spacer()
+                        
+                        Image(systemName: idxDone ? "checkmark.circle.fill": "checkmark.circle")
+                            .foregroundColor(idxDone ? .green : .red)
+                    }
                 }
+                
+                NavigationLink(destination: EmptyView()) {
+                    HStack {
+                        Text("Power of Attorney")
+                            .font(.headline)
+                        
+                        Spacer()
+                        
+                        Image(systemName: poADone ? "checkmark.circle.fill": "checkmark.circle")
+                            .foregroundColor(poADone ? .green : .red)
+                    }
+                }
+                .disabled(!canSubmit())
             }
             
             // Submit Application
@@ -276,8 +297,6 @@ struct ChoosePageEditing: View {
                 do {
                     try viewContext.save()
                     print("Application Entity Updated")
-                    //sheetType = .whatsNext
-                    //sheetShowing = true
                 } catch {
                     print(error.localizedDescription)
                 }
@@ -287,11 +306,14 @@ struct ChoosePageEditing: View {
             if sheetType == .mailView {
                 let clientName = "\(application.surname ?? "NIL"), \(application.firstNames ?? "NIL")"
                 let recipients = [salesConsultantEmails[salesConsultant] ?? ""]
-                MailView(clientName: clientName, emailBody: makeEmailBody(application: application), recipients: recipients, attachments: getAttachments(application: application, scanGroup: scanGroup),
-                         isShowing: self.$sheetShowing, result: self.$result, submitted: $submitted)
-            } /*else if sheetType == .whatsNext {
-                WhatsNext()
-            }*/
+                MailView(clientName: clientName,
+                         emailBody: makeEmailBody(application: application),
+                         recipients: recipients,
+                         attachments: getAttachments(application: application, scanGroup: scanGroup),
+                         isShowing: self.$sheetShowing,
+                         result: self.$result,
+                         submitted: $submitted)
+            }
         }
     }
     

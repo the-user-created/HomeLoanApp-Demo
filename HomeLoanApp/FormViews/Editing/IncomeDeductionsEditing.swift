@@ -9,7 +9,7 @@ import SwiftUI
 
 struct IncomeDeductionsEditing: View {
     // MARK: - Wrapped Objects
-    @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.managedObjectContext) var viewContext
     @Environment (\.presentationMode) var presentationMode
     @EnvironmentObject var applicationCreation: ApplicationCreation
     @ObservedObject var application: Application

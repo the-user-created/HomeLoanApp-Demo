@@ -213,7 +213,24 @@ extension Application {
     
     
     // MARK: - IDX Consent
+    @NSManaged public var idxName: String?
+    @NSManaged public var idxIdentityNumber: String?
+    @NSManaged public var accOneName: String?
+    @NSManaged public var accOneType: String?
+    @NSManaged public var accOneBranchName: String?
+    @NSManaged public var accOneBranchNum: String?
+    @NSManaged public var accOneNum: String?
+    @NSManaged public var accTwoName: String?
+    @NSManaged public var accTwoType: String?
+    @NSManaged public var accTwoBranchName: String?
+    @NSManaged public var accTwoBranchNum: String?
+    @NSManaged public var accTwoNum: String?
     
+    // MARK: - Power of Attorney
+    @NSManaged public var poAName: String?
+    @NSManaged public var poAIdentityNumber: String?
+    @NSManaged public var poACellNumber: String?
+    @NSManaged public var poAContactOther: String?
     
     var status: Status {
         set {

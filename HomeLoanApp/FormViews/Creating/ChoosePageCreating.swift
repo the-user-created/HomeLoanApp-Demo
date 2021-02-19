@@ -27,6 +27,8 @@ struct ChoosePageCreating: View {
     @State var notificationDone: Bool = false
     @State var employmentDone: Bool = false
     @State var expensesDone: Bool = false
+    @State var idxDone: Bool = false
+    @State var poADone: Bool = false
     
     @State var selection: Int?
     
@@ -184,6 +186,34 @@ struct ChoosePageCreating: View {
                         
                         Image(systemName: notificationDone ? "checkmark.circle.fill": "checkmark.circle")
                             .foregroundColor(notificationDone ? .green: .red)
+                    }
+                }
+                .disabled(!canSubmit())
+                
+                NavigationLink(destination: applicationCreation.idxSaved ?
+                                AnyView(IDXConsentEditing(application: applicationCreation.application, isDone: $idxDone, sender: .creator)) :
+                                AnyView(IDXConsent(isDone: $idxDone)), tag: 19, selection: $selection) {
+                    HStack {
+                        Text("IDX Consent")
+                            .font(.headline)
+                        
+                        Spacer()
+                        
+                        Image(systemName: idxDone ? "checkmark.circle.fill": "checkmark.circle")
+                            .foregroundColor(idxDone ? .green : .red)
+                    }
+                }
+                .disabled(!canSubmit())
+                
+                NavigationLink(destination: EmptyView()) {
+                    HStack {
+                        Text("Power of Attorney")
+                            .font(.headline)
+                        
+                        Spacer()
+                        
+                        Image(systemName: poADone ? "checkmark.circle.fill": "checkmark.circle")
+                            .foregroundColor(poADone ? .green : .red)
                     }
                 }
                 .disabled(!canSubmit())
