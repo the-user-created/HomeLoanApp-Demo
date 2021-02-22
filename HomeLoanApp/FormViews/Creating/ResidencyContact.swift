@@ -55,7 +55,7 @@ struct ResidencyContact: View {
     
     // MARK: - body
     var body: some View {
-        Form() {
+        Form {
             Section(header: Text("RESIDENCY")) {
                 FormYesNo(iD: "sACitizen",
                           question: formQuestions[2][0] ?? "MISSING",
@@ -210,7 +210,7 @@ struct ResidencyContact: View {
                 }
             }
             
-            Section() {
+            Section {
                 Button(action: {
                     handleSaving()
                 }) {
@@ -253,10 +253,10 @@ struct ResidencyContact: View {
                 changedValues.changedValues.merge(dict: ["postalCountry": countries[0], "postalLine1": "", "postalLine2": "", "postalSuburb": "", "postalCity": "", "postalProvince": "", "postalStreetCode": ""])
             }
         }
-        .onDisappear() {
+        .onDisappear {
             isActive = false
         }
-        .onAppear() {
+        .onAppear {
             isActive = true
         }
         .alert(isPresented: $showingAlert) {

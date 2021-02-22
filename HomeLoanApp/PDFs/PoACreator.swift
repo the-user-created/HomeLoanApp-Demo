@@ -119,10 +119,8 @@ class PoACreator: NSObject {
             let year = calendar.component(.year, from: date)
             let month = calendar.component(.month, from: date)
             let day = calendar.component(.day, from: date)
-            let hours = calendar.component(.hour, from: date)
-            let minutes = calendar.component(.minute, from: date)
             
-            let signedAt = "Signed at \(hours):\(minutes) on this \((days.keys.contains(day) ? days[day] : "\(day)th") ?? "") day of \(months[month] ?? "") \(year)"
+            let signedAt = "Signed at \(details["LOCATION"] ?? "") on this \((days.keys.contains(day) ? days[day] : "\(day)th") ?? "") day of \(months[month] ?? "") \(year)"
             let signedAtRect = CGRect(x: leftBuffer, y: 400, width: NSStringWidth, height: 12)
             signedAt.draw(in: signedAtRect, withAttributes: legalsAttr)
             

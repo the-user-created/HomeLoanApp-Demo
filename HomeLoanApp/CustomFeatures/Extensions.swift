@@ -257,9 +257,9 @@ extension UIImage {
 extension NSMutableAttributedString {
     func setFontFace(font: UIFont, color: UIColor? = nil) {
         beginEditing()
-        self.enumerateAttribute(
+        enumerateAttribute(
             .font,
-            in: NSRange(location: 0, length: self.length)
+            in: NSRange(location: 0, length: length)
         ) { (value, range, stop) in
 
             if let f = value as? UIFont,

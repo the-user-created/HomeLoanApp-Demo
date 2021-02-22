@@ -260,7 +260,7 @@ struct Employment: View {
         for (key, value) in changedValues.changedValues {
             applicationCreation.application.setValue(value, forKey: key)
         }
-        
+
         do {
             try viewContext.save()
             print("print - Application Entity Updated")

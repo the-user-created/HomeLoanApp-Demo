@@ -111,12 +111,14 @@ class IDXCreator: NSObject {
             legalsOne.draw(in: legalsOneRect, withAttributes: legalsAttr)
             
             // Legal speak #2
-            let legalsTwo = "For the purpose of assessing the home loan application that evo will submit on your behalf to any or all of the banks in the name of \(details["NAME"] ?? ""), the banks need your consent to obtain your bank statement(s) directly from other financial institutions (as specified below). The financial institutions involved will exchange no further information than the bank statements you have authorized and these will be safegaurded and not used for any other purposes. Bank account statements ontained will also be limited to the period necessary to assess the home loan application."
+            let legalsTwo =
+                    "For the purpose of assessing the home loan application that evo will submit on your behalf to any or all of the banks in the name of \(details["NAME"] ?? ""), the banks need your consent to obtain your bank statement(s) directly from other financial institutions (as specified below). The financial institutions involved will exchange no further information than the bank statements you have authorized and these will be safeguarded and not used for any other purposes. Bank account statements contained will also be limited to the period necessary to assess the home loan application."
             let legalsTwoRect = CGRect(x: leftBuffer, y: 250, width: NSStringWidth, height: 80)
             legalsTwo.draw(in: legalsTwoRect, withAttributes: legalsAttr)
             
             // Legal speak #3
-            let legalsThree = "Your signature below confirms that the baks have your consent to obtain bank statement(s) on the following account(s) (that show your account transaction history) and if there is a problem with the electronic retrieval of some or all of the required bank statements for any reason, the banks will contact you to provide physical copies:"
+            let legalsThree =
+                    "Your signature below confirms that the banks have your consent to obtain bank statement(s) on the following account(s) (that show your account transaction history) and if there is a problem with the electronic retrieval of some or all of the required bank statements for any reason, the banks will contact you to provide physical copies:"
             let legalsThreeRect = CGRect(x: leftBuffer, y: 340, width: NSStringWidth, height: 60)
             legalsThree.draw(in: legalsThreeRect, withAttributes: legalsAttr)
             
